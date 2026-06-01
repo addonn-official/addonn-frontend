@@ -61,10 +61,10 @@ const AboutUsPage = () => {
 
 
           {/* Why Us */}
-          {homeSettings.whyus_section ? (
+          {homeSettings?.whyus_section ? (
             <div className="rbt-splash-service-area rbt-section-gapBottom">
               <div className="container">
-                <ServiceSplash settings={{ ...homeSettings.whyus_section, subTitle: "Why Choose Us" }} />
+                <ServiceSplash settings={{ ...homeSettings?.whyus_section, subTitle: "Why Choose Us" }} />
               </div>
             </div>
           ) : (
@@ -76,8 +76,8 @@ const AboutUsPage = () => {
           {/* AddOnn In Numbers (Counter) */}
           <div className="rbt-counterup-area bg-color-extra2 rbt-section-gapBottom default-callto-action-overlap" style={{ paddingTop: '60px' }}>
             <div className="container">
-              {homeSettings.counters ? (
-                <Counter isDesc={false} settings={{ ...homeSettings.counters, subTitle: "Our Achievement" }} />
+              {homeSettings?.counters ? (
+                <Counter isDesc={false} settings={{ ...homeSettings?.counters, subTitle: "Our Achievement" }} />
               ) : !loading ? (
                 <p className="text-center">counters I didn't find</p>
               ) : null}
@@ -86,8 +86,8 @@ const AboutUsPage = () => {
 
 
           {/* <AddonAdvantage /> */}
-          {homeSettings.comparison ? (
-            <ComparisonTable settings={{ ...homeSettings.comparison, subTitle: "Why We Are Best", site: homeSettings.site }} />
+          {homeSettings?.comparison ? (
+            <ComparisonTable settings={{ ...homeSettings?.comparison, subTitle: "Why We Are Best", site: homeSettings?.site }} />
           ) : !loading ? (
             <div className="container mt-5 mb-5"><p className="text-center">comparison I didn't find</p></div>
           ) : null}

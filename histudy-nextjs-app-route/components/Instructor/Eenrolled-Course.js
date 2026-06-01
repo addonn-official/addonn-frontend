@@ -11,10 +11,6 @@ const EnrolledCourses = () => {
 
   const u = userData || {};
 
-
-console.log('sssssssssssssssssssssssss>>>>', u)
-
-
   const mapEnrollmentToCourse = (enrollment) => {
     const c = enrollment.course || {};
     return {

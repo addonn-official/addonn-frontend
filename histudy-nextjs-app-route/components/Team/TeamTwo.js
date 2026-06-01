@@ -23,7 +23,7 @@ const TeamTwo = () => {
           const data = res.data.sort((a, b) => a.order - b.order);
           setInstructors(data);
           // Set instructor with order 1 as default, or the first one if not found
-          const defaultInstructor = data.find((ins) => ins.order === 1) || data[0];
+          const defaultInstructor = data?.find((ins) => ins.order === 1) || data[0];
           setSelectedInstructor(defaultInstructor);
         }
       } catch (error) {
