@@ -1,0 +1,49 @@
+{
+  "siderbar": [
+    {
+      "link": "/instructor-dashboard",
+      "text": "Dashboard",
+      "icon": "feather-home"
+    },
+    {
+      "link": "/instructor-profile",
+      "text": "My Profile",
+      "icon": "feather-user"
+    },
+    {
+      "link": "/instructor-enrolled-course",
+      "text": "Enrolled Courses",
+      "icon": "feather-book-open"
+    },
+    {
+      "link": "/instructor-reviews",
+      "text": "Reviews",
+      "icon": "feather-star"
+    },
+    {
+      "link": "/instructor-quiz-attempts",
+      "text": "Quiz Attempts",
+      "icon": "feather-help-circle"
+    },
+    {
+      "link": "/instructor-assignments",
+      "text": "Assignments/Projects",
+      "icon": "feather-list"
+    },
+    {
+      "link": "/instructor-order-history",
+      "text": "Order History",
+      "icon": "feather-shopping-bag"
+    },
+    {
+      "link": "/instructor-settings",
+      "text": "Settings",
+      "icon": "feather-settings"
+    },
+    {
+      "link": "/",
+      "text": "Logout",
+      "icon": "feather-log-out"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+import Image from "next/image";
+import Link from "next/link";
+
+const CourseBreadcrumb = ({ getMatchCourse }) => {
+
+
+  return (
+    <>
+      <div className="col-lg-8">
+        <div className="content text-start">
+          <ul className="page-list">
+            <li className="rbt-breadcrumb-item">
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <div className="icon-right">
+                <i className="feather-chevron-right"></i>
+              </div>
+            </li>
+            <li className="rbt-breadcrumb-item active">
+              {getMatchCourse.category}
+            </li>
+          </ul>
+          <h2 className="title">{getMatchCourse.courseTitle}</h2>
+          <div className="description" dangerouslySetInnerHTML={{ __html: getMatchCourse.desc }}></div>
+
+          <div className="d-flex align-items-center mb--20 flex-wrap rbt-course-details-feature">
+            <div className="feature-sin best-seller-badge">
+              {getMatchCourse.isBestseller ? (
+                // <span className="rbt-badge-2 bestseller">
+                //   <i className="feather-zap" style={{ marginRight: '5px' }}></i>
+                //   Bestseller
+                // </span>
+
+                <span class="rbt-badge-2">
+                  <span class="image"><img src="/images/icons/card-icon-1.png" alt="Best Seller Icon" /></span> Bestseller
+                </span>
+              ) : (
+                <span className="rbt-badge-2">
+                  {getMatchCourse.sellsType}
+                </span>
+              )}
+            </div>
+
+            <div className="feature-sin rating">
+              <Link href="#">{getMatchCourse.star}</Link>
+              <Link href="#">
+                <i className="fa fa-star"></i>
+              </Link>
+              <Link href="#">
+                <i className="fa fa-star"></i>
+              </Link>
+              <Link href="#">
+                <i className="fa fa-star"></i>
+              </Link>
+              <Link href="#">
+                <i className="fa fa-star"></i>
+              </Link>
+              <Link href="#">
+                <i className="fa fa-star"></i>
+              </Link>
+            </div>
+
+            <div className="feature-sin total-rating">
+              <Link className="rbt-badge-4" href="#">
+                {getMatchCourse.ratingNumber} rating
+              </Link>
+            </div>
+
+            <div className="feature-sin total-student">
+              <span> {getMatchCourse.studentNumber} students</span>
+            </div>
+          </div>
+
+          <div className="rbt-author-meta mb--20">
+            <div className="rbt-avater">
+              <Link href={`/profile/${getMatchCourse.id}`}>
+                {getMatchCourse.userImg && (
+                  <Image
+                    width={40}
+                    height={40}
+                    src={getMatchCourse.userImg}
+                    alt={getMatchCourse.userName}
+                    style={{ objectFit: 'cover', objectPosition: 'top' }}
+                  />
+                )}
+              </Link>
+            </div>
+            <div className="rbt-author-info">
+              By
+              <Link className="px-1" href={`/profile/${getMatchCourse.id}`}>
+                {getMatchCourse.userName}
+              </Link>
+              In <Link href="#">{getMatchCourse.category}</Link>
+            </div>
+          </div>
+
+          <ul className="rbt-meta">
+            {console.log('getMatchCourse>>>>date>>>', getMatchCourse)}
+
+            <li>
+              <i className={`feather-calendar text-light`}></i>Last updated{" "}
+              {getMatchCourse.date}
+            </li>
+            <li>
+              <i className={`feather-globe text-light`}></i>
+              {getMatchCourse.language}
+            </li>
+            {getMatchCourse?.is_certificate_enabled ? (
+              <li>
+                <i className={`feather-award text-light`}></i> {getMatchCourse.courseAward}
+              </li>
+            ) :
+              <li>
+                <i className="feather-clock"></i> {getMatchCourse?.validity}
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default CourseBreadcrumb;

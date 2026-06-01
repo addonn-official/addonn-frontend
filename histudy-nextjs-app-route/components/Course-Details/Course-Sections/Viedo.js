@@ -1,0 +1,302 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import "venobox/dist/venobox.min.css";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useAppContext } from "@/context/Context";
+import { addToCartAction } from "@/redux/action/CartAction";
+import { getToken, getUser } from "@/utils/storage";
+import { getLocalStorageToken } from "@/utils/common.util";
+
+const Viedo = ({ checkMatchCourses }) => {
+  const pathname = usePathname();
+  const { cartToggle, setCart } = useAppContext();
+  const [toggle, setToggle] = useState(false);
+  const [hideOnScroll, setHideOnScroll] = useState(false);
+
+  const disableVideo = [
+    "/course-detail-2",
+    "/course-detail-3",
+    "/course-detail-4",
+    "/course-detail-5",
+    "/course-detail-6",
+    "/course-detail-7",
+    "/course-detail-8",
+  ].some((path) => pathname.startsWith(path));
+
+  const isVideo = ["/course-detail-6"].some((path) =>
+    pathname.startsWith(path)
+  );
+
+  // =====> Start ADD-To-Cart
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.CartReducer);
+
+  const [amount, setAmount] = useState(1);
+
+  const addToCartFun = (id, amount, product) => {
+    dispatch(addToCartAction(id, amount, product));
+    setCart(!cartToggle);
+  };
+
+  useEffect(() => {
+    dispatch({ type: "COUNT_CART_TOTALS" });
+    localStorage.setItem("hiStudy", JSON.stringify(cart));
+  }, [cart]);
+
+  // =====> For video PopUp
+  useEffect(() => {
+    import("venobox/dist/venobox.min.js").then((venobox) => {
+      new venobox.default({
+        selector: ".popup-video",
+      });
+    });
+
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      const isHide = currentScrollPos > 200;
+
+      setHideOnScroll(isHide);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <>
+      {!disableVideo ? (
+        <div
+          className={`video-popup-with-text video-popup-wrapper text-center popup-video sidebar-video-hidden mb--15 ${hideOnScroll ? "d-none" : ""
+            }`}
+          data-vbtype="video"
+          href={checkMatchCourses.courseVideo || "https://www.youtube.com/watch?v=nA1Aqp0sPQo"}
+          style={{ cursor: 'pointer' }}
+        >
+          <div className="video-content">
+            {checkMatchCourses.courseImg && (
+              <Image
+                className="w-100 rbt-radius"
+                src={checkMatchCourses.courseImg}
+                width={355}
+                height={255}
+                alt="Video Images"
+                style={{ objectFit: 'cover', objectPosition: 'top' }}
+              />
+            )}
+            <div className="position-to-top">
+              <span className="rbt-btn rounded-player-2 with-animation">
+                <span className="play-icon"></span>
+              </span>
+            </div>
+            <span className="play-view-text d-block color-white">
+              <i className="feather-eye"></i> Preview this course
+            </span>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {isVideo ? (
+        <div
+          className={`radius-6 overflow-hidden sidebar-video-hidden mb--30 ${hideOnScroll ? "d-none" : ""
+            }`}
+        >
+          <div className="plyr__video-embed rbtplayer">
+            <iframe
+              className="radius-6 overflow-hidden"
+              src="https://www.youtube.com/embed/DR9lxZ8kPYQ?autoplay=0&controls=0&disablekb=1&playsinline=0&cc_load_policy=0&cc_lang_pref=auto&widget_referrer=http%3A%2F%2Flocalhost%3A3001%2Fcourse-details-3.html&rel=0&showinfo=0&iv_load_policy=3&modestbranding=1&customControls=true&noCookie=false&enablejsapi=1&origin=http%3A%2F%2Flocalhost%3A3001&widgetid=1"
+              allowFullScreen
+              width={355}
+              height={200}
+              allow="autoplay"
+            ></iframe>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className="content-item-content">
+        <div className="rbt-price-wrapper d-flex flex-wrap align-items-center justify-content-between">
+          <div className="rbt-price">
+            <span className="current-price">${checkMatchCourses.price}</span>
+            <span className="off-price">${checkMatchCourses.offPrice}</span>
+          </div>
+          <div className="discount-time">
+            <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {checkMatchCourses.days} days
+              left!
+            </span>
+          </div>
+        </div>
+
+        <div className="add-to-card-button mt--15">
+          {checkMatchCourses.isPurchased ? (
+            <Link
+              className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
+              href={`/lesson/${checkMatchCourses.id}`}
+            >
+              <span className="btn-text">Continue Learning</span>
+              <span className="btn-icon">
+                <i className="feather-arrow-right"></i>
+              </span>
+            </Link>
+          ) : (
+            <Link
+              className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
+              href="#"
+              onClick={() =>
+                addToCartFun(checkMatchCourses.id, amount, checkMatchCourses)
+              }
+            >
+              <span className="btn-text">Add to Cart</span>
+              <span className="btn-icon">
+                <i className="feather-arrow-right"></i>
+              </span>
+            </Link>
+          )}
+        </div>
+
+        <div className="buy-now-btn mt--15">
+          {!checkMatchCourses.isPurchased && (
+            <Link
+              className="rbt-btn btn-border icon-hover w-100 d-block text-center"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                const t = getLocalStorageToken() || getToken();
+                const u = getUser();
+                if (!!t && !!u) {
+                  const itemInCart = cart.find((i) => i.id === checkMatchCourses.id);
+                  if (!itemInCart) {
+                    addToCartFun(checkMatchCourses.id, amount, checkMatchCourses);
+                  }
+                  window.location.href = `/checkout?id=${checkMatchCourses.id}`;
+                } else {
+                  window.location.href = "/login";
+                }
+              }}
+            >
+              <span className="btn-text">Enroll Now</span>
+              <span className="btn-icon">
+                <i className="feather-arrow-right"></i>
+              </span>
+            </Link>
+          )}
+        </div>
+        <span className="subtitle">
+          <i className="feather-rotate-ccw"></i> {checkMatchCourses.hasMoneyBackGuarantee ? `${checkMatchCourses.moneyBackDuration || 30}-Day Money-Back Guarantee` : 'Secure Payment Gateway'}
+        </span>
+        <div
+          className={`rbt-widget-details has-show-more ${toggle ? "active" : ""
+            }`}
+        >
+          <ul className="has-show-more-inner-content rbt-course-details-list-wrapper">
+            <li>
+              <span>Class Type</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.is_live ? 'Live' : 'Recorded'}
+              </span>
+            </li>
+            <li>
+              <span>Course Validity</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.is_live ? (checkMatchCourses.start_date || '03 March 2026') : (checkMatchCourses.validity === 'Unlimited' ? 'Lifetime' : checkMatchCourses.validity)}
+              </span>
+            </li>
+            <li>
+              <span>Course Duration</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.duration || (checkMatchCourses.is_live ? '3 Months' : '80 Hours')}
+              </span>
+            </li>
+            <li>
+              <span>Lectures</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.lesson || 0} Lectures
+              </span>
+            </li>
+            <li>
+              <span>Skill Level</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.skill_level || 'All Levels'}
+              </span>
+            </li>
+            <li>
+              <span>Language</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.language || 'Hinglish'}
+              </span>
+            </li>
+            <li>
+              <span>Quizzes</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.quizCount || 0}
+              </span>
+            </li>
+            <li>
+              <span>Certificate</span>
+              <span className="rbt-feature-value rbt-badge-5">
+                {checkMatchCourses.is_certificate_enabled ? 'Yes' : 'No'}
+              </span>
+            </li>
+          </ul>
+          <div
+            className={`rbt-show-more-btn ${toggle ? "active" : ""}`}
+            onClick={() => setToggle(!toggle)}
+          >
+            Show More
+          </div>
+        </div>
+
+        <div className="social-share-wrapper mt--30 text-center">
+          <div className="rbt-post-share d-flex align-items-center justify-content-center">
+            <ul className="social-icon social-default transparent-with-border justify-content-center">
+              <li>
+                <Link href="https://www.instagram.com/">
+                  <i className="feather-instagram"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="https://www.youtube.com/">
+                  <i className="feather-youtube"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="https://www.linkedin.com/">
+                  <i className="feather-linkedin"></i>
+                </Link>
+              </li>
+              <li>
+                <Link href="https://wa.me/">
+                  <i className="feather-message-circle"></i>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <hr className="mt--20" />
+          <div className="contact-with-us text-center">
+            <p>For details about the course</p>
+            <p className="rbt-badge-2 mt--10 justify-content-center w-100">
+              <i className="feather-message-circle mr--5" style={{ color: '#25D366' }}></i> WhatsApp:
+              <Link href="#">
+                <strong>+444 555 666 777</strong>
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Viedo;

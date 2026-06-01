@@ -1,0 +1,498 @@
+// "use client";
+
+// import { useEffect, useState, useCallback } from "react";
+// import Image from "next/image";
+// import { UserReviewServices } from "../../../services/User";
+// import MirrorLoader from "../../../components/Common/MirrorLoader";
+
+// const ReviewPage = () => {
+//   const [reviews, setReviews] = useState([]);
+//   const [page, setPage] = useState(1);
+//   const [loading, setLoading] = useState(false);
+//   const [hasMore, setHasMore] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   const fetchReviews = useCallback(async (pageNum) => {
+//     setLoading(true);
+//     try {
+//       const res = await UserReviewServices.getAllReviews({ per_page: 9, page: pageNum });
+
+//   console.log('reviews>>>>>',res);
+
+
+//       // if (res && res.success) {
+//       //   const verifiedReviews = res.data.filter(review => review.verified === 1);
+//       //   if (pageNum === 1) {
+//       //     setReviews(verifiedReviews);
+//       //   } else {
+//       //     setReviews(prev => [...prev, ...verifiedReviews]);
+//       //   }
+
+//       //   if (res.meta.current_page >= res.meta.last_page) {
+//       //     setHasMore(false);
+//       //   }
+//       // }
+//     } catch (error) {
+//       console.error("Error fetching reviews:", error);
+//       setError("Unable to load reviews. Please try again later.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     fetchReviews(1);
+//   }, [fetchReviews]);
+
+//   const handleScroll = useCallback(() => {
+//     if (loading || !hasMore) return;
+//     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+//     const windowHeight = window.innerHeight;
+//     const documentHeight = document.documentElement.scrollHeight;
+//     if (scrollTop + windowHeight >= documentHeight - 100) {
+//       setPage(prev => prev + 1);
+//     }
+//   }, [loading, hasMore]);
+
+//   useEffect(() => {
+//     if (page > 1) {
+//       fetchReviews(page);
+//     }
+//   }, [page, fetchReviews]);
+
+//   useEffect(() => {
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, [handleScroll]);
+
+//   const renderReviewCard = (review) => (
+//     <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30" key={review.id}>
+//       <div className="rbt-testimonial-box testimonial-card-style">
+//         <div className="inner">
+//           <div className="header">
+//             <div className="clint-info-wrapper">
+//               <div className="thumb">
+//                 <Image
+//                   src={review.file?.url || "/images/client/client-01.png"}
+//                   width={494}
+//                   height={494}
+//                   alt="Client Images"
+//                 />
+//               </div>
+//               <div className="client-info">
+//                 <h5 className="title">{review.name}</h5>
+//                 {review.user_profession ? (
+//                   <p className="designation">{review.user_profession}</p>
+//                 ) : (
+//                   <p className="designation">Student</p>
+//                 )}
+//               </div>
+//             </div>
+//             <div className="quote-icon">
+//               <i className="feather-quote"></i>
+//             </div>
+//           </div>
+//           <div className="description">
+//             <p className="subtitle-3">{review.review}</p>
+//             <div className="footer-content">
+//               <div className="rbt-review">
+//                 <div className="rating">
+//                   {[...Array(5)].map((_, i) => (
+//                     <i
+//                       key={i}
+//                       className={`fas fa-star ${i < Math.round(parseFloat(review.rating)) ? "" : "off"}`}
+//                     ></i>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+  
+
+//   return (
+//     <main className="rbt-main-wrapper">
+//       <div className="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+//         <div className="container">
+//           <div className="row">
+//             <div className="col-lg-12">
+//               <div className="breadcrumb-inner text-center">
+//                 <h1 className="title">Student Reviews</h1>
+//                 <ul className="page-list">
+//                   <li className="rbt-breadcrumb-item">
+//                     <a href="/">Home</a>
+//                   </li>
+//                   <li>
+//                     <div className="icon-right">
+//                       <i className="feather-chevron-right"></i>
+//                     </div>
+//                   </li>
+//                   <li className="rbt-breadcrumb-item active">Reviews</li>
+//                 </ul>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="rbt-course-area bg-color-white rbt-section-gap">
+//         <div className="container">
+//           <div className="row mb--60">
+//             <div className="col-lg-12">
+//               <div className="section-title text-center">
+//                 <span className="subtitle bg-primary-opacity">REVIEWS</span>
+//                 <h2 className="title">What Our Students Say</h2>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="row g-5">
+//             {error && (
+//               <div className="col-12">
+//                 <div className="alert alert-danger text-center">
+//                   {error}
+//                 </div>
+//               </div>
+//             )}
+//             {reviews.map(renderReviewCard)}
+//             {loading && reviews.length === 0 && (
+//               [...Array(6)].map((_, index) => (
+//                 <div className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30" key={`skeleton-${index}`}>
+//                   <div className="rbt-testimonial-box testimonial-card-style">
+//                     <div className="inner">
+//                       <div className="header">
+//                         <div className="clint-info-wrapper">
+//                           <div className="thumb">
+//                             <MirrorLoader widthClass="w-100" heightClass="h-100" radiusClass="radius-15" />
+//                           </div>
+//                           <div className="client-info">
+//                             <MirrorLoader widthClass="w-75" heightClass="h-20" className="mb--10" />
+//                             <MirrorLoader widthClass="w-50" heightClass="h-16" />
+//                           </div>
+//                         </div>
+//                       </div>
+//                       <div className="description">
+//                         <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--10" />
+//                         <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--10" />
+//                         <MirrorLoader widthClass="w-50" heightClass="h-20" />
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))
+//             )}
+//             {loading && reviews.length > 0 && (
+//               <div className="col-12 text-center mt--30">
+//                 <MirrorLoader widthClass="w-100" heightClass="h-20" />
+//               </div>
+//             )}
+//             {!hasMore && !error && <div className="col-12 text-center">No more reviews</div>}
+//           </div>
+//         </div>
+//       </div>
+//     </main>
+//   );
+// };
+
+// export default ReviewPage;
+
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
+import { UserReviewServices } from "../../../services/User";
+import MirrorLoader from "../../../components/Common/MirrorLoader";
+
+const ReviewPage = () => {
+  const [reviews, setReviews] = useState([]);
+  const [cursor, setCursor] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchReviews = useCallback(
+    async (cursorValue = null) => {
+      if (loading) return;
+
+      setLoading(true);
+
+      try {
+        const params = {
+          per_page: 9,
+        };
+
+        if (cursorValue) {
+          params.cursor = cursorValue;
+        }
+
+        const res = await UserReviewServices.getAllReviews(params);
+
+        console.log("reviews>>>>>", res);
+
+        if (res?.success) {
+          const reviewData = Array.isArray(res.data) ? res.data : [];
+
+          if (!cursorValue) {
+            setReviews(reviewData);
+          } else {
+            setReviews((prev) => [...prev, ...reviewData]);
+          }
+
+          if (res?.links?.next) {
+            try {
+              const nextUrl = new URL(res.links.next);
+              const nextCursor = nextUrl.searchParams.get("cursor");
+
+              setCursor(nextCursor);
+              setHasMore(true);
+            } catch (err) {
+              console.error("Cursor parsing error:", err);
+              setCursor(null);
+              setHasMore(false);
+            }
+          } else {
+            setCursor(null);
+            setHasMore(false);
+          }
+        } else {
+          setHasMore(false);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        setError("Unable to load reviews. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loading]
+  );
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    if (loading || !hasMore || !cursor) return;
+
+    const scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop;
+
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollTop + windowHeight >= documentHeight - 100) {
+      fetchReviews(cursor);
+    }
+  }, [loading, hasMore, cursor, fetchReviews]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  const renderReviewCard = (review) => (
+    <div
+      className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30"
+      key={review.id}
+    >
+      <div className="rbt-testimonial-box testimonial-card-style">
+        <div className="inner">
+          <div className="header">
+            <div className="clint-info-wrapper">
+              <div className="thumb">
+                <Image
+                  src={review.file?.url || "/images/client/client-01.png"}
+                  width={494}
+                  height={494}
+                  alt="Client Images"
+                />
+              </div>
+
+              <div className="client-info">
+                <h5 className="title">{review.name}</h5>
+
+                {review.user_profession ? (
+                  <p className="designation">{review.user_profession}</p>
+                ) : (
+                  <p className="designation">Student</p>
+                )}
+              </div>
+            </div>
+
+            <div className="quote-icon">
+              <i className="feather-quote"></i>
+            </div>
+          </div>
+
+          <div className="description">
+            <p className="subtitle-3">{review.review}</p>
+
+            <div className="footer-content">
+              <div className="rbt-review">
+                <div className="rating">
+                  {[...Array(5)].map((_, i) => (
+                    <i
+                      key={i}
+                      className={`fas fa-star ${
+                        i < Math.round(Number(review.rating || 0))
+                          ? ""
+                          : "off"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <main className="rbt-main-wrapper">
+      <div className="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="breadcrumb-inner text-center">
+                <h1 className="title">Student Reviews</h1>
+
+                <ul className="page-list">
+                  <li className="rbt-breadcrumb-item">
+                    <a href="/">Home</a>
+                  </li>
+
+                  <li>
+                    <div className="icon-right">
+                      <i className="feather-chevron-right"></i>
+                    </div>
+                  </li>
+
+                  <li className="rbt-breadcrumb-item active">Reviews</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rbt-course-area bg-color-white rbt-section-gap">
+        <div className="container">
+          <div className="row mb--60">
+            <div className="col-lg-12">
+              <div className="section-title text-center">
+                <span className="subtitle bg-primary-opacity">
+                  REVIEWS
+                </span>
+
+                <h2 className="title">What Our Students Say</h2>
+              </div>
+            </div>
+          </div>
+
+          <div className="row g-5">
+            {error && (
+              <div className="col-12">
+                <div className="alert alert-danger text-center">
+                  {error}
+                </div>
+              </div>
+            )}
+
+            {reviews.map(renderReviewCard)}
+
+            {loading && reviews.length === 0 &&
+              [...Array(6)].map((_, index) => (
+                <div
+                  className="col-lg-4 col-md-6 col-sm-6 col-12 mt--30"
+                  key={`skeleton-${index}`}
+                >
+                  <div className="rbt-testimonial-box testimonial-card-style">
+                    <div className="inner">
+                      <div className="header">
+                        <div className="clint-info-wrapper">
+                          <div className="thumb">
+                            <MirrorLoader
+                              widthClass="w-100"
+                              heightClass="h-100"
+                              radiusClass="radius-15"
+                            />
+                          </div>
+
+                          <div className="client-info">
+                            <MirrorLoader
+                              widthClass="w-75"
+                              heightClass="h-20"
+                              className="mb--10"
+                            />
+
+                            <MirrorLoader
+                              widthClass="w-50"
+                              heightClass="h-16"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="description">
+                        <MirrorLoader
+                          widthClass="w-100"
+                          heightClass="h-20"
+                          className="mb--10"
+                        />
+
+                        <MirrorLoader
+                          widthClass="w-100"
+                          heightClass="h-20"
+                          className="mb--10"
+                        />
+
+                        <MirrorLoader
+                          widthClass="w-50"
+                          heightClass="h-20"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+            {loading && reviews.length > 0 && (
+              <div className="col-12 text-center mt--30">
+                <MirrorLoader
+                  widthClass="w-100"
+                  heightClass="h-20"
+                />
+              </div>
+            )}
+
+            {!loading &&
+              !error &&
+              reviews.length === 0 && (
+                <div className="col-12 text-center">
+                  No reviews found
+                </div>
+              )}
+
+            {!hasMore &&
+              reviews.length > 0 &&
+              !error && (
+                <div className="col-12 text-center">
+                  No more reviews
+                </div>
+              )}
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default ReviewPage;

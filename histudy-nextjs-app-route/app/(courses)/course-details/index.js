@@ -1,0 +1,368 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import sal from "sal.js";
+import { Provider } from "react-redux";
+import Store from "@/redux/store";
+import Context from "@/context/Context";
+
+import MobileMenu from "@/components/Header/MobileMenu";
+import HeaderStyleTen from "@/components/Header/HeaderStyle-Ten";
+import Cart from "@/components/Header/Offcanvas/Cart";
+import Separator from "@/components/Common/Separator";
+import FooterOne from "@/components/Footer/Footer-One";
+import CourseHead from "@/components/Course-Details/Course-Sections/course-head";
+import CourseDetailsOne from "@/components/Course-Details/CourseDetails-One";
+import CourseActionBottom from "@/components/Course-Details/Course-Sections/Course-Action-Bottom";
+import SimilarCourses from "@/components/Course-Details/Course-Sections/SimilarCourses";
+import MirrorLoader from "@/components/Common/MirrorLoader";
+
+import { UserCoursesServices } from "@/services/User/Courses/index.service";
+import { useSettings } from "@/context/SettingsContext";
+import { formatDate, getDaysLeft } from "@/utils";
+import FooterThree from "@/components/Footer/Footer-Three";
+
+// Helper: format total seconds to "Xh Ym Zs"
+const formatTime = (h, m, s) => {
+  const totalSec = (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
+  if (totalSec === 0) return "";
+  const hours = Math.floor(totalSec / 3600);
+  const minutes = Math.floor((totalSec % 3600) / 60);
+  const seconds = Math.floor(totalSec % 60);
+  if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+  if (minutes > 0) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+};
+
+// Icon purely from API `icon` field
+const getItemIcon = (content) => {
+  const icon = content?.icon; // from API: "quiz", "editor", "video", etc.
+  if (icon === "quiz") return "feather-help-circle";
+  if (icon === "document") return "feather-book-open";
+  if (icon === "video") return "feather-play-circle";
+  if (icon === "editor") return "feather-edit";
+  // fallback: check category slug
+  const slug = content?.category?.slug;
+  if (slug === "quiz") return "feather-help-circle";
+  if (slug === "assignment") return "feather-file-text";
+  if (slug === "practice-problem") return "feather-code";
+  if (slug === "project") return "feather-folder";
+  // null / unknown → generic circle
+  return "feather-circle";
+};
+
+const CourseDetailsSkeleton = () => (
+  <div className="rbt-course-details-area ptb--60">
+    <div className="container">
+      <div className="row mb--50">
+        <div className="col-xl-8 col-lg-7">
+          <MirrorLoader widthClass="w-100" heightClass="h-60" className="mb--20" />
+          <MirrorLoader widthClass="w-75" heightClass="h-40" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--10" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--10" />
+          <MirrorLoader widthClass="w-50" heightClass="h-20" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-400" radiusClass="radius-15" />
+        </div>
+        <div className="col-xl-4 col-lg-5">
+          <MirrorLoader widthClass="w-100" heightClass="h-500" radiusClass="radius-15" />
+        </div>
+      </div>
+      <div className="row g-5">
+        <div className="col-lg-12">
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" className="mb--20" />
+          <MirrorLoader widthClass="w-100" heightClass="h-20" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SingleCourse = ({ getParams }) => {
+  const router = useRouter();
+  const courseId = getParams.courseId;
+  const [courseData, setCourseData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const { settings, loading } = useSettings();
+
+
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCourseDetails = async () => {
+
+      try {
+        if (courseId) {
+
+
+          const offer = settings?.offer;
+
+          const leftDays =
+            offer?.end_date
+              ? getDaysLeft(offer.end_date)
+              : 0;
+
+          const singleCourseRes = await UserCoursesServices.UserGetCourse(courseId);
+
+          if (singleCourseRes && singleCourseRes.status === "success" && isMounted) {
+            const apiData = singleCourseRes.data;
+            const instructors = apiData.instructors?.map((instructor) => (instructor))
+
+            // const x = apiData.topics?.map(topic => (topic.course_contents?.map(content => (content))))
+            const adaptedData = {
+              id: apiData.id,
+              courseTitle: apiData.title,
+              courseImg: apiData.file?.url || "/images/course/course-01.jpg",
+              courseVideo: apiData.introVideos?.[0]?.url || "",
+              desc: apiData.short_description,
+              longDesc: apiData.long_description,
+              category: apiData.categories?.[0]?.name || "Uncategorized",
+              sellsType: apiData.course_type === "paid" ? "Paid" : "Free",
+              isPurchased: apiData.is_purchased || false,
+              price: apiData.discounted_price,
+              offPrice: apiData.actual_price,
+              discount: apiData.actual_price ? Math.round(
+                ((apiData.actual_price - apiData.discounted_price) /
+                  apiData.actual_price) *
+                100
+              ) : 0,
+              star: apiData.average_star_rating || 0,
+              ratingNumber: apiData.total_star_ratings || 0,
+              review: apiData.total_star_ratings || 0,
+              studentNumber: apiData.enrolled_users_count || 0,
+              lesson: apiData.number_of_lectures,
+              duration: apiData.duration,
+              language: apiData.language ? apiData.language.charAt(0).toUpperCase() + apiData.language.slice(1) : "English",
+              date: apiData.updated_at ? formatDate(apiData.updated_at) : new Date().toLocaleDateString(),
+              isBestseller: apiData.is_bestseller || false,
+              courseAward: apiData.is_certificate_enabled ? "Certificate" : "No Certificate",
+              certificateNumber: apiData.certificate_number || null,
+              is_certificate_enabled: apiData?.is_certificate_enabled,
+              days: leftDays && leftDays,
+              quizCount: apiData.quizzes_count || 0,
+              validity: apiData.validity_unit === 'unlimited' ? 'Lifetime' : (apiData.validity || 'Unlimited'),
+
+              ratingDistribution: [
+                { rating: 5, percentage: apiData.five_star_percentage || 0 },
+                { rating: 4, percentage: apiData.four_star_percentage || 0 },
+                { rating: 3, percentage: apiData.three_star_percentage || 0 },
+                { rating: 2, percentage: apiData.two_star_percentage || 0 },
+                { rating: 1, percentage: apiData.one_star_percentage || 0 },
+              ],
+
+              userName: instructors && instructors[0]?.display_name || "Unknown Instructor",
+
+
+              userImg: instructors && instructors[0]?.file?.url || "/images/client/avatar-02.png",
+              userCategory: instructors && instructors[0]?.short_description || "Instructor",
+              instructorCompanies: instructors && instructors[0]?.companies || [],
+              hasMoneyBackGuarantee: apiData.has_money_back_guarantee || false,
+              moneyBackDuration:
+                apiData.money_back_guarantee_period || apiData.money_back_duration || 30,
+
+              courseOverview: [
+                {
+                  title: "Course Description",
+                  desc: apiData.long_description,
+                  overviewList: []
+                }
+              ],
+              courseContent: [
+                {
+                  title: "Course Curriculum",
+                  contentList: apiData.topics?.map(topic => ({
+                    title: topic.name,
+                    time: topic.progres?.total || "0m",
+                    listItem: topic.course_contents?.map(content => ({
+                      text: content.title,
+                      playIcon: content.icon === "play" || content.category?.slug === "lesson",
+                      time: formatTime(content.hours, content.minutes, content.seconds),
+                      status: apiData.is_purchased ? true : !content.is_lock,
+                      topicId: topic.id,
+                      contentId: content.id,
+                      icon: getItemIcon(content),
+                      summary: content.summary,
+                      preview_url: content?.file?.preview_url || "",
+                      videoUrl:
+                        content.file?.url ||
+                        content.preview_url ||
+                        content.video_url ||
+                        content.url ||
+                        ""
+                    })) || []
+                  })) || []
+                }
+              ],
+              courseInstructor: [
+                {
+                  title: "Instructor",
+                  body: apiData?.instructors?.map((instructor) => (
+                    {
+                      name: instructor.display_name || instructor.name,
+                      desc: instructor.short_description || instructor.bio,
+                      img: instructor.file?.url || "/images/client/avatar-02.png",
+                      type: instructor.subtitle || "Instructor",
+                      companies: instructor.companies || [],
+                      ratingNumber: instructor.rating_count || 0,
+                      star: instructor.instructor_rating || 0,
+                      studentNumber: instructor.students_taught || 0,
+                      course: instructor.courses_count || 0,
+                      social: instructor.socialMedia?.map(social => ({
+                        icon: social.platform,
+                        link: social.url
+                      })) || [],
+                      linkedinUrl: instructor.socialMedia?.find(s => s.platform === 'linkedin')?.url || "#"
+                    }
+                  ))
+                }
+              ],
+              courseRequirement: apiData.prerequisites
+                ? [
+                  {
+                    title: "Prerequisites",
+                    detailsList: apiData.prerequisites.split(/\r?\n/).filter(line => line.trim() !== "").map(line => ({ listItem: line.trim() }))
+                  }
+                ]
+                : [],
+              courseBenefits: apiData.benefits
+                ? [
+                  {
+                    title: "Benefits",
+                    detailsList: apiData.benefits.split(/\r?\n/).filter(line => line.trim() !== "").map(line => ({ listItem: line.trim() }))
+                  }
+                ]
+                : [],
+              featuredReview: [
+                {
+                  title: "Featured Reviews",
+                  body: apiData.reviews?.map(rev => ({
+                    userName: rev.name,
+                    desc: rev.review,
+                    star: rev.rating,
+                    userImg: rev.file?.url || "/images/client/avatar-02.png"
+                  })) || []
+                }
+              ],
+              similarCourse: apiData.related_courses?.map(related => ({
+                id: related.id,
+                title: related.title,
+                img: related.file?.url || "/images/course/course-01.jpg",
+                price: related.discounted_price,
+                offPrice: related.actual_price,
+                rating: related.average_star_rating,
+                review: related.total_star_ratings,
+                lesson: related.number_of_lectures,
+                student: related.enrolled_users_count,
+                author: apiData.instructor?.name || "Instructor",
+                avatar: apiData.instructor?.file?.url || "/images/client/avatar-02.png",
+                post: "Instructor",
+                link: `/course-details/${related.slug}`,
+                desc: related.short_description
+              })) || [],
+              relatedCourse: [],
+              roadmap: [
+                { text: "Start Date", desc: apiData.start_date || "N/A" },
+                { text: "Enrolled", desc: apiData.enrolled_users_count || 0 },
+                { text: "Lectures", desc: apiData.number_of_lectures || 0 },
+                { text: "Skill Level", desc: apiData.difficulty_level || "All Levels" },
+                { text: "Language", desc: apiData.language || "English" },
+                { text: "Duration", desc: apiData.duration || "0 hours" }
+              ],
+              slug: apiData.slug
+            };
+
+            setCourseData(adaptedData);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching course details:", error);
+        if (isMounted) {
+          setError("Unable to load course details. Please try again later.");
+        }
+      }
+    };
+
+    fetchCourseDetails();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [courseId, settings]);
+
+  useEffect(() => {
+    sal({
+      threshold: 0.01,
+      once: true,
+    });
+  }, []);
+
+  if (error) {
+    return (
+      <div className="rbt-course-details-area ptb--60">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="alert alert-danger text-center">
+                {error}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!courseData) {
+    return <CourseDetailsSkeleton />;
+  }
+
+  return (
+    <>
+      <Provider store={Store}>
+        <Context>
+          <MobileMenu />
+          <HeaderStyleTen headerSticky="" headerType={true} />
+          <Cart />
+
+          <div className="rbt-breadcrumb-default rbt-breadcrumb-style-3">
+            <CourseHead
+              checkMatch={courseData}
+            />
+          </div>
+
+          <div className="rbt-course-details-area ptb--60">
+            <div className="container">
+              <div className="row g-5">
+                <CourseDetailsOne
+                  checkMatchCourses={courseData}
+                  courseSlug={courseId}
+                />
+              </div>
+            </div>
+          </div>
+
+          <CourseActionBottom
+            checkMatchCourses={courseData}
+          />
+
+          {courseData?.similarCourse?.length > 0 &&
+            <div className="rbt-related-course-area bg-color-white pt--60 rbt-section-gapBottom">
+              <SimilarCourses
+                checkMatchCourses={courseData.similarCourse}
+              />
+            </div>}
+
+          <Separator />
+          {/* <FooterOne /> */}
+          <FooterThree />
+        </Context>
+      </Provider>
+    </>
+  );
+};
+
+export default SingleCourse;

@@ -1,0 +1,557 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import sal from "sal.js";
+
+import MainDemoBanner from "./MainDemoBanner";
+import Counter from "../Counters/Counter";
+import ReviewSection from "../Reviews/ReviewSection";
+import EventCarouse from "../Events/EventCarouse";
+import TeamTwo from "../Team/TeamTwo";
+import ContactForm from "../Contacts/Contact-Form";
+
+import CourseCarousel from "../Course/CourseCarousel";
+import MoneyBackGuarantee from "../MoneyBack/MoneyBackGuarantee";
+import ServiceSplash from "../Services/ServiceSplash";
+
+import { UserDashboardServices, UserHomeServices } from "../../services/User/index";
+import { useSettings } from "@/context/SettingsContext";
+import ComparisonTable from "../Addon/ComparisonTable";
+import MainDemoData from "../../data/course-details/courseData.json";
+
+const MainDemo = ({ blogs }) => {
+	const [topCourses, setTopCourses] = useState([]);
+	const [topCoursesWithBestSaller, setTopCoursesWithBestSaller] = useState([]);
+
+	const [upcomingCourses, setUpcomingCourses] = useState([]);
+	const [bundleCourses, setBundleCourses] = useState([]);
+
+	const [showAllFaqs, setShowAllFaqs] = useState(false);
+
+	// Use centralized settings from SettingsContext — avoids duplicate API call
+	const { settings: homeSettings, loading } = useSettings();
+	const hasFetchedCourses = useRef(false);
+
+	useEffect(() => {
+		// Guard against React Strict Mode double-mount
+		if (hasFetchedCourses.current) return;
+		hasFetchedCourses.current = true;
+
+		const fetchCourses = async () => {
+			try {
+				const res = await UserHomeServices.getAllCourses();
+				console.log('res>>adaptedCourses>>>', res);
+
+				if (res && res.data) {
+					const adaptedCourses = res.data.map((item) => {
+						// Format language to capitalize first letter
+						const formatLanguage = (lang) => {
+							if (!lang) return "English";
+							return lang.charAt(0).toUpperCase() + lang.slice(1).toLowerCase();
+						};
+
+						// Format validity
+						const formatValidity = (unit, duration) => {
+							if (unit === "unlimited") return "Lifetime";
+							if (unit === "days") return `${duration} Days`;
+							if (unit === "months") return `${duration} Months`;
+							if (unit === "years") return `${duration} Years`;
+							return "Lifetime";
+						};
+
+						return {
+							id: item.id,
+							slug: item.slug,
+							courseImg: item.file?.url || "/images/course/course-online-01.jpg",
+							courseTitle: item.title,
+							desc: item.short_description || "",
+							lesson: item.number_of_lectures,
+							student: item.enrolled_users_count,
+							review: item.total_star_ratings || 0,
+							rating: item.average_star_rating || 0,
+							price: item.discounted_price ? parseFloat(item.discounted_price) : 0,
+							offPrice: item.actual_price ? parseFloat(item.actual_price) : 0,
+							offPricePercentage: item.actual_price > 0 && item.discounted_price > 0
+								? Math.round(((item.actual_price - item.discounted_price) / item.actual_price) * 100)
+								: 0,
+							is_live: item.is_live,
+							status: item.status,
+							is_bestseller: item.is_bestseller || false,
+							number_of_lectures: item.number_of_lectures,
+							language: formatLanguage(item.language),
+							validity: formatValidity(item.validity_unit, item.validity_duration),
+							validity_unit: item.validity_unit,
+							// New Maps
+							category: item.categories?.[0]?.name || "Category",
+							instructor: item.instructor?.display_name || item.instructor?.name || "Instructor",
+							userImg: item.instructor?.file?.url || "/images/client/avatar-02.png",
+							duration: item.duration || "",
+						};
+					});
+
+					setTopCourses(adaptedCourses.filter(c => c.status).slice(0, 4));
+					setTopCoursesWithBestSaller(adaptedCourses.filter(c => c.status && c.is_bestseller).slice(0, 4));
+					setUpcomingCourses(adaptedCourses.filter(c => !c.status).slice(0, 4));
+
+				} else {
+					console.error("API success false or invalid response", res);
+				}
+
+				// Static Bundle Courses
+				const staticBundles = MainDemoData.courseDetails.map((item) => {
+					let img = item.courseImg || "/images/course/course-online-01.jpg";
+					// If it's a placeholder URL, try to set it to 710x488
+					if (typeof img === 'string' && img.includes('placeholder')) {
+						img = img.replace('400x117', '710x488').replace('400/117', '710/488');
+					}
+					return {
+						id: item.id,
+						slug: item.id, // Using ID as slug for static data if slug is missing
+						courseImg: img,
+						courseTitle: item.courseTitle,
+						desc: item.courseContent || "", // Using courseContent as short desc? or default to empty
+						lesson: item.lesson,
+						student: item.student,
+						review: item.review,
+						rating: item.star,
+						price: item.price,
+						offPrice: item.offPrice,
+						offPricePercentage: item.offPrice > 0
+							? Math.round(((item.offPrice - item.price) / item.offPrice) * 100)
+							: 0,
+						// New Maps for static
+						category: item.category || "Web Development",
+						instructor: item.userName || "Instructor",
+						language: item.language || "English",
+						duration: item.days || "15 Days", // Mapping days to duration? Or just use days
+					}
+				});
+				setBundleCourses(staticBundles.slice(0, 4));
+
+			} catch (error) {
+				console.error("Error fetching courses:", error);
+			}
+		};
+
+		fetchCourses();
+	}, []);
+
+	useEffect(() => {
+		sal({
+			threshold: 0.01,
+			once: true,
+		});
+	}, [topCourses, upcomingCourses, bundleCourses, topCoursesWithBestSaller]);
+
+
+
+	const [faqs, setFaqs] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchFAQs = async () => {
+			try {
+				const response = await UserDashboardServices.getFAQs();
+				if (response?.data) {
+					setFaqs(response.data);
+				}
+			} catch (error) {
+				console.error("Error fetching FAQs:", error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchFAQs();
+	}, []);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	const categories = Object.keys(faqs);
+
+	return (
+		<>
+			<main className="rbt-main-wrapper">
+				<div className="rbt-banner-area rbt-banner-1">
+					<MainDemoBanner courses={topCoursesWithBestSaller} settings={homeSettings.hero_section} loading={loading} />
+					{!homeSettings.hero_section && !loading && <p className="text-center">hero_section I didn't find</p>}
+				</div>
+
+				{/* Top Courses */}
+				{topCourses && topCourses.length > 0 && (
+					<CourseCarousel
+						courses={topCourses}
+						title={<>Histudy Course student <br /> can join with us.</>}
+						subTitle="Top Popular Course"
+						sectionId="live-courses"
+					/>
+				)}
+
+				{/* Coming Soon */}
+				<CourseCarousel
+					courses={upcomingCourses}
+					title={<>Explore Our Upcoming <br /> Courses & Learning Paths</>}
+					subTitle="Coming Soon"
+					isComingSoon={true}
+				/>
+
+
+				{/* Course Bundles */}
+				{bundleCourses && bundleCourses.length > 0 && (
+					<CourseCarousel
+						courses={bundleCourses}
+						title={<>Get More For Less <br /> With Our Exclusive Bundles</>}
+						subTitle="Course Bundles"
+					/>
+				)}
+
+				{/* Money Back Guarantee */}
+				{homeSettings.moneyback_section ? (
+					<MoneyBackGuarantee settings={{ ...homeSettings.moneyback_section, subTitle: "Money Back Guarantee" }} />
+				) : !loading ? (
+					<div className="container mt-5 mb-5"><p className="text-center">moneyback_section I didn't find</p></div>
+				) : null}
+
+
+				{/* Why Us */}
+				{homeSettings.whyus_section ? (
+					<div className="rbt-splash-service-area rbt-section-gapBottom">
+						<div className="container">
+							<ServiceSplash settings={{ ...homeSettings.whyus_section, subTitle: "Why Choose Us" }} />
+						</div>
+					</div>
+				) : (
+					!loading && <div className="container my-5"><p className="text-center">whyus_section I didn't find</p></div>
+				)}
+
+				{/* Why Us (using AboutTwo) */}
+				{/* <div className="rbt-about-area bg-color-white rbt-section-gapTop pb_md--80 pb_sm--80 about-style-1">
+          <div className="container">
+            <ParallaxProvider>
+              <AboutTwo />
+            </ParallaxProvider>
+          </div>
+        </div> */}
+
+				{/* AddOnn In Numbers (Counter) */}
+				<div className="rbt-counterup-area bg-color-extra2 rbt-section-gapBottom default-callto-action-overlap" style={{ paddingTop: '60px' }}>
+					<div className="container">
+						{homeSettings.counters ? (
+							<Counter isDesc={false} settings={{ ...homeSettings.counters, subTitle: "Our Achievement" }} />
+						) : !loading ? (
+							<p className="text-center">counters I didn't find</p>
+						) : null}
+					</div>
+				</div>
+
+				{/* AddOnn Advantage */}
+				{/* <AddonAdvantage /> */}
+				{homeSettings.comparison ? (
+					<ComparisonTable settings={{ ...homeSettings.comparison, subTitle: "Why We Are Best", site: homeSettings.site }} />
+				) : !loading ? (
+					<div className="container mt-5 mb-5"><p className="text-center">comparison I didn't find</p></div>
+				) : null}
+
+				{/* Reviews */}
+				<div className="rbt-testimonial-area rbt-section-gap overflow-hidden">
+					<div className="container">
+						<div className="row align-items-center">
+							<div className="col-lg-3 left-content">
+								<div className="section-title">
+									<span className="subtitle bg-primary-opacity">
+										EDUCATION FOR EVERYONE
+									</span>
+									<h2 className="title">
+										What Our <br /> Learners Say
+									</h2>
+								</div>
+								<p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p>
+								<div className="mt--30">
+									<Link href="/review" className="rbt-btn btn-gradient">
+										View All Reviews
+									</Link>
+								</div>
+							</div>
+							<div className="col-lg-9">
+								<div className="testimonial-cards-wrapper" style={{ width: "100vw" }}>
+									<ReviewSection />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Testimonials */}
+				<div className="rbt-event-area rbt-section-gap bg-gradient-3">
+					<div className="container">
+						<div className="row mb--55">
+							<div className="section-title text-center">
+								<span className="subtitle bg-white-opacity">
+									STIMULATED TO TAKE PART IN?
+								</span>
+								<h2 className="title color-white">Testimonials</h2>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-lg-12">
+								<EventCarouse />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Team */}
+				<div className="rbt-team-area bg-color-white rbt-section-gap">
+					<div className="container">
+						{/* <div className="row mb--60">
+							<div className="col-lg-12">
+								<div className="section-title text-center">
+									<span className="subtitle bg-primary-opacity">
+										Our Teacher
+									</span>
+									<h2 className="title">Whose Inspirations You</h2>
+								</div>
+							</div>
+						</div> */}
+						<TeamTwo />
+					</div>
+				</div>
+
+
+				{/* FAQS */}
+				<div className="rbt-team-area rbt-section-gap">
+					<div className="container">
+						<div className="row">
+							{categories.length > 0 ? (
+								<>
+									{/* First 2 Categories Always Visible */}
+									{categories.slice(0, 1).map((category, index) => (
+										<div className="col-12 mb-5" key={category}>
+
+											{/* Category Heading */}
+											<div className="border-bottom pb-3 mb-4">
+												<h4 className="fw-bold mb-0">{category}</h4>
+											</div>
+
+											{/* FAQ List */}
+											<div
+												className="accordion accordion-flush"
+												id={`accordion-${index}`}
+											>
+												{[...(faqs[category] || [])]
+													.sort((a, b) => a.order - b.order)
+													.map((item, innerIndex) => (
+														<div
+															key={item.id}
+															className="accordion-item border-bottom"
+															style={{
+																backgroundColor: "transparent",
+															}}
+														>
+															<h2
+																className="accordion-header"
+																id={`heading-${item.id}`}
+															>
+																<button
+																	className={`accordion-button px-0 py-4 shadow-none ${innerIndex !== 0
+																		? "collapsed text-secondary"
+																		: "text-dark"
+																		}`}
+																	type="button"
+																	data-bs-toggle="collapse"
+																	data-bs-target={`#collapse-${item.id}`}
+																	aria-expanded={innerIndex === 0}
+																	style={{
+																		backgroundColor: "transparent",
+																	}}
+																>
+																	<div className="d-flex align-items-center w-100">
+																		<div
+																			className="flex-grow-1 fw-semibold fs-1 text-start"
+																			style={{
+																				color: "#6c757d",
+																			}}
+																		>
+																			{item.question}
+																		</div>
+																	</div>
+																</button>
+															</h2>
+
+															<div
+																id={`collapse-${item.id}`}
+																className={`accordion-collapse collapse ${innerIndex === 0 ? "show" : ""
+																	}`}
+																data-bs-parent={`#accordion-${index}`}
+															>
+																<div
+																	className="accordion-body text-secondary"
+																	style={{
+																		paddingLeft: "20px",
+																		lineHeight: "1.8",
+																	}}
+																>
+																	{item.answer}
+																</div>
+															</div>
+														</div>
+													))}
+											</div>
+										</div>
+									))}
+
+									{/* Remaining Categories */}
+									{categories.length > 1 && (
+										<div className="collapse" id="allFaqs">
+											{categories.slice(1).map((category, index) => (
+												<div className="col-12 mb-5" key={category}>
+
+													{/* Category Heading */}
+													<div className="border-bottom pb-3 mb-4">
+														<h4 className="fw-bold mb-0">{category}</h4>
+													</div>
+
+													{/* FAQ List */}
+													<div
+														className="accordion accordion-flush"
+														id={`accordion-hidden-${index}`}
+													>
+														{[...(faqs[category] || [])]
+															.sort((a, b) => a.order - b.order)
+															.map((item, innerIndex) => (
+																<div
+																	key={item.id}
+																	className="accordion-item border-bottom"
+																	style={{
+																		backgroundColor: "transparent",
+																	}}
+																>
+																	<h2
+																		className="accordion-header"
+																		id={`heading-hidden-${item.id}`}
+																	>
+																		<button
+																			className={`accordion-button px-0 py-4 shadow-none ${innerIndex !== 0
+																				? "collapsed text-secondary"
+																				: "text-dark"
+																				}`}
+																			type="button"
+																			data-bs-toggle="collapse"
+																			data-bs-target={`#collapse-hidden-${item.id}`}
+																			aria-expanded={innerIndex === 0}
+																			style={{
+																				backgroundColor: "transparent",
+																			}}
+																		>
+																			<div className="d-flex align-items-center w-100">
+																				<div
+																					className="flex-grow-1 fw-semibold fs-1 text-start"
+																					style={{
+																						color: "#6c757d",
+																					}}
+																				>
+																					{item.question}
+																				</div>
+																			</div>
+																		</button>
+																	</h2>
+
+																	<div
+																		id={`#collapse-hidden-${item.id}`}
+																		className={`accordion-collapse collapse ${innerIndex === 0 ? "show" : ""
+																			}`}
+																		data-bs-parent={`#accordion-hidden-${index}`}
+																	>
+																		<div
+																			className="accordion-body text-secondary"
+																			style={{
+																				paddingLeft: "20px",
+																				lineHeight: "1.8",
+																			}}
+																		>
+																			{item.answer}
+																		</div>
+																	</div>
+																</div>
+															))}
+													</div>
+												</div>
+											))}
+										</div>
+									)}
+								</>
+							) : (
+								<div className="col-12 text-center">
+									<p>No FAQs found.</p>
+								</div>
+							)}
+						</div>
+
+						{/* View All Button */}
+						{categories.length > 1 && (
+							<div className="text-center mt-4">
+								<button
+									className="rbt-btn btn-gradient"
+									type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#allFaqs"
+									aria-expanded="false"
+									aria-controls="allFaqs"
+								>
+									View All FAQs
+								</button>
+							</div>
+						)}
+					</div>
+				</div>
+
+				{/* Contact Us */}
+				<div className="rbt-contact-area bg-color-extra2 rbt-section-gap">
+					<ContactForm />
+				</div>
+
+				{/* <div className="rbt-rbt-blog-area rbt-section-gap bg-color-extra2">
+          <div className="container">
+            <div className="row g-5 align-items-center mb--30">
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="section-title">
+                  <span className="subtitle bg-pink-opacity">Blog Post</span>
+                  <h2 className="title">Post Popular Post.</h2>
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 col-12">
+                <div className="read-more-btn text-start text-md-end">
+                  <Link
+                    className="rbt-btn btn-gradient hover-icon-reverse"
+                    href="/blog"
+                  >
+                    <div className="icon-reverse-wrapper">
+                      <span className="btn-text">See All Articles</span>
+                      <span className="btn-icon">
+                        <i className="feather-arrow-right"></i>
+                      </span>
+                      <span className="btn-icon">
+                        <i className="feather-arrow-right"></i>
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <BlogGridTop BlogData={blogs} />
+          </div>
+        </div> */}
+
+				{/* <div className="rbt-newsletter-area newsletter-style-2 bg-color-primary rbt-section-gap">
+          <NewsletterTwo />
+        </div> */}
+			</main>
+		</>
+	);
+};
+
+export default MainDemo;

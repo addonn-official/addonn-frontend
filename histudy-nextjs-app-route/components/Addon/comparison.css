@@ -1,0 +1,427 @@
+/* SECTION */
+
+.comparison-section {
+  padding: 80px 0;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* TITLE */
+
+.comparison-title-wrapper {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.comparison-subtitle {
+  display: inline-block;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.comparison-title {
+  font-size: 42px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+/* MAIN WRAPPER */
+
+.comparison-wrapper {
+  display: grid;
+  grid-template-columns: 260px repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.comparison-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* FEATURE COLUMN */
+
+.feature-column {
+  min-width: 260px;
+  flex-shrink: 0;
+  border: 1px solid #dbe4ff;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.35s ease;
+}
+
+.feature-header {
+  height: 120px;
+}
+
+.feature-footer {
+  height: 110px;
+}
+
+.feature-item {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* CARD */
+
+.pricing-card {
+  min-width: 280px;
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #dbe4ff;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.35s ease;
+}
+
+/* HOVER EFFECT */
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15);
+  border-color: #2563eb;
+}
+
+.feature-column:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15);
+  border-color: #2563eb;
+}
+
+/* ACTIVE CARD */
+
+.active-card {
+  border: 2px solid #2563eb;
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.12);
+}
+
+/* BADGE */
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.popular-badge span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 140px;
+  height: 45px;
+
+  background: #2563eb;
+  color: #fff;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.active-card {
+  border: 2px solid #2563eb;
+  overflow: visible; /* IMPORTANT */
+}
+
+.active-card .card-header-custom {
+  padding-top: 45px;
+}
+/* HEADER */
+
+.card-header-custom {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #edf2f7;
+  padding: 20px;
+  text-align: center;
+}
+
+.card-header-custom h3 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* BODY */
+
+.card-body-custom {
+  width: 100%;
+}
+
+/* FEATURES */
+
+.card-feature {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-bottom: 1px solid #edf2f7;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+/* ROW HOVER EFFECT */
+
+.pricing-card:hover .card-feature {
+  background: rgba(37, 99, 235, 0.03);
+}
+
+/* FOOTER */
+
+.card-footer-custom {
+  padding: 24px;
+}
+
+/* BUTTON */
+
+.choose-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  border: 1px solid #2563eb;
+  background: white;
+  color: #2563eb;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.choose-btn:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.active-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.active-btn:hover {
+  background: #1d4ed8;
+  color: white;
+}
+
+/* TEXT COLORS */
+
+.success-text {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.danger-text {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* LOGO */
+
+.comparison-provider-logo img {
+  max-width: 140px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* TABLET */
+
+@media (max-width: 768px) {
+  .comparison-section {
+    padding: 50px 0;
+    overflow: hidden;
+  }
+
+  .comparison-title {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  /* MOBILE HORIZONTAL SCROLL */
+
+  .comparison-wrapper {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* HIDE SCROLLBAR */
+
+  .comparison-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .comparison-wrapper {
+    scrollbar-width: none;
+  }
+
+  /* FEATURE COLUMN */
+
+  .feature-column {
+    min-width: 180px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* CARDS */
+
+  .pricing-card {
+    min-width: 260px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    border-radius: 20px;
+  }
+
+  /* REMOVE FIXED HEIGHT ISSUES */
+
+  .card-header-custom {
+    padding: 30px 20px 20px;
+  }
+
+  .card-feature {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .feature-item {
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .card-header-custom h3 {
+    font-size: 22px;
+  }
+
+  .choose-btn {
+    height: 46px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .comparison-title {
+    font-size: 34px;
+  }
+
+  .comparison-wrapper {
+    gap: 18px;
+  }
+
+  .feature-column {
+    min-width: 220px;
+  }
+
+  .pricing-card {
+    min-width: 240px;
+  }
+
+  .feature-item {
+    font-size: 15px;
+  }
+
+  .card-feature {
+    font-size: 14px;
+  }
+}
+/* MOBILE */
+@media (max-width: 767px) {
+  .comparison-section {
+    padding: 60px 0;
+  }
+
+  .comparison-title {
+    font-size: 28px;
+  }
+
+  .comparison-wrapper {
+    gap: 14px;
+  }
+
+  .feature-column {
+    min-width: 180px;
+  }
+
+  .pricing-card {
+    min-width: 220px;
+    border-radius: 20px;
+  }
+
+  .feature-item {
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  .card-feature {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .card-header-custom {
+    height: 100px;
+  }
+
+  .card-header-custom h3 {
+    font-size: 20px;
+  }
+
+  .feature-header {
+    height: 100px;
+  }
+
+  .choose-btn {
+    height: 48px;
+    font-size: 14px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 480px) {
+  .pricing-card {
+    min-width: 240px;
+  }
+
+  .feature-column {
+    min-width: 160px;
+  }
+
+  .comparison-title {
+    font-size: 24px;
+  }
+}
