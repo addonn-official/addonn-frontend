@@ -29,23 +29,23 @@ const CourseWidget = ({
   const [currentReview, setCurrentReview] = useState(null);
 
   const getDiscountPercentage = () => {
-    let discount = data.coursePrice * ((100 - data.offerPrice) / 100);
+    let discount = data?.coursePrice * ((100 - data?.offerPrice) / 100);
     setDiscountPercentage(discount.toFixed(0));
   };
 
   const getTotalReviews = () => {
     let reviews =
-      data.reviews.oneStar +
-      data.reviews.twoStar +
-      data.reviews.threeStar +
-      data.reviews.fourStar +
-      data.reviews.fiveStar;
+      data?.reviews?.oneStar +
+      data?.reviews?.twoStar +
+      data?.reviews?.threeStar +
+      data?.reviews?.fourStar +
+      data?.reviews?.fiveStar;
     setTotalReviews(reviews);
   };
 
   const getTotalRating = () => {
-    let ratingStar = data.rating.average;
-    setRating(ratingStar.toFixed(0));
+    let ratingStar = data?.rating?.average;
+    setRating(ratingStar?.toFixed(0));
   };
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const CourseWidget = ({
       let res;
 
       const payload = {
-        course_id: data.id,
+        course_id: data?.id,
         review: reviewText,
         rating: userRating,
       };
@@ -246,7 +246,7 @@ const CourseWidget = ({
                   placeholder="Share your experience..."
                   style={{ border: "1px solid #ddd", padding: "8px", borderRadius: "4px" }}
                   value={reviewText}
-                  onChange={(event) => setReviewText(event.target.value)}
+                  onChange={(event) => setReviewText(event?.target?.value)}
                 />
               </div>
             </div>
@@ -315,7 +315,7 @@ const CourseWidget = ({
         is_allowed: isAllowed,
       });
       if (res?.success || res?.status === "success") {
-        const downloadUrl = res.data?.download_url || res.data?.url;
+        const downloadUrl = res?.data?.download_url || res?.data?.url;
         if (downloadUrl) {
           window.open(downloadUrl, "_blank");
           showSuccess("Downloading started...");
@@ -340,10 +340,6 @@ const CourseWidget = ({
       handleCertificateRequest();
     }
   };
-
-
-  console.log('>>>>>>111111111111>>>>', data);
-
 
   return (
     <>
@@ -383,7 +379,7 @@ const CourseWidget = ({
                     {userRating > 0 ? (
                       <>
                         {userRating}{" "}
-                        {!data.userReviews[0].verify &&( <button
+                        {data?.userReviews?.length > 0 && !data?.userReviews?.[0]?.verify && (<button
                           // onClick={(e) => {
                           //   e.preventDefault();
                           //   setReviewText(data.userReviewText || "");
@@ -426,18 +422,18 @@ const CourseWidget = ({
                 </div>
               </div>
               <h4 className="rbt-card-title">
-                <Link href={`/course-details/${data.id}`}>{data.title}</Link>
+                <Link href={`/course-details/${data?.id}`}>{data?.title}</Link>
               </h4>
             </>
           )}
           <ul className="rbt-meta">
             <li>
               <i className="feather-video" />
-              {data.lectures || "N/A"} Lecture
+              {data?.lectures || "N/A"} Lecture
             </li>
             <li>
               <i className="feather-clock" />
-              {data.progress.total} Duration
+              {data?.progress?.total} Duration
             </li>
           </ul>
 
@@ -452,8 +448,8 @@ const CourseWidget = ({
                       data-wow-duration="0.5s"
                       data-wow-delay=".3s"
                       role="progressbar"
-                      style={{ width: `${data.progress.total}%` }}
-                      aria-valuenow={data.progress.total}
+                      style={{ width: `${data?.progress?.total}%` }}
+                      aria-valuenow={data?.progress?.total}
                       aria-valuemin={0}
                       aria-valuemax={100}
                     ></div>
@@ -556,8 +552,8 @@ const CourseWidget = ({
           {!isProgress ? (
             <div className="rbt-card-bottom">
               <div className="rbt-price">
-                <span className="current-price">${data.offerPrice}</span>
-                <span className="off-price">${data.coursePrice}</span>
+                <span className="current-price">${data?.offerPrice}</span>
+                <span className="off-price">${data?.coursePrice}</span>
               </div>
 
               {isEdit ? (

@@ -86,8 +86,8 @@ const Assignments = () => {
     assignment.attempts ||
     assignment.attempt_number ||
     assignment.attempt_count ||
-    assignment.total_submit ||
-    assignment.total_submit_count ||
+    assignment?.total_submit ||
+    assignment?.total_submit_count ||
     assignment.submission_count ||
     "-";
 
@@ -149,11 +149,6 @@ const Assignments = () => {
     if (!message) return;
     await showInfo("Submission Message", String(message));
   };
-
-
-  // console.log('userData....', courseOptions);
-  console.log('userData?.active_enrollments>>>>', submissions);
-
 
   return (
     <>

@@ -18,15 +18,15 @@ const StudentDashboardSidebar = () => {
               <nav className="mainmenu-nav">
                 <ul className="dashboard-mainmenu rbt-default-sidebar-list">
                   {SidebarData &&
-                    SidebarData.siderbar.slice(0, 7).map((data, index) => (
+                    SidebarData?.siderbar.slice(0, 7)?.map((data, index) => (
                       <li className="nav-item" key={index} role="presentation">
                         <Link
                           className={`${pathname === data.link ? "active" : ""}`}
-                          href={data.link}
+                          href={data?.link}
                           scroll={false}
                         >
-                          <i className={data.icon} />
-                          <span>{data.text}</span>
+                          <i className={data?.icon} />
+                          <span>{data?.text}</span>
                         </Link>
                       </li>
                     ))}
@@ -40,15 +40,15 @@ const StudentDashboardSidebar = () => {
               <nav className="mainmenu-nav">
                 <ul className="dashboard-mainmenu rbt-default-sidebar-list">
                   {SidebarData &&
-                    SidebarData.siderbar.slice(7, 10).map((data, index) => (
+                    SidebarData?.siderbar?.slice(7, 10)?.map((data, index) => (
                       <li key={index}>
                         <Link
-                          href={data.link}
-                          className={`${pathname === data.link ? "active" : ""}`}
+                          href={data?.link}
+                          className={`${pathname === data?.link ? "active" : ""}`}
                           scroll={false}
                         >
-                          <i className={data.icon} />
-                          <span>{data.text}</span>
+                          <i className={data?.icon} />
+                          <span>{data?.text}</span>
                         </Link>
                       </li>
                     ))}

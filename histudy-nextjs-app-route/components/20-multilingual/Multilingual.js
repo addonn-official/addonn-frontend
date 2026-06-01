@@ -326,14 +326,14 @@ const Multilingual = ({ blogdata }) => {
                               <div className="card-information">
                                 <div className="card-flag">
                                   <Image
-                                    src={innerData.flagImg}
+                                    src={innerData?.flagImg}
                                     width={20}
                                     height={20}
                                     alt="united-kingdom"
                                   />
                                 </div>
                                 <div className="card-count">
-                                  {innerData.totalCourse} programs
+                                  {innerData?.totalCourse} programs
                                 </div>
                               </div>
                             </div>

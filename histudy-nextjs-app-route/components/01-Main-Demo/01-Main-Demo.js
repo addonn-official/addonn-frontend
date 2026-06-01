@@ -69,7 +69,7 @@ const MainDemo = ({ blogs }) => {
 							desc: item.short_description || "",
 							lesson: item.number_of_lectures,
 							student: item.enrolled_users_count,
-							review: item.total_star_ratings || 0,
+							review: item?.total_star_ratings || 0,
 							rating: item.average_star_rating || 0,
 							price: item.discounted_price ? parseFloat(item.discounted_price) : 0,
 							offPrice: item.actual_price ? parseFloat(item.actual_price) : 0,
