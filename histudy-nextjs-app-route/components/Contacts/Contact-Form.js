@@ -46,22 +46,28 @@ const ContactForm = ({ gap }) => {
         <div className="container">
           <div className="row g-5">
             <div className="col-lg-6">
-              <div className="thumbnail">
                 <Image
                   src={contactData?.image || img}
                   alt="Contact Images"
                   width={500}
                   height={500}
                   className="w-100 radius-6"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block"
+                  }}
                 />
-              </div>
+              {/* <div className="thumbnail w-100">
+              </div> */}
             </div>
 
             <div className="col-lg-6">
               <div className="rbt-contact-form contact-form-style-1 max-width-auto">
                 <div className="section-title text-start">
                   <span className="subtitle bg-primary-opacity">
-                    EDUCATION FOR EVERYONE
+                    Connect With Us
                   </span>
                 </div>
                 {loading ? (

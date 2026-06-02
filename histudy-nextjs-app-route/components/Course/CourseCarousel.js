@@ -102,7 +102,7 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                         </Link>
                       </h4>
 
-                      <ul className="rbt-meta">
+                      {/* <ul className="rbt-meta">
                         <li>
                           <i className="feather-book"></i>
                           {data.number_of_lectures || data.lesson} Lectures
@@ -115,7 +115,7 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                           <i className="feather-globe"></i>
                           {data.language}
                         </li>
-                      </ul>
+                      </ul> */}
 
                       <div className="rbt-card-text" dangerouslySetInnerHTML={{ __html: data.desc }}></div>
 

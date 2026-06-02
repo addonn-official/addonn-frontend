@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import logo from "../../public/images/logo/logo.png";
-import logoLight from "../../public/images/dark/logo/logo-light.png";
-
 import SingleFooter from "./FooterProps/SingleFooter";
 import CopyRight from "./CopyRight";
 import { useAppContext } from "@/context/Context";
@@ -15,6 +12,7 @@ const FooterThree = () => {
 
   const footerSetting = settings?.footer || {};
   const footerSocial = settings?.social_links || {};
+  const site = settings?.site
 
   const icons = {
     facebook: "feather-facebook",
@@ -24,6 +22,7 @@ const FooterThree = () => {
     github: "feather-github",
     youtube: "feather-youtube",
   };
+
 
   return (
     <>
@@ -38,7 +37,7 @@ const FooterThree = () => {
                     <Link href="/">
                       {isLightTheme ? (
                         <Image
-                          src={logo}
+                          src={site?.logo||"/images/logo/logo.png"}
                           width={152}
                           height={50}
                           priority
@@ -46,7 +45,7 @@ const FooterThree = () => {
                         />
                       ) : (
                         <Image
-                          src={logoLight}
+                          src={site?.logo||'/images/logo/logo.png'}
                           width={152}
                           height={50}
                           priority

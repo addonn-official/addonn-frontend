@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-const Nav = () => {
+const Nav = ({onMenuClick}) => {
   const [activeMenuItem, setActiveMenuItem] = useState(null);
 
   const pathname = usePathname();
@@ -23,6 +23,7 @@ const Nav = () => {
           <Link
             className={`${isActive("/") ? "active" : ""}`}
             href="/"
+            onClick={onMenuClick}
           >
             Home
           </Link>
@@ -39,7 +40,8 @@ const Nav = () => {
                   const el = document.getElementById('live-courses');
                   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-              } catch (err) { }
+              } catch (err) { };
+              onMenuClick
             }}
           >
             Courses

@@ -6,28 +6,18 @@ import Image from "next/image";
 
 import HeaderRightTwo from "../Header-Right/HeaderRight-Two";
 import Search from "../Offcanvas/Search";
-import Category from "../Category/Category";
 import Nav from "../Nav";
 
-import logo from "../../../public/images/logo/logo.png";
-import logoLight from "../../../public/images/dark/logo/logo-light.png";
 import { useAppContext } from "@/context/Context";
 import { useSettings } from "@/context/SettingsContext";
 
-const HeaderEight = ({
-  headerType,
-  gapSpaceBetween,
-  sticky,
-  headerSticky,
-  navigationEnd,
-  container,
-}) => {
+const HeaderEight = ({ headerType, gapSpaceBetween, sticky, headerSticky, navigationEnd, container, }) => {
   const [isSticky, setIsSticky] = useState(false);
   const { isLightTheme } = useAppContext();
   const { settings } = useSettings();
 
   const site = settings?.site;
-  const siteLogo = site?.logo || (isLightTheme ? logo : logoLight);
+  const siteLogo = site?.logo || (isLightTheme ? site?.logo : site?.logo);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,30 +37,37 @@ const HeaderEight = ({
   }, []);
   return (
     <>
-      <div
-        className={`rbt-header-wrapper ${gapSpaceBetween} ${sticky}  ${!headerType && isSticky ? `${headerSticky}` : ""
-          }`}
-      >
+      <div className={`rbt-header-wrapper ${gapSpaceBetween} ${sticky}  ${!headerType && isSticky ? `${headerSticky}` : ""}`}      >
         <div className={`${container}`}>
           <div className={`mainbar-row ${navigationEnd} align-items-center`}>
             <div className="header-left rbt-header-content">
               <div className="header-info">
                 <div className="logo">
                   <Link href="/">
-                    <Image
-                      src={siteLogo}
-                      width={152}
-                      height={50}
-                      priority={true}
-                      alt={site?.name || "Education Logo Images"}
-                    />
+                    {siteLogo ? (
+                      <Image
+                        src={siteLogo}
+                        width={152}
+                        height={50}
+                        priority
+                        alt={site?.name || "Addonn"}
+                      />
+                    ) : (
+                      <Image
+                        src={"/images/logo/logo.png"}
+                        width={152}
+                        height={50}
+                        priority
+                        alt={"Addonn"}
+                      />
+                    )}
                   </Link>
                 </div>
               </div>
 
-              <div className="header-info d-none d-lg-block">
+              {/* <div className="header-info d-none d-lg-block">
                 <Category />
-              </div>
+              </div> */}
             </div>
 
             <div className="rbt-main-navigation d-none d-xl-block">
