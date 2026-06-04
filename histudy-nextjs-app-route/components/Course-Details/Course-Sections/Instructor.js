@@ -9,7 +9,7 @@ const Instructor = ({ checkMatchCourses }) => {
         <div className="section-title mb--30">
           <h4 className="rbt-title-style-3">{checkMatchCourses.title}</h4>
         </div>
-        {checkMatchCourses.body.map((teacher, innerIndex) => (
+        {checkMatchCourses?.body?.map((teacher, innerIndex) => (
           <div className="media align-items-center" key={innerIndex}>
             <div className="thumbnail">
               <Link href={`#`}>
