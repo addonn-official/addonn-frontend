@@ -131,12 +131,12 @@ const Viedo = ({ checkMatchCourses }) => {
             <span className="current-price">${checkMatchCourses.price}</span>
             <span className="off-price">${checkMatchCourses.offPrice}</span>
           </div>
-          <div className="discount-time">
+          {checkMatchCourses?.days > 0 &&<div className="discount-time">
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
-              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {checkMatchCourses.days} days
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {checkMatchCourses?.days} days
               left!
             </span>
-          </div>
+          </div>}
         </div>
 
         <div className="add-to-card-button mt--15">
