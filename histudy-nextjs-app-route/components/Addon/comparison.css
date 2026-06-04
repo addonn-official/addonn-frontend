@@ -1,7 +1,7 @@
 /* SECTION */
 
 .comparison-section {
-  padding: 80px 0;
+  padding: 20px 0px 80px 0px;
   background: #ffffff;
   overflow: hidden;
 }
@@ -19,7 +19,7 @@
   color: #2563eb;
   padding: 8px 18px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 18px;
 }

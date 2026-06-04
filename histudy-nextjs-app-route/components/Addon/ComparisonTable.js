@@ -135,15 +135,15 @@ const ComparisonTable = ({ settings }) => {
 
   const logoSrc = site?.logo?.url || site?.logo || null;
 
-  const keyMap = {
-    "Know Your Tutor Before Joining": "know_tutor",
-    Curriculum: "curriculum",
-    "Course Updates": "updates",
-    "Resume Help": "resume_help",
-    Community: "community",
-    Pricing: "pricing",
-    "Refund Policy": "refund",
-  };
+  // const keyMap = {
+  //   "Know Your Tutor Before Joining": "know_tutor",
+  //   Curriculum: "curriculum",
+  //   "Course Updates": "updates",
+  //   "Resume Help": "resume_help",
+  //   Community: "community",
+  //   Pricing: "pricing",
+  //   "Refund Policy": "refund",
+  // };
 
   const labelMap = {
     "Know Your Tutor Before Joining": "Know Your Tutor Before Joining",
@@ -155,15 +155,15 @@ const ComparisonTable = ({ settings }) => {
   const getProviderValue = (provider, feature) => {
     const data = provider.data || {};
 
-    const dataKey =
-      keyMap[feature] ||
-      Object.keys(data).find(
-        (key) => normalizeKey(key) === normalizeKey(feature)
-      );
+    // const dataKey =
+    //   keyMap[feature] ||
+    //   Object.keys(data).find(
+    //     (key) => normalizeKey(key) === normalizeKey(feature)
+    //   );
 
-    if (dataKey && data[dataKey] !== undefined) {
-      return data[dataKey];
-    }
+    // if (dataKey && data[dataKey] !== undefined) {
+    //   return data[dataKey];
+    // }
 
     const fallbackKey = Object.keys(data).find(
       (key) =>
@@ -176,20 +176,19 @@ const ComparisonTable = ({ settings }) => {
       : provider.data?.[feature] ?? "—";
   };
 
-  const getDisplayFeature = (feature) =>
-    labelMap[feature] || feature;
+  // const getDisplayFeature = (feature) =>
+  //   labelMap[feature] || feature;
 
   return (
-    <section className="comparison-section">
+    <section className="comparison-section bg-color-extra2 ">
       <div className="container">
         {/* SECTION TITLE */}
         <div className="comparison-title-wrapper">
           {settings?.subTitle && (
             <span className="comparison-subtitle">
-              {settings.subTitle}
+              {settings?.subTitle}
             </span>
           )}
-
           <h2 className="comparison-title">{heading}</h2>
         </div>
 
@@ -203,7 +202,8 @@ const ComparisonTable = ({ settings }) => {
 
             {features.map((feature, index) => (
               <div className="feature-item" key={index}>
-                {getDisplayFeature(feature)}
+                {/* {getDisplayFeature(feature)} */}
+                {feature}
               </div>
             ))}
 

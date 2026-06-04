@@ -230,18 +230,18 @@ const MainDemo = ({ blogs }) => {
 
 				{/* Why Us (using AboutTwo) */}
 				{/* <div className="rbt-about-area bg-color-white rbt-section-gapTop pb_md--80 pb_sm--80 about-style-1">
-          <div className="container">
-            <ParallaxProvider>
-              <AboutTwo />
-            </ParallaxProvider>
-          </div>
-        </div> */}
+					<div className="container">
+						<ParallaxProvider>
+							<AboutTwo />
+						</ParallaxProvider>
+					</div>
+				</div> */}
 
 				{/* AddOnn In Numbers (Counter) */}
 				<div className="rbt-counterup-area bg-color-extra2 rbt-section-gapBottom default-callto-action-overlap" style={{ paddingTop: '60px' }}>
 					<div className="container">
 						{homeSettings.counters ? (
-							<Counter isDesc={false} settings={{ ...homeSettings.counters, subTitle: "Our Achievement" }} />
+							<Counter isDesc={false} settings={{ ...homeSettings.counters, subTitle: "Our Achievements" }} />
 						) : !loading ? (
 							<p className="text-center">counters I didn't find</p>
 						) : null}
@@ -461,7 +461,7 @@ const MainDemo = ({ blogs }) => {
 																	</h2>
 
 																	<div
-																		id={`#collapse-hidden-${item.id}`}
+																		id={`collapse-hidden-${item.id}`}
 																		className={`accordion-collapse collapse ${innerIndex === 0 ? "show" : ""
 																			}`}
 																		data-bs-parent={`#accordion-hidden-${index}`}
@@ -501,8 +501,9 @@ const MainDemo = ({ blogs }) => {
 									data-bs-target="#allFaqs"
 									aria-expanded="false"
 									aria-controls="allFaqs"
+									onClick={() => setShowAllFaqs(!showAllFaqs)}
 								>
-									View All FAQs
+									{showAllFaqs ? "Less All FAQs" : "View All FAQs"}
 								</button>
 							</div>
 						)}
@@ -515,40 +516,40 @@ const MainDemo = ({ blogs }) => {
 				</div>
 
 				{/* <div className="rbt-rbt-blog-area rbt-section-gap bg-color-extra2">
-          <div className="container">
-            <div className="row g-5 align-items-center mb--30">
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="section-title">
-                  <span className="subtitle bg-pink-opacity">Blog Post</span>
-                  <h2 className="title">Post Popular Post.</h2>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-12">
-                <div className="read-more-btn text-start text-md-end">
-                  <Link
-                    className="rbt-btn btn-gradient hover-icon-reverse"
-                    href="/blog"
-                  >
-                    <div className="icon-reverse-wrapper">
-                      <span className="btn-text">See All Articles</span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <BlogGridTop BlogData={blogs} />
-          </div>
-        </div> */}
+					<div className="container">
+						<div className="row g-5 align-items-center mb--30">
+							<div className="col-lg-6 col-md-6 col-12">
+								<div className="section-title">
+									<span className="subtitle bg-pink-opacity">Blog Post</span>
+									<h2 className="title">Post Popular Post.</h2>
+								</div>
+							</div>
+							<div className="col-lg-6 col-md-6 col-12">
+								<div className="read-more-btn text-start text-md-end">
+									<Link
+										className="rbt-btn btn-gradient hover-icon-reverse"
+										href="/blog"
+									>
+										<div className="icon-reverse-wrapper">
+											<span className="btn-text">See All Articles</span>
+											<span className="btn-icon">
+												<i className="feather-arrow-right"></i>
+											</span>
+											<span className="btn-icon">
+												<i className="feather-arrow-right"></i>
+											</span>
+										</div>
+									</Link>
+								</div>
+							</div>
+						</div>
+						<BlogGridTop BlogData={blogs} />
+					</div>
+				</div> */}
 
 				{/* <div className="rbt-newsletter-area newsletter-style-2 bg-color-primary rbt-section-gap">
-          <NewsletterTwo />
-        </div> */}
+					<NewsletterTwo />
+				</div> */}
 			</main>
 		</>
 	);
