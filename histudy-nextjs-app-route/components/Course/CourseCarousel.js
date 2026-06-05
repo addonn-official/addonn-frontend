@@ -136,6 +136,9 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                               </Link>
                             </div>
                             <div className="rbt-author-info">
+
+{console.log('data>>>',data)}
+
                               By <Link href="#">{data.instructor}</Link> In <Link href="#">{data.category}</Link>
                             </div>
                           </div>

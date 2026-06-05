@@ -60,6 +60,9 @@ const MainDemo = ({ blogs }) => {
 							if (unit === "years") return `${duration} Years`;
 							return "Lifetime";
 						};
+console.log('item.instructor<<<<',item.instructors);
+
+
 
 						return {
 							id: item.id,
@@ -85,7 +88,7 @@ const MainDemo = ({ blogs }) => {
 							validity_unit: item.validity_unit,
 							// New Maps
 							category: item.categories?.[0]?.name || "Category",
-							instructor: item.instructor?.display_name || item.instructor?.name || "Instructor",
+							instructor: item.instructors[0]?.display_name || item.instructor?.name || "Instructor",
 							userImg: item.instructor?.file?.url || "/images/client/avatar-02.png",
 							duration: item.duration || "",
 						};
