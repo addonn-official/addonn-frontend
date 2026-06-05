@@ -185,7 +185,7 @@ const MainDemo = ({ blogs }) => {
 				{topCourses && topCourses.length > 0 && (
 					<CourseCarousel
 						courses={topCourses}
-						title={<>Histudy Course student <br /> can join with us.</>}
+						title={<>Join Our Most Popular Courses  <br /> and Upgrade Your Skills.</>}
 						subTitle="Top Popular Course"
 						sectionId="live-courses"
 					/>
@@ -263,13 +263,13 @@ const MainDemo = ({ blogs }) => {
 							<div className="col-lg-3 left-content">
 								<div className="section-title">
 									<span className="subtitle bg-primary-opacity">
-										EDUCATION FOR EVERYONE
+										REVIEWS
 									</span>
 									<h2 className="title">
 										What Our <br /> Learners Say
 									</h2>
 								</div>
-								<p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p>
+								{/* <p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p> */}
 								<div className="mt--30">
 									<Link href="/review" className="rbt-btn btn-gradient">
 										View All Reviews
@@ -291,9 +291,9 @@ const MainDemo = ({ blogs }) => {
 						<div className="row mb--55">
 							<div className="section-title text-center">
 								<span className="subtitle bg-white-opacity">
-									STIMULATED TO TAKE PART IN?
+									Testimonials
 								</span>
-								<h2 className="title color-white">Testimonials</h2>
+								<h2 className="title color-white">Hear directly from our learners</h2>
 							</div>
 						</div>
 						<div className="row">
@@ -325,6 +325,10 @@ const MainDemo = ({ blogs }) => {
 				{/* FAQS */}
 				<div className="rbt-team-area rbt-section-gap">
 					<div className="container">
+						<div className="section-title text-center">
+							<span className="subtitle bg-primary-opacity">FAQ's</span>
+							{/* <h2 className="title">FAQ's</h2> */}
+						</div>
 						<div className="row">
 							{categories.length > 0 ? (
 								<>
@@ -503,7 +507,7 @@ const MainDemo = ({ blogs }) => {
 									aria-controls="allFaqs"
 									onClick={() => setShowAllFaqs(!showAllFaqs)}
 								>
-									{showAllFaqs ? "Less All FAQs" : "View All FAQs"}
+									{showAllFaqs ? "Hide All FAQs" : "View All FAQs"}
 								</button>
 							</div>
 						)}

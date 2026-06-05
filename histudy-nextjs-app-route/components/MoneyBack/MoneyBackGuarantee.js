@@ -50,7 +50,7 @@ const MoneyBackGuarantee = ({ settings }) => {
                             </div>
                             <div className="mw-money-back-btn">
                                 <div className="btn btn-light mw-btn jump-to-plans mw-money-btn py-2 px-4 fw-bold text-primary bg-opacity-10"
-                                    style={{ background: '#eef5ff' }}>Start Risk-Free</div>
+                                    style={{ background: '#eef5ff' }}>Enroll Risk-Free</div>
                             </div>
                         </div>
                     </div>

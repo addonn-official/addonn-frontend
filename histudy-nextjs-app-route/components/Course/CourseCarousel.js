@@ -69,8 +69,8 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                           <div className="rbt-badge-3 bg-white" style={{
                             position: 'absolute',
                             top: '5px',
-                            left: '10px',
-                            right: 'auto'
+                            // left: '10px',
+                            // right: 'auto'
                           }}>
                             <span>-{data.offPricePercentage}%</span>
                             <span>Off</span>
@@ -102,20 +102,21 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                         </Link>
                       </h4>
 
-                      {/* <ul className="rbt-meta">
-                        <li>
-                          <i className="feather-book"></i>
-                          {data.number_of_lectures || data.lesson} Lectures
-                        </li>
-                        <li>
-                          <i className="feather-clock"></i>
-                          {data.validity || "Lifetime"}
-                        </li>
-                        <li>
-                          <i className="feather-globe"></i>
-                          {data.language}
-                        </li>
-                      </ul> */}
+                      {sectionId === "live-courses" &&
+                        <ul className="rbt-meta">
+                          <li>
+                            <i className="feather-book"></i>
+                            {data.number_of_lectures || data.lesson} Lectures
+                          </li>
+                          <li>
+                            <i className="feather-clock"></i>
+                            {data.validity || "Lifetime"}
+                          </li>
+                          <li>
+                            <i className="feather-globe"></i>
+                            {data.language}
+                          </li>
+                        </ul>}
 
                       <div className="rbt-card-text" dangerouslySetInnerHTML={{ __html: data.desc }}></div>
 
@@ -144,8 +145,8 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                             <div className="rbt-price">
                               {data.price && data.price > 0 ? (
                                 <>
-                                  <span className="current-price">${data.price}</span>
-                                  {data.offPrice > data.price && <span className="off-price">${data.offPrice}</span>}
+                                  <span className="current-price">₹{data.price}</span>
+                                  {data.offPrice > data.price && <span className="off-price">₹{data.offPrice}</span>}
                                 </>
                               ) : (
                                 <span className="current-price">Free</span>

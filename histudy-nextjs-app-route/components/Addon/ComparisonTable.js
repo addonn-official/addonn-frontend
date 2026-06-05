@@ -127,9 +127,11 @@
 import React from "react";
 import Link from "next/link";
 import "./comparison.css";
+import { useAppContext } from "@/context/Context";
 
 const ComparisonTable = ({ settings }) => {
   if (!settings) return null;
+  const { isLightTheme } = useAppContext();
 
   const { heading, features = [], providers = [], site } = settings;
 
@@ -189,7 +191,7 @@ const ComparisonTable = ({ settings }) => {
               {settings?.subTitle}
             </span>
           )}
-          <h2 className="comparison-title">{heading}</h2>
+          <h2 className={`comparison-title${isLightTheme && 'text-dark'}`}>{heading}</h2>
         </div>
 
         {/* COMPARISON GRID */}
@@ -216,11 +218,11 @@ const ComparisonTable = ({ settings }) => {
               key={providerIndex}
               className={`pricing-card ${provider.highlight === "1" ? "active-card" : ""}`}
             >
-               {provider.highlight === "1" && (
-                  <div className="popular-badge">
-                    <span>MOST POPULAR</span>
-                  </div>
-                )}
+              {provider.highlight === "1" && (
+                <div className="popular-badge">
+                  <span>BEST CHOICE</span>
+                </div>
+              )}
 
               {/* CARD HEADER */}
               <div className="card-header-custom">

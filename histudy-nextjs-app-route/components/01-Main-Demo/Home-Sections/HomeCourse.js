@@ -43,8 +43,8 @@ const HomeCourses = ({ start, end, courses }) => {
                         <div className="rbt-badge-3 bg-white" style={{
                           position: 'absolute',
                           top: '15px',
-                          left: '15px',
-                          right: 'auto'
+                          // left: '15px',
+                          // right: 'auto'
                         }}>
                           <span>-{data.offPricePercentage || data.discount}%</span>
                           <span>Off</span>
@@ -113,8 +113,8 @@ const HomeCourses = ({ start, end, courses }) => {
                     <div className={`rbt-price ${isLoading ? "rbt-skeleton-loading" : ""}`} style={isLoading ? { width: '80px', height: '20px' } : {}}>
                       {!isLoading && (
                         <>
-                          <span className="current-price">${data.price}</span>
-                          <span className="off-price">${data.offPrice}</span>
+                          <span className="current-price">₹{data.price}</span>
+                          <span className="off-price">₹{data.offPrice}</span>
                         </>
                       )}
                     </div>
