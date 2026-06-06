@@ -143,7 +143,7 @@ const QuizAttempts = () => {
                             <span className={`${quiz?.latest_attempt?.result === 'Fail' ? 'text-danger' : 'text-success'}`}>{quiz?.latest_attempt?.result}</span>
                           </td>
                           <td>
-                            <p className="b3">{quiz?.latest_attempt?.attempt_number || 1}</p>
+                            <p className="b3">{quiz?.latest_attempt?.attempt_number}</p>
                           </td>
                           <td>
                             <div className="rbt-button-group justify-content-end">

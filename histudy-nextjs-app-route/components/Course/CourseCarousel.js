@@ -70,7 +70,8 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                             position: 'absolute',
                             top: '5px',
                             // left: '10px',
-                            // right: 'auto'
+                            // width: '',
+                            right: '2px'
                           }}>
                             <span>-{data.offPricePercentage}%</span>
                             <span>Off</span>
@@ -137,7 +138,7 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                             </div>
                             <div className="rbt-author-info">
 
-{console.log('data>>>',data)}
+                              {console.log('data>>>', data)}
 
                               By <Link href="#">{data.instructor}</Link> In <Link href="#">{data.category}</Link>
                             </div>

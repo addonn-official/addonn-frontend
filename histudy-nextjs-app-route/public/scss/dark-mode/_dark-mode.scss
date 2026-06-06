@@ -1464,6 +1464,26 @@
         }
     }
 
+
+
+/* Hide Bootstrap default arrow */
+.accordion-button::after {
+    display: none !important;
+}
+
+/* Default state = collapsed */
+.faq-toggle-icon::before {
+    content: "+";
+    font-size: 32px;
+    font-weight: 600;
+    color: currentColor;
+}
+
+/* Open state */
+.accordion-button:not(.collapsed) .faq-toggle-icon::before {
+    content: "-";
+}
+
     .accordion-button:not(.collapsed) {
         color: var(--color-white);
     }

@@ -20,6 +20,7 @@ import { UserDashboardServices, UserHomeServices } from "../../services/User/ind
 import { useSettings } from "@/context/SettingsContext";
 import ComparisonTable from "../Addon/ComparisonTable";
 import MainDemoData from "../../data/course-details/courseData.json";
+import { useAppContext } from "@/context/Context";
 
 const MainDemo = ({ blogs }) => {
 	const [topCourses, setTopCourses] = useState([]);
@@ -33,6 +34,7 @@ const MainDemo = ({ blogs }) => {
 	// Use centralized settings from SettingsContext — avoids duplicate API call
 	const { settings: homeSettings, loading } = useSettings();
 	const hasFetchedCourses = useRef(false);
+	const { isLightTheme } = useAppContext();
 
 	useEffect(() => {
 		// Guard against React Strict Mode double-mount
@@ -60,7 +62,7 @@ const MainDemo = ({ blogs }) => {
 							if (unit === "years") return `${duration} Years`;
 							return "Lifetime";
 						};
-console.log('item.instructor<<<<',item.instructors);
+						console.log('item.instructor<<<<', item.instructors);
 
 
 
@@ -386,9 +388,14 @@ console.log('item.instructor<<<<',item.instructors);
 																			{item.question}
 																		</div>
 																	</div>
+																	<span
+																		className="faq-toggle-icon fs-1 ms-3"
+																		style={{
+																			color: isLightTheme ? "#000408" : "#ffffff",
+																		}}
+																	></span>
 																</button>
 															</h2>
-
 															<div
 																id={`collapse-${item.id}`}
 																className={`accordion-collapse collapse ${innerIndex === 0 ? "show" : ""
@@ -464,6 +471,12 @@ console.log('item.instructor<<<<',item.instructors);
 																					{item.question}
 																				</div>
 																			</div>
+																			<span
+																				className="faq-toggle-icon fs-1 ms-3"
+																				style={{
+																					color: isLightTheme ? "#00060c" : "#ffffff",
+																				}}
+																			></span>
 																		</button>
 																	</h2>
 

@@ -42,9 +42,9 @@ const HomeCourses = ({ start, end, courses }) => {
                       {(data.offPricePercentage || data.discount) > 0 && (
                         <div className="rbt-badge-3 bg-white" style={{
                           position: 'absolute',
-                          top: '15px',
+                          top: '5px',
                           // left: '15px',
-                          // right: 'auto'
+                          right: '2px'
                         }}>
                           <span>-{data.offPricePercentage || data.discount}%</span>
                           <span>Off</span>

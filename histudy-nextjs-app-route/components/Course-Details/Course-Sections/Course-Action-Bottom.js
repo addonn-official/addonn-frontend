@@ -46,10 +46,10 @@ const CourseActionBottom = ({ checkMatchCourses }) => {
               <div className="course-action-bottom-right rbt-single-group">
                 <div className="rbt-single-list rbt-price large-size justify-content-center">
                   <span className="current-price color-primary">
-                    ${checkMatchCourses.price}
+                    ₹{checkMatchCourses.price}
                   </span>
                   <span className="off-price">
-                    ${checkMatchCourses.offPrice}
+                    ₹{checkMatchCourses.offPrice}
                   </span>
                 </div>
                 <div className="rbt-single-list action-btn">
