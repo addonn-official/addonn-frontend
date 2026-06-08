@@ -30,7 +30,6 @@ const Profile = () => {
 
   const p = userData || {};
   const prof = p.profile || {};
-console.log('userData>>>>>',userData);
 
   return (
     <>

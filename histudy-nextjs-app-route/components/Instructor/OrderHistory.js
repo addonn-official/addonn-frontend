@@ -83,8 +83,7 @@ const OrderHistory = () => {
                   orders.map((order, index) => {
                     const { date, time } = formatDate(order.created_at);
                     const statusText = normalizeOrderStatus(order);
-                    const orderRefundStatus =
-                      order.refund?.status || refundStatusMap[order.order_id] || "";
+                    const orderRefundStatus = order.refund?.status || refundStatusMap[order.order_id] || "";
                     const infoMessage = getInfoMessage(order);
                     const canRefund = statusText === "Successful" && !orderRefundStatus;
 
@@ -96,17 +95,16 @@ const OrderHistory = () => {
                           <div>{date}</div>
                           <div className="b3">{time}</div>
                         </td>
-                        <td>${order.final_amount}</td>
+                        <td>₹{order.final_amount}</td>
                         <td>
                           <div className="d-flex align-items-center gap-2">
                             <span
-                              className={`rbt-badge-5 ${
-                                statusText === "Successful"
+                              className={`rbt-badge-5 ${statusText === "Successful"
                                   ? "bg-color-success-opacity color-success"
                                   : statusText === "Pending"
-                                  ? "bg-color-warning-opacity color-warning"
-                                  : "bg-color-danger-opacity color-danger"
-                              }`}
+                                    ? "bg-color-warning-opacity color-warning"
+                                    : "bg-color-danger-opacity color-danger"
+                                }`}
                             >
                               {statusText}
                             </span>

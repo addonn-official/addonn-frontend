@@ -114,6 +114,14 @@ const SingleCourse = ({ getParams }) => {
 
             // const x = apiData.topics?.map(topic => (topic.course_contents?.map(content => (content))))
             const adaptedData = {
+
+              last_watch_content_id: apiData?.last_watch_content_id,
+              last_watch_topic_id:apiData?.last_watch_topic_id,
+              total_duration_in_min: apiData?.total_duration_in_min,
+              total_watched_in_min: apiData?.total_watched_in_min,
+              total_completion_percentage: apiData?.total_completion_percentage,
+              total_remaining_watched_in_txt: apiData?.total_remaining_watched_in_txt,
+
               id: apiData.id,
               courseTitle: apiData.title,
               courseImg: apiData.file?.url || "/images/course/course-01.jpg",

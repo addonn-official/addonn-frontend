@@ -25,19 +25,19 @@ const Instructor = ({ checkMatchCourses }) => {
               <div className="author-info">
                 {teacher.companies && teacher.companies.length > 0 && (
                   <>
-                    <span className="company-name b3" style={{ fontSize: '16px', fontWeight: '600' }}>
+                    <span className="company-name b3" style={{ fontSize: '20px', fontWeight: '600' }}>
                       {teacher.name}
                     </span>
+                      <hr />
                     <div className="company-info-wrapper d-flex align-items-center flex-wrap gap-3 mb--10">
-
                       {teacher.companies.slice(0, 1).map((company, cIndex) => (
                         <div key={cIndex} className="company-item d-flex align-items-center gap-2">
                           {company.logo?.url && (
                             <div className="company-logo">
                               <Image
                                 src={company.logo.url}
-                                width={32}
-                                height={32}
+                                width={25}
+                                height={25}
                                 alt={company.name}
                                 style={{ objectFit: 'contain', borderRadius: '4px' }}
                               />

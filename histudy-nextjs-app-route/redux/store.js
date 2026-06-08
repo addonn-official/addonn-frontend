@@ -6,12 +6,15 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { CartReducer } from "./reducer/CartReducer";
 import { QuizReducer } from "./reducer/QuizReducer";
 import { SubmissionReducer } from "./reducer/SubmissionReducer";
+import { CourseReducer } from "./reducer/CourseReducer";
+
 
 const root = combineReducers({
   //   ProductsReducer,
   CartReducer,
   QuizReducer,
- submission: SubmissionReducer
+  submission: SubmissionReducer,
+  courseReducer: CourseReducer
 });
 
 const middleware = [thunk];

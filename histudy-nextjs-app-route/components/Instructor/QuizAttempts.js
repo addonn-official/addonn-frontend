@@ -116,8 +116,8 @@ const QuizAttempts = () => {
           <hr className="mt--30" />
 
           <div className="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
-            <table className="rbt-table table table-borderless">
-              <thead>
+            <table className="rbt-table table table-borderless text-center">
+              <thead className="text-center">
                 <tr>
                   <th>Quiz Name</th>
                   <th>Score %</th>
@@ -143,10 +143,10 @@ const QuizAttempts = () => {
                             <span className={`${quiz?.latest_attempt?.result === 'Fail' ? 'text-danger' : 'text-success'}`}>{quiz?.latest_attempt?.result}</span>
                           </td>
                           <td>
-                            <p className="b3">{quiz?.latest_attempt?.attempt_number}</p>
+                            <p className="b3">{quiz?.latest_attempt?.attempt_number || "-"}</p>
                           </td>
                           <td>
-                            <div className="rbt-button-group justify-content-end">
+                             <div className="rbt-button-group justify-content-end">
                               {quiz?.latest_attempt?.attempt_number < 3 ? (
                                 <Link
                                   className="rbt-btn btn-sm bg-primary-opacity radius-round"
@@ -155,18 +155,18 @@ const QuizAttempts = () => {
                                     ?.trim()
                                     ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.latest_attempt?.content_id}`}
                                 >
-                                  {quiz?.latest_attempt?.attempt_number === 0
-                                    ? "Attempt"
-                                    : "Re-Attempt"}
+                                  {quiz?.latest_attempt?.attempt_number === 0 ? "Attempt" : "Re-Attempt"}
                                 </Link>
                               ) : (
-                                <button
+                                <Link
                                   className="rbt-btn btn-sm bg-primary-opacity radius-round"
-                                  disabled
-                                  style={{ cursor: "not-allowed", opacity: 0.6 }}
+                                  href={`/lesson?course_slug=${quizzes?.title
+                                    ?.toLowerCase()
+                                    ?.trim()
+                                    ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.content_id}`}
                                 >
-                                  Re-Attempt
-                                </button>
+                                  Attempt
+                                </Link>
                               )}
                             </div>
                           </td>

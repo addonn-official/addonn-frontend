@@ -96,8 +96,6 @@ const CourseBreadcrumb = ({ getMatchCourse }) => {
           </div>
 
           <ul className="rbt-meta">
-            {console.log('getMatchCourse>>>>date>>>', getMatchCourse)}
-
             <li>
               <i className={`feather-calendar text-light`}></i>Last updated{" "}
               {getMatchCourse.date}

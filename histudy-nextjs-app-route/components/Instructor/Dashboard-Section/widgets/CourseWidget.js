@@ -283,11 +283,11 @@ const CourseWidget = ({
   };
 
   const getCertificateStatus = () => {
-    const status = data.certificateStatus?.toLowerCase();
-    if (status === "granted" || status === "download now" || status === "downloaded") return "Download Certificate";
-    if (status === "pending" || status === "requested") return "Request Pending";
-    if (status === "rejected") return "Request Rejected";
-    return "Request Certificate";
+    // const status = data.certificateStatus?.toLowerCase();
+    // if (status === "granted" || status === "download now" || status === "downloaded") return "Download Certificate";
+    // if (status === "pending" || status === "requested") return "Request Pending";
+    // if (status === "rejected") return "Request Rejected";
+    return data?.certificate?.request_status;
   };
 
   const handleCertificateRequest = async () => {
@@ -341,11 +341,20 @@ const CourseWidget = ({
     }
   };
 
+  console.log('dataVVVVVVVVVVVV', data);
+
+
+
   return (
     <>
       <div className="rbt-card variation-01 rbt-hover">
         <div className="rbt-card-img">
-          <Link href={`/course-details/${data.id}`}>
+          <Link
+
+            href={`/lesson?course_slug=${data?.title?.toLowerCase()
+              ?.trim()
+              ?.replace(/\s+/g, "-")}&topic_id=${data?.topics?.[0]?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+          >
             {data.courseThumbnail ? (
               <Image
                 width={330}
@@ -422,7 +431,11 @@ const CourseWidget = ({
                 </div>
               </div>
               <h4 className="rbt-card-title">
-                <Link href={`/course-details/${data?.id}`}>{data?.title}</Link>
+                <Link
+                  href={`/lesson?course_slug=${data?.title?.toLowerCase()
+                    ?.trim()
+                    ?.replace(/\s+/g, "-")}&topic_id=${data?.topics?.[0]?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+                >{data?.title}</Link>
               </h4>
             </>
           )}
@@ -448,13 +461,13 @@ const CourseWidget = ({
                       data-wow-duration="0.5s"
                       data-wow-delay=".3s"
                       role="progressbar"
-                      style={{ width: `${data?.progress?.total}%` }}
-                      aria-valuenow={data?.progress?.total}
+                      style={{ width: `${data?.total_completion_percentage}%` }}
+                      aria-valuenow={data?.total_completion_percentage}
                       aria-valuemin={0}
                       aria-valuemax={100}
                     ></div>
                     <span className="rbt-title-style-2 progress-number">
-                      {data.progressValue}%
+                      {data?.total_completion_percentage}%
                     </span>
                   </div>
                 </div>
@@ -467,6 +480,7 @@ const CourseWidget = ({
                     ? "btn-gradient"
                     : "bg-primary-opacity"
                     }`}
+                  disabled={data?.certificate?.request_status === "requested" ? true : false}
                 >
                   {getCertificateStatus()}
                 </button>

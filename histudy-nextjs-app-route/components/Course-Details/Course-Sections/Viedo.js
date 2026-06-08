@@ -71,6 +71,13 @@ const Viedo = ({ checkMatchCourses }) => {
     };
   }, []);
 
+
+  // console.log('checkMatchCourses>>>', checkMatchCourses);
+
+
+
+
+
   return (
     <>
       {!disableVideo ? (
@@ -131,7 +138,7 @@ const Viedo = ({ checkMatchCourses }) => {
             <span className="current-price">₹{checkMatchCourses.price}</span>
             <span className="off-price">₹{checkMatchCourses.offPrice}</span>
           </div>
-          {checkMatchCourses?.days > 0 &&<div className="discount-time">
+          {checkMatchCourses?.days > 0 && <div className="discount-time">
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
               <i className="feather-clock" style={{ color: '#e33e36' }}></i> {checkMatchCourses?.days} days
               left!
@@ -143,7 +150,9 @@ const Viedo = ({ checkMatchCourses }) => {
           {checkMatchCourses.isPurchased ? (
             <Link
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
-              href={`/lesson/${checkMatchCourses.id}`}
+              href={`/lesson?course_slug=${checkMatchCourses?.courseTitle?.toLowerCase()
+                ?.trim()
+                ?.replace(/\s+/g, "-")}&topic_id=${checkMatchCourses?.topics?.[0]?.id || checkMatchCourses?.last_watch_topic_id}&content_id=${checkMatchCourses?.last_watch_content_id || checkMatchCourses?.contents?.[0]?.id}`}
             >
               <span className="btn-text">Continue Learning</span>
               <span className="btn-icon">

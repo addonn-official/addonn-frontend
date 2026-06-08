@@ -15,6 +15,15 @@ const EnrolledCourses = () => {
     const c = enrollment.course || {};
     return {
       enrollment_id: enrollment.id,
+      last_watch_topic_id: c.last_watch_topic_id,
+      last_watch_content_id: c.last_watch_content_id,
+      total_duration_in_min: c.total_duration_in_min,
+      total_watched_in_min: c.total_watched_in_min,
+      total_completion_percentage: c.total_completion_percentage,
+      total_duration_in_txt: c.total_duration_in_txt,
+      total_watched_in_txt: c.total_watched_in_txt,
+      total_remaining_watched_in_txt: c.total_remaining_watched_in_txt,
+
       id: c.id,
       title: c.title,
       lectures: c.number_of_lectures,
@@ -28,14 +37,15 @@ const EnrolledCourses = () => {
       certificateMessage: enrollment.certificate_message,
       userReviewText: enrollment.review?.review || "",
       userRating: enrollment.review?.rating || 0,
-      userReviews:c.reviews,
-      progress:c.progres,
+      userReviews: c.reviews,
+      progress: c.progres,
       rating: {
         average: c.reviews_avg_rating || 0,
       },
       reviews: {
-        oneStar: 0, twoStar: 0, threeStar: 0, fourStar: 0, fiveStar: 0 // Mocking for now
-      }
+        oneStar: 0, twoStar: 0, threeStar: 0, fourStar: 0, fiveStar: 0, // Mocking for now
+      },
+      certificate:enrollment.certificate
     };
   };
 

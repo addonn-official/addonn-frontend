@@ -32,6 +32,7 @@ const profiles = [
 const SingleCourseEight = ({ getParams }) => {
   const router = useRouter();
   const postId = parseInt(getParams.courseId);
+
   let getCourse;
 
   getCourse = JSON.parse(JSON.stringify(CourseData.courseTab));

@@ -192,7 +192,8 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
   }, 0);
 
   const remainingSeconds = Math.max(0, totalSecondsAll - watchedSeconds);
-  const progressPercent = totalSecondsAll > 0 ? Math.round((watchedSeconds / totalSecondsAll) * 100) : 0;
+  const progressPercent = courseData?.total_completion_percentage || 0
+  //  totalSecondsAll > 0 ? Math.round((watchedSeconds / totalSecondsAll) * 100) : 0;
 
   const getItemIcon = (content) => {
     const icon = content?.icon; // from API: "quiz", "editor", "video", etc.
@@ -264,13 +265,14 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
 
             <div className="sidebar-progress-stats">
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{formatTime(totalSecondsAll)}</span></span>
+
+                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{courseData?.total_completion_percentage || 0}</span></span>
               </div>
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{formatTime(watchedSeconds)}</span></span>
+                <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{courseData?.total_watched_in_txt || 0}</span></span>
               </div>
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Remaining: <span className="text-accent">{formatTime(remainingSeconds)}</span></span>
+                <span className="sidebar-stat-label text-white">Remaining: <span className="text-accent">{courseData?.total_remaining_watched_in_txt || 0}</span></span>
               </div>
             </div>
           </div>
