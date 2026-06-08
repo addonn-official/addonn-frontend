@@ -24,19 +24,17 @@ const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
             <CourseMenu />
           </div>
 
-          {checkMatchCourses &&
-            checkMatchCourses.courseOverview.map((data, index) => (
-              <Overview {...data} key={index} checkMatchCourses={data} />
-            ))}
+          {checkMatchCourses && checkMatchCourses.courseOverview.map((data, index) => (
+            <Overview {...data} key={index} checkMatchCourses={data} />
+          ))}
 
           <div
             className="course-content rbt-shadow-box coursecontent-wrapper mt--30"
             id="coursecontent"
           >
-            {checkMatchCourses &&
-              checkMatchCourses.courseContent.map((data, index) => (
-                <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} />
-              ))}
+            {checkMatchCourses && checkMatchCourses.courseContent.map((data, index) => (
+              <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} />
+            ))}
           </div>
 
           {((checkMatchCourses.courseRequirement && checkMatchCourses.courseRequirement.length > 0 && checkMatchCourses.courseRequirement.some(r => r.detailsList && r.detailsList.length > 0)) ||

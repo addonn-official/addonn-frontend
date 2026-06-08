@@ -181,7 +181,7 @@ const Assignments = () => {
           <hr className="mt--30" />
 
           <div className="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
-            <table className="rbt-table table table-borderless">
+            <table className="rbt-table table table-borderless text-center">
               <thead>
                 <tr>
                   <th>Assignment/Project Name</th>
@@ -211,43 +211,38 @@ const Assignments = () => {
                           <span className={`b3 text-secondry ${assSubm?.is_approved ? 'text-success' : "text-danger"}`}>{assSubm?.application_status}</span>
                         </td>
                         <td>
-                          <span className="b3">{assSubm?.marks}</span>
+                          <span className="b3">{assSubm?.marks || '-'}</span>
                         </td>
                         <td className="d-md-table-cell">
-                          <span className="b3">{formatDate(assSubm?.submitted_at)}</span>
+                          <span className="b3">{formatDate(assSubm?.submitted_at) || '-'}</span>
                         </td>
                         <td>
                           <div className="rbt-button-group justify-content-end align-items-center">
-                            {/* <Link
+                            {!assSubm?.latest_submission ? <Link
                               className="rbt-btn btn-sm bg-primary-opacity radius-round"
                               href="/lesson-assignments-submit"
                             >
                               Upload
-                            </Link> */}
-                            {assSubm?.application_status !== 'Draft' && assSubm?.feedback ? (
-                              <button
-                                type="button"
-                                className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
-                                onClick={() => handleShowMessage(assSubm?.feedback)}
-                                title="View submission message"
-                              >
-                                <i className="feather-info" />
-                              </button>
-                            ) :
-
-
-                              <Link
-                                className="rbt-btn btn-sm bg-primary-opacity radius-round"
-                                href={`/lesson?course_slug=${submissions?.title
-                                  ?.toLowerCase()
-                                  ?.trim()
-                                  ?.replace(/\s+/g, "-")}&topic_id=${assignment?.topic_id}&content_id=${assSubm?.content_id}`}
-                              >
-                                {assSubm?.application_status === 'Draft'
-                                  && "Upload"}
-                              </Link>
-
-
+                            </Link>
+                              : (assSubm?.application_status !== 'Draft' && assSubm?.feedback ? (
+                                <button
+                                  type="button"
+                                  className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
+                                  onClick={() => handleShowMessage(assSubm?.feedback)}
+                                  title="View submission message"
+                                >
+                                  <i className="feather-info" />
+                                </button>
+                              ) :
+                                <Link
+                                  className="rbt-btn btn-sm bg-primary-opacity radius-round"
+                                  href={`/lesson?course_slug=${submissions?.title
+                                    ?.toLowerCase()
+                                    ?.trim()
+                                    ?.replace(/\s+/g, "-")}&topic_id=${assignment?.topic_id}&content_id=${assSubm?.content_id}`}
+                                >
+                                  {assSubm?.application_status === 'Draft' && "Upload"}
+                                </Link>)
                             }
                           </div>
                         </td>

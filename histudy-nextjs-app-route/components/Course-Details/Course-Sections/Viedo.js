@@ -72,7 +72,7 @@ const Viedo = ({ checkMatchCourses }) => {
   }, []);
 
 
-  // console.log('checkMatchCourses>>>', checkMatchCourses);
+  console.log('checkMatchCourses>>>', checkMatchCourses);
 
 
 
@@ -147,12 +147,13 @@ const Viedo = ({ checkMatchCourses }) => {
         </div>
 
         <div className="add-to-card-button mt--15">
+
           {checkMatchCourses.isPurchased ? (
             <Link
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
               href={`/lesson?course_slug=${checkMatchCourses?.courseTitle?.toLowerCase()
                 ?.trim()
-                ?.replace(/\s+/g, "-")}&topic_id=${checkMatchCourses?.topics?.[0]?.id || checkMatchCourses?.last_watch_topic_id}&content_id=${checkMatchCourses?.last_watch_content_id || checkMatchCourses?.contents?.[0]?.id}`}
+                ?.replace(/\s+/g, "-")}&topic_id=${checkMatchCourses?.topics?.[0]?.id || checkMatchCourses?.last_watch_topic_id}&content_id=${checkMatchCourses?.last_watch_content_id || checkMatchCourses?.contents?.[0]?.id || checkMatchCourses?.courseContent?.[0]?.contentList?.[0]?.listItem?.[0]?.contentId}`}
             >
               <span className="btn-text">Continue Learning</span>
               <span className="btn-icon">
@@ -303,7 +304,7 @@ const Viedo = ({ checkMatchCourses }) => {
             </p>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

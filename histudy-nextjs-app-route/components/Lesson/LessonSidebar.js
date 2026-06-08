@@ -142,7 +142,7 @@ const PlayPauseBtn = ({ isPlaying }) => (
 );
 
 const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonProgressMap = {}, quizAttempts = [], submissionContents = [] }) => {
-  // const [activeTab, setActiveTab] = useState(false);
+  const [activeTab, setActiveTab] = useState(false);
   const [openTabs, setOpenTabs] = useState([]);
   const pathname = usePathname();
   const searchParams = useSearchParams();

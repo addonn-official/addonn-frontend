@@ -116,7 +116,7 @@ const SingleCourse = ({ getParams }) => {
             const adaptedData = {
 
               last_watch_content_id: apiData?.last_watch_content_id,
-              last_watch_topic_id:apiData?.last_watch_topic_id,
+              last_watch_topic_id: apiData?.last_watch_topic_id,
               total_duration_in_min: apiData?.total_duration_in_min,
               total_watched_in_min: apiData?.total_watched_in_min,
               total_completion_percentage: apiData?.total_completion_percentage,
@@ -164,13 +164,11 @@ const SingleCourse = ({ getParams }) => {
 
               userName: instructors && instructors[0]?.display_name || "Unknown Instructor",
 
-
               userImg: instructors && instructors[0]?.file?.url || "/images/client/avatar-02.png",
               userCategory: instructors && instructors[0]?.short_description || "Instructor",
               instructorCompanies: instructors && instructors[0]?.companies || [],
               hasMoneyBackGuarantee: apiData.has_money_back_guarantee || false,
-              moneyBackDuration:
-                apiData.money_back_guarantee_period || apiData.money_back_duration || 30,
+              moneyBackDuration: apiData.money_back_guarantee_period || apiData.money_back_duration || 30,
 
               courseOverview: [
                 {
@@ -205,6 +203,7 @@ const SingleCourse = ({ getParams }) => {
                   })) || []
                 }
               ],
+              topics: apiData?.topics,
               courseInstructor: [
                 {
                   title: "Instructor",

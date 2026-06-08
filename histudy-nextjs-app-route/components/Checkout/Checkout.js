@@ -142,7 +142,7 @@ const Checkout = () => {
         key: res.gateway_key,
         amount: res.gateway_amount,
         currency: res.gateway_currency,
-        name: "Histudy",
+        // name: "Histudy",
         description: "Course Purchase",
         order_id: res.gateway_order_id,
 

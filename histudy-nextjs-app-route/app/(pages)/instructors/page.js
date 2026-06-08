@@ -25,7 +25,7 @@ const InstructorsPage = () => {
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className="breadcrumb-inner text-center">
-                                    <h2 className="title">Our Mentores</h2>
+                                    <h2 className="title">Our Instructors</h2>
                                     <ul className="page-list">
                                         <li className="rbt-breadcrumb-item">
                                             <a href="/">Home</a>

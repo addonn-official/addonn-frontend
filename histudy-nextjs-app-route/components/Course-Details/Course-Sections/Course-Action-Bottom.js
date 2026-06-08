@@ -6,6 +6,8 @@ import { useRouter, usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const CourseActionBottom = ({ checkMatchCourses }) => {
+  console.log('checkMatchCourses>>>>', checkMatchCourses);
+
   const path = usePathname();
   const [hideOnScroll, setHideOnScroll] = useState(false);
 
@@ -31,9 +33,8 @@ const CourseActionBottom = ({ checkMatchCourses }) => {
   return (
     <>
       <div
-        className={`rbt-course-action-bottom ${
-          hideOnScroll ? "rbt-course-action-active" : ""
-        }`}
+        className={`rbt-course-action-bottom ${hideOnScroll ? "rbt-course-action-active" : ""
+          }`}
       >
         <div className="container">
           <div className="row align-items-center">
@@ -52,22 +53,24 @@ const CourseActionBottom = ({ checkMatchCourses }) => {
                     ₹{checkMatchCourses.offPrice}
                   </span>
                 </div>
-                <div className="rbt-single-list action-btn">
-                  <Link
-                    className="rbt-btn btn-gradient hover-icon-reverse btn-md"
-                    href="#"
-                  >
-                    <span className="icon-reverse-wrapper">
-                      <span className="btn-text">Purchase Now</span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
+                {!checkMatchCourses?.isPurchased &&
+                  <div className="rbt-single-list action-btn">
+                    <Link
+                      className="rbt-btn btn-gradient hover-icon-reverse btn-md"
+                      href="#"
+                    >
+                      <span className="icon-reverse-wrapper">
+                        <span className="btn-text">Purchase Now</span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
                       </span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                    </span>
-                  </Link>
-                </div>
+                    </Link>
+                  </div>
+                }
               </div>
             </div>
           </div>

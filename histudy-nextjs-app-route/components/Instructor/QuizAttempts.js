@@ -140,13 +140,13 @@ const QuizAttempts = () => {
                             <p className="b3">{quiz?.latest_attempt?.percentage ?? 0}%</p>
                           </td>
                           <td>
-                            <span className={`${quiz?.latest_attempt?.result === 'Fail' ? 'text-danger' : 'text-success'}`}>{quiz?.latest_attempt?.result}</span>
+                            <span className={`${quiz?.latest_attempt?.result === 'Fail' ? 'text-danger' : 'text-success'}`}>{quiz?.latest_attempt?.result || "-"}</span>
                           </td>
                           <td>
                             <p className="b3">{quiz?.latest_attempt?.attempt_number || "-"}</p>
                           </td>
                           <td>
-                             <div className="rbt-button-group justify-content-end">
+                            <div className="rbt-button-group justify-content-end">
                               {quiz?.latest_attempt?.attempt_number < 3 ? (
                                 <Link
                                   className="rbt-btn btn-sm bg-primary-opacity radius-round"
@@ -163,7 +163,7 @@ const QuizAttempts = () => {
                                   href={`/lesson?course_slug=${quizzes?.title
                                     ?.toLowerCase()
                                     ?.trim()
-                                    ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.content_id}`}
+                                    ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.content_id || quiz?.id}`}
                                 >
                                   Attempt
                                 </Link>

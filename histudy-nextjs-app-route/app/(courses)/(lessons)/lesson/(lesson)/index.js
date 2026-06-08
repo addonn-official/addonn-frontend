@@ -1794,11 +1794,11 @@ const LessonPage = () => {
                                           </div>
                                         )}
                                       </div> :
-                                      <div>
+                                      <div className="text-center mt-4">
                                         Comments have been disabled.
                                       </div>}
 
-                                    {courseData?.is_comment_enabled &&
+                                    {! courseData?.is_comment_enabled &&
                                       <div className="lesson-chat-input-bar">
                                         <input
                                           type="text"
