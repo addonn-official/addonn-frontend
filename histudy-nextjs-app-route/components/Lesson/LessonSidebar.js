@@ -266,7 +266,7 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
             <div className="sidebar-progress-stats">
               <div className="sidebar-stat">
 
-                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{courseData?.total_duration_in_min || 0}</span></span>
+                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{courseData?.total_duration_in_txt || 0}</span></span>
               </div>
               <div className="sidebar-stat">
                 <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{courseData?.total_watched_in_txt || 0}</span></span>

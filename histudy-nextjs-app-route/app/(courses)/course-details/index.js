@@ -118,6 +118,7 @@ const SingleCourse = ({ getParams }) => {
               last_watch_content_id: apiData?.last_watch_content_id,
               last_watch_topic_id: apiData?.last_watch_topic_id,
               total_duration_in_min: apiData?.total_duration_in_min,
+              total_duration_in_txt: apiData?.total_duration_in_txt,
               total_watched_in_min: apiData?.total_watched_in_min,
               total_completion_percentage: apiData?.total_completion_percentage,
               total_remaining_watched_in_txt: apiData?.total_remaining_watched_in_txt,
