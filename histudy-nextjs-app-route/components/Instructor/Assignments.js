@@ -9,15 +9,14 @@ import { useAppContext } from "../../context/Context";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubmissions } from "@/redux/action/SubmissionActions";
 import { formatDate, formatDateWithTime } from "@/utils";
+import Loader from "../Common/Loader";
 
 const Assignments = () => {
   const { userData, loadingUser } = useAppContext();
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const dispatch = useDispatch();
-  const { submissions, loading } = useSelector(
-    (state) => state.submission
-  );
+  const { submissions, loading } = useSelector((state) => state.submission);
 
   const courseOptions = useMemo(
     () => [
@@ -195,8 +194,30 @@ const Assignments = () => {
               <tbody>
                 {submissions?.contents?.length > 0 ? (
                   submissions?.contents?.map((assignment, index) => {
-
                     const assSubm = assignment?.latest_submission
+                    const is_approved = assSubm?.application_status;
+
+                    const status = assSubm?.application_status;
+                    const uploadUrl = `/lesson?course_slug=html-masterclass&topic_id=${assignment?.topic_id}&content_id=${assignment?.id}`;
+
+                    let statusColor;
+
+                    switch (is_approved) {
+                      case "Pending":
+                        statusColor = "text-warning"; // or yellow
+                        break;
+                      case "Rejected":
+                        statusColor = "text-danger";
+                        break;
+
+                      case "Submitted":
+                        statusColor = "text-success";
+                        break;
+
+                      default:
+                        statusColor = "text-secondry"; // not submitted
+                        break;
+                    }
 
                     return (
                       <tr key={index}>
@@ -208,7 +229,7 @@ const Assignments = () => {
                           <p className="b3">{attempt}</p>
                         </td> */}
                         <td>
-                          <span className={`b3 text-secondry ${assSubm?.is_approved ? 'text-success' : "text-danger"}`}>{assSubm?.application_status}</span>
+                          <span className={`b3 text-secondry ${statusColor}`}>{assSubm?.application_status || 'Not Submited'}</span>
                         </td>
                         <td>
                           <span className="b3">{assSubm?.marks || '-'}</span>
@@ -216,15 +237,55 @@ const Assignments = () => {
                         <td className="d-md-table-cell">
                           <span className="b3">{formatDate(assSubm?.submitted_at) || '-'}</span>
                         </td>
+
                         <td>
                           <div className="rbt-button-group justify-content-end align-items-center">
-                            {!assSubm?.latest_submission ? <Link
+                            {status === "Not Submitted" || status === undefined && (
+                              <Link
+                                className="rbt-btn btn-sm bg-primary-opacity radius-round"
+                                href={uploadUrl}
+                              >
+                                Upload
+                              </Link>
+                            )}
+
+                            {status === "Rejected" && (
+                              <>
+                                <Link
+                                  className="rbt-btn btn-sm bg-primary-opacity radius-round"
+                                  href={uploadUrl}
+                                >
+                                  Re-Upload
+                                </Link>
+
+                                <button
+                                  type="button"
+                                  className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
+                                  onClick={() => handleShowMessage(assSubm?.feedback)}
+                                  title="View rejection reason"
+                                >
+                                  <i className="feather-info" />
+                                </button>
+                              </>
+                            )}
+
+                            {(status === "Submitted") && (
+                              <button
+                                type="button"
+                                className="rbt-btn btn-sm radius-round"
+                                disabled
+                              >
+                                {status}
+                              </button>
+                            )}
+
+                            {/* {!assSubm?.latest_submission ? <Link
                               className="rbt-btn btn-sm bg-primary-opacity radius-round"
                               href="/lesson-assignments-submit"
                             >
-                              Upload
+                              Uploadssss
                             </Link>
-                              : (assSubm?.application_status !== 'Draft' && assSubm?.feedback ? (
+                              : (assSubm?.application_status === 'Not Submitted' || assSubm?.application_status === 'Rejected' ? (
                                 <button
                                   type="button"
                                   className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
@@ -241,9 +302,9 @@ const Assignments = () => {
                                     ?.trim()
                                     ?.replace(/\s+/g, "-")}&topic_id=${assignment?.topic_id}&content_id=${assSubm?.content_id}`}
                                 >
-                                  {assSubm?.application_status === 'Draft' && "Upload"}
+                                  {assSubm?.application_status === 'Rejected' && "Re-Upload"}
                                 </Link>)
-                            }
+                            } */}
                           </div>
                         </td>
                       </tr>
@@ -252,7 +313,8 @@ const Assignments = () => {
                 ) : (
                   <tr>
                     <td colSpan={6} className="text-center py-5">
-                      <p className="b3">No assignments or projects found for the selected course.</p>
+                      <Loader />
+                      {/* <p className="b3">No assignments or projects found for the selected course.</p> */}
                     </td>
                   </tr>
                 )}

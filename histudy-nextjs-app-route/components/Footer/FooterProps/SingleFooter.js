@@ -15,9 +15,9 @@ const SingleFooter = ({
         <ul className="ft-link">
           {footerType?.links?.map((item, index) => (
             <li key={index}>
-              <Link href={item.url || "#"}>
-                {item.label}
-              </Link>
+              {item.url ? <Link href={item.url || "#"}>
+              </Link> :
+                <span >{item.label}</span>}
             </li>
           ))}
         </ul>

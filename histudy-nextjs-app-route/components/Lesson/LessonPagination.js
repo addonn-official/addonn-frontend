@@ -5,7 +5,7 @@ const LessonPagination = ({ urlPrev, urlNext }) => {
   return (
     <>
       <div className="lesson-pagination-dark ptb--15 overflow-hidden">
-        <div className="rbt-button-group">
+        <div className={`rbt-button-group ${urlPrev ? 'mb--60':''}`} >
           {urlPrev && (
             <Link
               className="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"

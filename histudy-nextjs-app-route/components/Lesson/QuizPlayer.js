@@ -17,9 +17,6 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
   const [attemptId, setAttemptId] = useState(null);
   const [quizResult, setQuizResult] = useState(null); // Server response
 
-  console.log('quizzes>>>>', latestAttempt);
-
-
   if (!quizzes.length)
     return <div className="qp-empty"><i className="feather-help-circle"></i><p>No questions available.</p></div>;
 
@@ -236,6 +233,18 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
               <span>No Time Limit</span>
             </div>
           </div>
+          
+          <div className="d-flex gap-4 justify-content-center mb-4">
+            <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Total Attempt</span>
+              <span style={{ fontSize: "18px", color: "white", fontWeight: "700" }}>{latestAttempt?.attempt_number}</span>
+            </div>
+
+            <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Attempts Remaining</span>
+              <span style={{ fontSize: "18px", color: remainingAttempt > 0 ? "#22c55e" : "#ef4444", fontWeight: "700" }}>{remainingAttempt !== undefined ? remainingAttempt : "-"}</span>
+            </div>
+          </div>
 
           <button
             className="rbt-btn btn-gradient"
@@ -270,18 +279,10 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
                 gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
                 gap: "15px"
               }}>
-                <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                  <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Total Attempt</span>
-                  <span style={{ fontSize: "18px", color: "white", fontWeight: "700" }}>{latestAttempt.attempt_number}</span>
-                </div>
+
 
                 <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                  <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Remaining</span>
-                  <span style={{ fontSize: "18px", color: remainingAttempt > 0 ? "#22c55e" : "#ef4444", fontWeight: "700" }}>{remainingAttempt !== undefined ? remainingAttempt : "-"}</span>
-                </div>
-
-                <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                  <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Questions</span>
+                  <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Questions Attempted</span>
                   <span style={{ fontSize: "18px", color: "white", fontWeight: "700" }}>{latestAttempt.total_questions}</span>
                 </div>
 

@@ -126,6 +126,7 @@ const QuizAttempts = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+              {console.log({ quizzes })}
               <tbody>
                 {
                   quizzes?.quizzes?.length > 0 ? (
@@ -163,7 +164,7 @@ const QuizAttempts = () => {
                                   href={`/lesson?course_slug=${quizzes?.title
                                     ?.toLowerCase()
                                     ?.trim()
-                                    ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.content_id || quiz?.id}`}
+                                    ?.replace(/\s+/g, "-")}&topic_id=${quiz.topic_id}&content_id=${quiz?.id}`}
                                 >
                                   Attempt
                                 </Link>

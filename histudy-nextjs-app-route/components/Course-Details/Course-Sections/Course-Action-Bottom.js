@@ -6,8 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const CourseActionBottom = ({ checkMatchCourses }) => {
-  console.log('checkMatchCourses>>>>', checkMatchCourses);
-
   const path = usePathname();
   const [hideOnScroll, setHideOnScroll] = useState(false);
 

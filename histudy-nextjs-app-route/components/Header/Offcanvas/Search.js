@@ -14,11 +14,7 @@ const Search = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    courses = [],
-    loading,
-    error,
-  } = useSelector((state) => state.courseReducer);
+  const { courses = [], loading, error, } = useSelector((state) => state.courseReducer);
 
   useEffect(() => {
     const keyword = searchCours.trim();
@@ -38,7 +34,6 @@ const Search = () => {
     setSearchCours(e.target.value);
   };
 
-  
   return (
     <div className={`rbt-search-dropdown ${!search ? "active" : ""}`}>
       <div className="wrapper">
@@ -77,11 +72,11 @@ const Search = () => {
                 </div>
               )}
 
-              {!loading && error && (
+              {/* {!loading && error && (
                 <div className="col-12 text-center">
                   <p>Failed to load courses.</p>
                 </div>
-              )}
+              )} */}
 
               {!loading &&
                 !error &&

@@ -11,7 +11,7 @@ export const searchCourses = (searchText) => async (dispatch) => {
       url: `api/v1/get-all-courses?search=${searchText}`,
     });
 
-    if (response?.success) {
+    if (response?.status === 'success') {
       dispatch({
         type: "SEARCH_COURSES_SUCCESS",
         payload: response.data,

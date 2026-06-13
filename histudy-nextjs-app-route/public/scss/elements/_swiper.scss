@@ -384,6 +384,16 @@
     }
 }
 
+
+.rbt-arrow-between.icon-bg-primary .rbt-swiper-arrow,
+.rbt-arrow-between.icon-bg-primary .rbt-swiper-arrow::after {
+    background: #2f57ef !important;
+}
+
+.rbt-arrow-between.icon-bg-primary .rbt-swiper-arrow {
+    color: #fff !important;
+}
+
 .swiper {
     .rbt-cat-box-1 {
         &.variation-2 {

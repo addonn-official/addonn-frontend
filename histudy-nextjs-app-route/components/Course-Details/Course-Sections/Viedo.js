@@ -71,13 +71,6 @@ const Viedo = ({ checkMatchCourses }) => {
     };
   }, []);
 
-
-  console.log('checkMatchCourses>>>', checkMatchCourses);
-
-
-
-
-
   return (
     <>
       {!disableVideo ? (

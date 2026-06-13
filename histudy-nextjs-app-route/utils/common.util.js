@@ -196,14 +196,10 @@ export const getDaysLeft = (date) => {
   );
 };
 
-export const formatDate = (
-  date,
-  format = "DD-MM-YYYY h:mm A",
-  output = "DD/MM/YYYY"
-) => {
+export const formatDate = (date, output = "DD/MM/YYYY") => {
   if (!date) return "";
 
-  return moment(date, format).format(output);
+  return moment(date).format(output);
 };
 
 export const formatDateWithTime = (

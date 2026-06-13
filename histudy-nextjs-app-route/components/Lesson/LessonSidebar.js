@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import LessonData from "../../data/lesson.json";
@@ -72,8 +72,8 @@ const ItemRing = ({ percent }) => {
         <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
           {isComplete ? (
             <>
-              <stop offset="0%" stopColor="rgba(34, 197, 94, 0.5)" />
-              <stop offset="100%" stopColor="rgba(22, 163, 74, 0.5)" />
+              <stop offset="0%" stopColor="#22c55e" />
+              <stop offset="100%" stopColor="#16a34a" />
             </>
           ) : (
             <>
@@ -104,7 +104,7 @@ const ItemRing = ({ percent }) => {
         <path
           d="M12.5 18.5l3 3 8-8"
           fill="none"
-          stroke="rgba(34, 197, 94, 0.6)"
+          stroke="#22c55e"
           strokeWidth="2.2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -143,10 +143,10 @@ const PlayPauseBtn = ({ isPlaying }) => (
 
 const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonProgressMap = {}, quizAttempts = [], submissionContents = [] }) => {
   const [activeTab, setActiveTab] = useState(false);
-  const [openTabs, setOpenTabs] = useState([]);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentContentId = searchParams.get("content_id");
+  const router = useRouter();
 
   const isActive = (contentId) => currentContentId === String(contentId);
 
@@ -156,12 +156,7 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
         const matchedItem = topic.course_contents?.find(
           (item) => String(item.id) === currentContentId
         );
-        // if (matchedItem) setActiveTab(topic.id);
-        if (matchedItem) {
-          setOpenTabs((prev) =>
-            prev.includes(topic.id) ? prev : [...prev, topic.id]
-          );
-        }
+        if (matchedItem) setActiveTab(topic.id);
       });
     } else {
       LessonData.lesson.forEach((lesson) => {
@@ -192,8 +187,7 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
   }, 0);
 
   const remainingSeconds = Math.max(0, totalSecondsAll - watchedSeconds);
-  const progressPercent = courseData?.total_completion_percentage || 0
-  //  totalSecondsAll > 0 ? Math.round((watchedSeconds / totalSecondsAll) * 100) : 0;
+  const progressPercent = totalSecondsAll > 0 ? Math.round((watchedSeconds / totalSecondsAll) * 100) : 0;
 
   const getItemIcon = (content) => {
     const icon = content?.icon; // from API: "quiz", "editor", "video", etc.
@@ -238,6 +232,21 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
     return false;
   };
 
+
+  // Normalize total duration
+  function normalizeDuration(duration) {
+    const match = duration.match(/(?:(\d+)m)?\s*(?:(\d+)s)?/i);
+
+    if (!match) return "0M";
+
+    const minutes = parseInt(match[1] || 0, 10);
+    const seconds = parseInt(match[2] || 0, 10);
+
+    const roundedMinutes = Math.round(minutes + seconds / 60);
+
+    return `${roundedMinutes}M`;
+  }
+
   return (
     <>
       <div className="sidebar-dark-wrapper">
@@ -245,13 +254,21 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
         {/* ── Sidebar Header: Back Arrow + Course Name ── */}
         <div className="sidebar-header-bar">
           <Link
-            href={courseSlug ? `/course-details/${courseSlug}` : "/course-details"}
+            href={`/instructor-enrolled-course`}
             className="lesson-strip-btn"
             title="Back to Course"
           >
             <i className="feather-arrow-left"></i>
           </Link>
-          <span className="sidebar-course-name">{courseData?.title || courseData?.name || "Course"}</span>
+          {/* <button
+            onClick={() => router.back()}
+            className="lesson-strip-btn"
+            title="Go Back"
+            type="button"
+          >
+            <i className="feather-arrow-left"></i>
+          </button>
+          <span className="sidebar-course-name">{courseData?.title || courseData?.name || "Course"}</span> */}
         </div>
 
         {/* ── Progress Card: circle LEFT | divider | stats RIGHT ── */}
@@ -265,14 +282,13 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
 
             <div className="sidebar-progress-stats">
               <div className="sidebar-stat">
-
-                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{courseData?.total_duration_in_txt || 0}</span></span>
+                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{normalizeDuration(formatTime(totalSecondsAll))}</span></span>
               </div>
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{courseData?.total_watched_in_txt || 0}</span></span>
+                <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{formatTime(watchedSeconds)}</span></span>
               </div>
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Remaining: <span className="text-accent">{courseData?.total_remaining_watched_in_txt || 0}</span></span>
+                <span className="sidebar-stat-label text-white">Remaining: <span className="text-accent">{formatTime(remainingSeconds)}</span></span>
               </div>
             </div>
           </div>
@@ -286,22 +302,14 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
             ? topics.map((data, index) => {
               const topicTotalSec = (data.course_contents || [])
                 .reduce((a, c) => a + toTotalSeconds(c.hours, c.minutes, c.seconds), 0);
-              // const isTopicOpen = data.id === activeTab;
-              const isTopicOpen = openTabs.includes(data.id);
+              const isTopicOpen = data.id === activeTab;
 
               return (
                 <div className="sidebar-topic" key={index}>
                   {/* Topic header */}
                   <button
                     className={`sidebar-topic-header ${isTopicOpen ? "open" : ""}`}
-                    // onClick={() => setActiveTab(isTopicOpen ? false : data.id)}
-                    onClick={() => {
-                      setOpenTabs((prev) =>
-                        prev.includes(data.id)
-                          ? prev.filter((id) => id !== data.id) // close
-                          : [...prev, data.id] // open
-                      );
-                    }}
+                    onClick={() => setActiveTab(isTopicOpen ? false : data.id)}
                   >
                     <span className="sidebar-topic-num">{index + 1}.</span>
                     <span className="sidebar-topic-name">{data.name}</span>

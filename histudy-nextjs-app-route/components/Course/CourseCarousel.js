@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) => {
   return (
@@ -32,7 +32,12 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
               className="swiper rbt-arrow-between rbt-dot-bottom-center pb--60 icon-bg-primary"
               slidesPerView={1}
               spaceBetween={30}
-              modules={[Navigation, Pagination]}
+              modules={[Navigation, Pagination, Autoplay]}
+              autoplay={{
+                delay: 3000, // 3 seconds
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
               pagination={{
                 el: ".rbt-swiper-pagination",
                 clickable: true,
@@ -57,7 +62,8 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                 <SwiperSlide key={index}>
                   <div className="rbt-card variation-01 rbt-hover">
                     <div className="rbt-card-img">
-                      <Link href={`/course-details/${data.slug}`}>
+                      {subTitle !== "Coming Soon" ? <Link href={`/course-details/${data.slug}`}
+                      >
                         <Image
                           src={data.courseImg}
                           width={710}
@@ -77,7 +83,29 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                             <span>Off</span>
                           </div>
                         ) : null}
-                      </Link>
+                      </Link> :
+                        <>
+                          <Image
+                            src={data.courseImg}
+                            width={710}
+                            height={488}
+                            alt="Card image"
+                          />
+                          {/* Hide badge if free or if no discount, although user said "discount nahi hoto yaa free hoto wo image ke upar ka off % bhi remove ho jaye" */}
+                          {data.price > 0 && data.offPricePercentage > 0 ? (
+                            <div className="rbt-badge-3 bg-white" style={{
+                              position: 'absolute',
+                              top: '5px',
+                              // left: '10px',
+                              // width: '',
+                              right: '2px'
+                            }}>
+                              <span>-{data.offPricePercentage}%</span>
+                              <span>Off</span>
+                            </div>
+                          ) : null}
+                        </>
+                      }
                     </div>
                     <div className="rbt-card-body">
                       {/* Reviews */}
@@ -98,9 +126,12 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                       )}
                       {/* Course title */}
                       <h4 className="rbt-card-title">
-                        <Link href={`/course-details/${data.slug}`}>
+                        {subTitle !== "Coming Soon" ? <Link href={`/course-details/${data.slug}`}>
                           {data.courseTitle}
-                        </Link>
+                        </Link> :
+                          <span>
+                            {data.courseTitle}
+                          </span>}
                       </h4>
 
                       {sectionId === "live-courses" &&
