@@ -2988,3 +2988,153 @@ body:has(.rbt-lesson-area) {
         }
     }
 }
+
+
+.qp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+
+  animation: fadeIn 0.25s ease;
+}
+
+.qp-modal-content {
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #16181d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+
+  position: relative;
+
+  animation: modalSlideUp 0.3s ease;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.2) transparent;
+}
+
+.qp-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.qp-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qp-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.2);
+  border-radius: 50px;
+}
+
+.qp-modal-header {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  background: #16181d;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+  z-index: 2;
+}
+
+.qp-modal-title {
+  margin: 0;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.qp-modal-close {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255,255,255,.08);
+  color: #fff;
+
+  cursor: pointer;
+  transition: all .25s ease;
+}
+
+.qp-modal-close:hover {
+  background: #ff4d4f;
+  transform: rotate(90deg);
+}
+
+.qp-modal-body {
+  padding: 24px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 991px) {
+  .qp-modal-content {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .qp-modal-overlay {
+    padding: 10px;
+  }
+
+  .qp-modal-content {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .qp-modal-title {
+    font-size: 18px;
+  }
+
+  .qp-modal-body {
+    padding: 16px;
+  }
+}

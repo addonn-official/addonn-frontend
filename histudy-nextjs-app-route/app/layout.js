@@ -23,10 +23,12 @@ import "../public/scss/styles.scss";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "react-hot-toast";
 import { SettingsProvider, useSettings } from "@/context/SettingsContext";
+import Store from "@/redux/store";
+import { Provider } from "react-redux";
 
 const Favicon = () => {
   const { settings } = useSettings();
-  const favicon = settings?.site?.addonn_favicon || "/images/favicon.png";
+  const favicon = "/images/favicon.png";
 
   useEffect(() => {
     if (!favicon) return;
@@ -70,13 +72,15 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" />
       </head>
       <body className="" suppressHydrationWarning={true}>
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
-          <SettingsProvider>
-            <Toaster position="top-right" reverseOrder={false} />
-            <Favicon />
-            {children}
-          </SettingsProvider>
-        </GoogleOAuthProvider>
+        <Provider store={Store}>
+          <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+            <SettingsProvider>
+              <Toaster position="top-right" reverseOrder={false} />
+              <Favicon />
+              {children}
+            </SettingsProvider>
+          </GoogleOAuthProvider>
+        </Provider>
       </body>
     </html>
   );

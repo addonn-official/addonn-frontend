@@ -1,21 +1,48 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { UserCoursesServices } from "@/services/User/Courses/index.service";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourseQuizzes } from "@/redux/action/QuizActions";
+import { useSearchParams } from "next/navigation";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
-const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, remainingAttempt }) => {
+const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, remainingAttempt, courseId }) => {
+
+  const searchParams = useSearchParams();
+  const course_slug = searchParams.get("course_slug");
+  const topic_id = searchParams.get("topic_id");
+  const content_id = searchParams.get("content_id");
+
+
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState({});   // { quizId: optionId }
   const [submitted, setSubmitted] = useState(false);
   const [showAnswer, setShowAnswer] = useState({});  // { quizId: true }
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [starting, setStarting] = useState(false);
   const [started, setStarted] = useState(false);
   const [attemptId, setAttemptId] = useState(null);
   const [quizResult, setQuizResult] = useState(null); // Server response
+
+  const [reviewLastAttempt, setReviewLastAttempt] = useState(false);
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.QuizReducer);
+
+  useEffect(() => {
+    if (courseId) {
+      dispatch(getCourseQuizzes(courseId));
+    }
+  }, [courseId]);
+
+
+  const filteredQuiz = data?.quizzes?.quizzes?.find((item) => item?.id === content_id)
+
+
+
+
 
   if (!quizzes.length)
     return <div className="qp-empty"><i className="feather-help-circle"></i><p>No questions available.</p></div>;
@@ -23,13 +50,12 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
   const quiz = quizzes[current];
   const total = quizzes.length;
   const answered = Object.keys(selected).length;
+  const firstUnansweredIndex = quizzes.findIndex(q => !selected[q.id]);
   const isSelected = (optId) => selected[quiz.id] === optId;
   const isCorrect = (optId) => submitted && optId === quiz.correct_course_quiz_option_id;
   const isWrong = (optId) => submitted && selected[quiz.id] === optId && optId !== quiz.correct_course_quiz_option_id;
 
-  const score = submitted
-    ? quizzes.filter(q => selected[q.id] === q.correct_course_quiz_option_id).length
-    : 0;
+  const score = submitted ? quizzes.filter(q => selected[q.id] === q.correct_course_quiz_option_id).length : 0;
 
   const handleSelect = (optId) => {
     if (submitted) return;
@@ -60,13 +86,19 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
   };
 
   const submitQuizAttempt = async () => {
+    if (firstUnansweredIndex !== -1) {
+      setCurrent(firstUnansweredIndex);
+      toast.error("Please select one option for every question before submitting.");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const payload = {
         attempt_id: attemptId,
         answers: quizzes.map(q => ({
           question_id: q.id,
-          option_id: selected[q.id] || null
+          option_id: selected[q.id]
         }))
       };
 
@@ -87,15 +119,11 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
   };
 
   const handleSubmit = () => {
-    if (answered < total) {
-      setShowConfirmModal(true);
+    if (firstUnansweredIndex !== -1) {
+      setCurrent(firstUnansweredIndex);
+      toast.error("Please select one option for every question before submitting.");
       return;
     }
-    submitQuizAttempt();
-  };
-
-  const confirmSubmit = () => {
-    setShowConfirmModal(false);
     submitQuizAttempt();
   };
 
@@ -106,7 +134,6 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
     setAttemptId(null);
     setShowAnswer({});
     setCurrent(0);
-    setShowConfirmModal(false);
     setQuizResult(null);
   };
 
@@ -199,8 +226,416 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
     );
   }
 
+
+  // if (reviewLastAttempt) {
+  //   return (
+  //     <div className="qp-modal-overlay">
+  //       <div
+  //         className="qp-modal-content"
+  //         onClick={(e) => e.stopPropagation()}
+  //       >
+  //         {/* Header */}
+  //         <div className="qp-modal-header">
+  //           <div>
+  //             <h5 className="qp-modal-title">
+  //               Review Answers
+  //             </h5>
+  //             <small
+  //               style={{
+  //                 color: "rgba(255,255,255,.6)",
+  //                 fontSize: "13px",
+  //               }}
+  //             >
+  //               Review your previous quiz attempt
+  //             </small>
+  //           </div>
+
+  //           <button
+  //             className="qp-modal-close"
+  //             onClick={() => setReviewLastAttempt(false)}
+  //           >
+  //             <i className="feather-x"></i>
+  //           </button>
+  //         </div>
+
+  //         {/* Body */}
+  //         <div className="qp-modal-body">
+  //           {/* Summary */}
+  //           <div
+  //             className="d-flex justify-content-between align-items-center mb-4"
+  //             style={{
+  //               padding: "15px 20px",
+  //               background: "rgba(255,255,255,.04)",
+  //               borderRadius: "12px",
+  //               border: "1px solid rgba(255,255,255,.08)",
+  //             }}
+  //           >
+  //             <div>
+  //               <span
+  //                 style={{
+  //                   color: "rgba(255,255,255,.6)",
+  //                   fontSize: "13px",
+  //                 }}
+  //               >
+  //                 Total Questions
+  //               </span>
+  //               <h6
+  //                 style={{
+  //                   color: "#fff",
+  //                   margin: 0,
+  //                   marginTop: "4px",
+  //                 }}
+  //               >
+  //                 {quizzes.length}
+  //               </h6>
+  //             </div>
+
+  //             <div>
+  //               <span className="badge bg-primary">
+  //                 Review Mode
+  //               </span>
+  //             </div>
+  //           </div>
+
+  //           {/* Questions */}
+  //           <div className="qp-review-list">
+  //             {quizzes.map((q, qi) => {
+  //               const userOpt = selected[q.id];
+  //               const isRight =
+  //                 userOpt === q.correct_course_quiz_option_id;
+  //               const expanded = showAnswer[q.id];
+
+  //               return (
+  //                 <div
+  //                   key={q.id}
+  //                   className={`qp-review-card ${isRight ? "right" : "wrong"
+  //                     }`}
+  //                 >
+  //                   <div
+  //                     className="qp-review-header"
+  //                     onClick={() =>
+  //                       setShowAnswer((prev) => ({
+  //                         ...prev,
+  //                         [q.id]: !prev[q.id],
+  //                       }))
+  //                     }
+  //                   >
+  //                     <span
+  //                       className={`qp-review-badge ${isRight ? "right" : "wrong"
+  //                         }`}
+  //                     >
+  //                       {isRight ? "✓" : "✗"}
+  //                     </span>
+
+  //                     <span className="qp-review-num">
+  //                       Q{qi + 1}
+  //                     </span>
+
+  //                     <div
+  //                       className="qp-review-q"
+  //                       dangerouslySetInnerHTML={{
+  //                         __html: q.question,
+  //                       }}
+  //                     />
+
+  //                     <i
+  //                       className={`feather-chevron-${expanded ? "up" : "down"
+  //                         } qp-review-chevron`}
+  //                     />
+  //                   </div>
+
+  //                   {expanded && (
+  //                     <div className="qp-review-body">
+  //                       <div className="qp-review-options">
+  //                         {q.options?.map((opt, oi) => {
+  //                           const correct =
+  //                             opt.id ===
+  //                             q.correct_course_quiz_option_id;
+
+  //                           const picked =
+  //                             opt.id === userOpt;
+
+  //                           return (
+  //                             <div
+  //                               key={opt.id}
+  //                               className={`qp-review-option ${correct ? "correct" : ""
+  //                                 } ${picked && !correct
+  //                                   ? "wrong"
+  //                                   : ""
+  //                                 }`}
+  //                             >
+  //                               <span className="qp-review-letter">
+  //                                 {LETTERS[oi]}
+  //                               </span>
+
+  //                               {opt.option_text}
+
+  //                               {correct && (
+  //                                 <span className="qp-review-tag correct">
+  //                                   Correct
+  //                                 </span>
+  //                               )}
+
+  //                               {picked && !correct && (
+  //                                 <span className="qp-review-tag wrong">
+  //                                   Your Answer
+  //                                 </span>
+  //                               )}
+  //                             </div>
+  //                           );
+  //                         })}
+  //                       </div>
+
+  //                       {q.answer && (
+  //                         <div
+  //                           className="qp-explanation"
+  //                           dangerouslySetInnerHTML={{
+  //                             __html: q.answer,
+  //                           }}
+  //                         />
+  //                       )}
+  //                     </div>
+  //                   )}
+  //                 </div>
+  //               );
+  //             })}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  if (reviewLastAttempt) {
+    return (
+      <div className="qp-modal-overlay">
+        <div
+          className="qp-modal-content"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="qp-modal-header">
+            <div>
+              <h5 className="qp-modal-title">
+                Review Answers
+              </h5>
+
+              <small
+                style={{
+                  color: "rgba(255,255,255,.6)",
+                  fontSize: "13px",
+                }}
+              >
+                Review your previous quiz attempt
+              </small>
+            </div>
+
+            <button
+              className="qp-modal-close"
+              onClick={() => setReviewLastAttempt(false)}
+            >
+              <i className="feather-x"></i>
+            </button>
+          </div>
+
+          {/* Body */}
+          <div className="qp-modal-body">
+            {/* Summary */}
+            <div
+              className="d-flex justify-content-between align-items-center mb-4"
+              style={{
+                padding: "15px 20px",
+                background: "rgba(255,255,255,.04)",
+                borderRadius: "12px",
+                border: "1px solid rgba(255,255,255,.08)",
+              }}
+            >
+              <div>
+                <span
+                  style={{
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: "13px",
+                  }}
+                >
+                  Total Questions
+                </span>
+
+                <h6
+                  style={{
+                    color: "#fff",
+                    margin: 0,
+                    marginTop: "4px",
+                  }}
+                >
+                  {
+                    filteredQuiz?.latest_attempt?.attemptquizzes
+                      ?.length
+                  }
+                </h6>
+              </div>
+
+              <div>
+                <span className="badge bg-primary">
+                  Review Mode
+                </span>
+              </div>
+            </div>
+
+            {/* Questions */}
+            <div className="qp-review-list">
+              {filteredQuiz?.latest_attempt?.attemptquizzes?.map(
+                (q, qi) => {
+                  const userOpt = q?.selectedOption?.id;
+
+                  const isRight =
+                    userOpt ===
+                    q?.correct_course_quiz_option_id;
+
+                  const expanded = showAnswer[q.id];
+
+                  return (
+                    <div
+                      key={q.id}
+                      className={`qp-review-card ${isRight ? "right" : "wrong"
+                        }`}
+                    >
+                      {/* Question Header */}
+                      <div
+                        className="qp-review-header"
+                        onClick={() =>
+                          setShowAnswer((prev) => ({
+                            ...prev,
+                            [q.id]: !prev[q.id],
+                          }))
+                        }
+                      >
+                        <span
+                          className={`qp-review-badge ${isRight ? "right" : "wrong"
+                            }`}
+                        >
+                          {isRight ? "✓" : "✗"}
+                        </span>
+
+                        <span className="qp-review-num">
+                          Q{qi + 1}
+                        </span>
+
+                        <div
+                          className="qp-review-q"
+                          dangerouslySetInnerHTML={{
+                            __html: q.question,
+                          }}
+                        />
+
+                        <i
+                          className={`feather-chevron-${expanded ? "up" : "down"
+                            } qp-review-chevron`}
+                        />
+                      </div>
+
+                      {/* Question Body */}
+                      {expanded && (
+                        <div className="qp-review-body">
+                          <div className="qp-review-options">
+                            {q.options?.map((opt, oi) => {
+                              const isCorrect =
+                                opt.id ===
+                                q.correct_course_quiz_option_id;
+
+                              const isSelected =
+                                opt.id ===
+                                q.selectedOption?.id;
+
+                              return (
+                                <div
+                                  key={opt.id}
+                                  className={`qp-review-option
+                                  ${isSelected &&
+                                      isCorrect
+                                      ? "correct"
+                                      : ""
+                                    }
+                                  ${isSelected &&
+                                      !isCorrect
+                                      ? "selected"
+                                      : ""
+                                    }
+                                `}
+                                >
+                                  <span className="qp-review-letter">
+                                    {LETTERS[oi]}
+                                  </span>
+
+                                  <span>
+                                    {opt.option_text}
+                                  </span>
+
+                                  {isSelected && (
+                                    <span className="qp-review-tag selected">
+                                      Your Answer
+                                    </span>
+                                  )}
+
+                                  {isCorrect && (
+                                    <span className="qp-review-tag correct">
+                                      Correct
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {/* Correct Answer */}
+                          <div
+                            className="mt-3"
+                            style={{
+                              padding: "12px",
+                              borderRadius: "8px",
+                              background:
+                                "rgba(25,135,84,.15)",
+                              border:
+                                "1px solid rgba(25,135,84,.3)",
+                            }}
+                          >
+                            <strong>
+                              Correct Answer:
+                            </strong>{" "}
+                            {
+                              q?.correct_option
+                                ?.option_text
+                            }
+                          </div>
+
+                          {/* Explanation */}
+                          {q.answer && (
+                            <div
+                              className="qp-explanation mt-3"
+                              dangerouslySetInnerHTML={{
+                                __html: q.answer,
+                              }}
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
+
+
+
+
   /* ── Start screen ── */
-  if (!started && !submitted) {
+  if (!started && !submitted && !reviewLastAttempt) {
     return (
       <div className="qp-wrapper">
         <div className="qp-start-screen" style={{
@@ -233,7 +668,7 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
               <span>No Time Limit</span>
             </div>
           </div>
-          
+
           <div className="d-flex gap-4 justify-content-center mb-4">
             <div style={{ backgroundColor: "rgba(255,255,255,0.05)", padding: "15px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
               <span style={{ display: "block", fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "5px" }}>Total Attempt</span>
@@ -248,14 +683,16 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
 
           <button
             className="rbt-btn btn-gradient"
-            style={{ height: "55px", padding: "0 40px", fontSize: "18px", opacity: remainingAttempt <= 0 ? 0.6 : 1, cursor: remainingAttempt <= 0 ? "not-allowed" : "pointer" }}
-            onClick={handleStartQuiz}
-            disabled={starting || remainingAttempt <= 0}
+            style={{ height: "55px", padding: "0 40px", fontSize: "18px", }}
+            onClick={() => {
+              remainingAttempt === 0 ?
+                setReviewLastAttempt(true) : handleStartQuiz()
+            }}
           >
             {starting ? (
               <><i className="feather-loader icon-spin mr--10"></i> Starting...</>
             ) : remainingAttempt <= 0 ? (
-              <><i className="feather-lock mr--10"></i> Limit Reached</>
+              <><i className="feather-lock mr--10"></i> Review your last attempt</>
             ) : (
               <><i className="feather-play mr--10"></i> Start Knowledge Check</>
             )}
@@ -322,33 +759,13 @@ const QuizPlayer = ({ quizzes = [], enrollmentId, contentId, latestAttempt, rema
     );
   }
 
+
+
+
+
   /* ── Active quiz ── */
   return (
     <>
-      {/* Confirmation Modal */}
-      {showConfirmModal && (
-        <div className="qp-confirm-modal-backdrop" onClick={() => setShowConfirmModal(false)}>
-          <div className="qp-confirm-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="qp-confirm-icon">
-              <i className="feather-alert-triangle"></i>
-            </div>
-            <h4 className="qp-confirm-title">Incomplete Quiz</h4>
-            <p className="qp-confirm-desc">
-              You have answered <strong>{answered}</strong> out of <strong>{total}</strong> questions.
-              Are you sure you want to submit? Unanswered questions will be marked incorrect.
-            </p>
-            <div className="qp-confirm-actions">
-              <button className="qp-btn-cancel" onClick={() => setShowConfirmModal(false)}>
-                Cancel
-              </button>
-              <button className="qp-btn-submit" onClick={confirmSubmit}>
-                <i className="feather-send mr--5"></i> Submit Anyway
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="qp-wrapper">
         {/* Header */}
         <div className="qp-header">

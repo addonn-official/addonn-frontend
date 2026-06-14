@@ -51,6 +51,8 @@ const OrderHistory = () => {
   };
 
   const handleRefundClick = (orderId) => {
+
+
     setRefundStatusMap((prev) => ({
       ...prev,
       [orderId]: prev[orderId] === "Pending" ? "Pending" : "Pending",
@@ -73,8 +75,8 @@ const OrderHistory = () => {
                   <th>Course Name</th>
                   <th>Date</th>
                   <th>Price</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>Transaction</th>
+                  <th>Refund</th>
                 </tr>
               </thead>
 
@@ -100,17 +102,14 @@ const OrderHistory = () => {
                           <div className="d-flex align-items-center gap-2">
                             <span
                               className={`rbt-badge-5 ${statusText === "Successful"
-                                  ? "bg-color-success-opacity color-success"
-                                  : statusText === "Pending"
-                                    ? "bg-color-warning-opacity color-warning"
-                                    : "bg-color-danger-opacity color-danger"
+                                ? "bg-color-success-opacity color-success"
+                                : statusText === "Pending"
+                                  ? "bg-color-warning-opacity color-warning"
+                                  : "bg-color-danger-opacity color-danger"
                                 }`}
                             >
                               {statusText}
                             </span>
-                            {orderRefundStatus ? (
-                              <span className="b3">{orderRefundStatus}</span>
-                            ) : null}
                             {infoMessage ? (
                               <button
                                 type="button"
@@ -131,7 +130,7 @@ const OrderHistory = () => {
                                 className="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger"
                                 onClick={() => handleRefundClick(order.order_id)}
                               >
-                                Refund
+                                Request
                               </button>
                             ) : orderRefundStatus ? (
                               <span className="b3">{orderRefundStatus}</span>

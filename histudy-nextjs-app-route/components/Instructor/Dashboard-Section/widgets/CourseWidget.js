@@ -282,12 +282,31 @@ const CourseWidget = ({
     return createPortal(renderReviewModal(), document.body);
   };
 
+  // const getCertificateStatus = () => {
+  //   // const status = data.certificateStatus?.toLowerCase();
+  //   // if (status === "granted" || status === "download now" || status === "downloaded") return "Download Certificate";
+  //   // if (status === "pending" || status === "requested") return "Request Pending";
+  //   // if (status === "rejected") return "Request Rejected";
+  //   return data?.certificate?.request_status;
+  // };
+
+
   const getCertificateStatus = () => {
-    // const status = data.certificateStatus?.toLowerCase();
-    // if (status === "granted" || status === "download now" || status === "downloaded") return "Download Certificate";
-    // if (status === "pending" || status === "requested") return "Request Pending";
-    // if (status === "rejected") return "Request Rejected";
-    return data?.certificate?.request_status;
+    const status = data?.certificate?.request_status?.toLowerCase();
+
+    if (["pending", "rejected"].includes(status)) {
+      return "Request Certificate";
+    }
+
+    if (["approved", "downloaded"].includes(status)) {
+      return "Download Certificate";
+    }
+
+    if (status === "requested") {
+      return "Requested";
+    }
+
+    return "Request Certificate";
   };
 
   const handleCertificateRequest = async () => {
@@ -331,16 +350,31 @@ const CourseWidget = ({
     }
   };
 
+  // const handleCertificateClick = (e) => {
+  //   e.preventDefault();
+  //   const statusText = getCertificateStatus();
+  //   if (statusText === "Download Certificate") {
+  //     setShowQRModal(true);
+  //   } else if (statusText === "Request Certificate") {
+  //     handleCertificateRequest();
+  //   }
+  // };
+
+
   const handleCertificateClick = (e) => {
     e.preventDefault();
-    const statusText = getCertificateStatus();
-    if (statusText === "Download Certificate") {
+
+    const status = data?.certificate?.request_status?.toLowerCase();
+
+    if (["approved", "downloaded"].includes(status)) {
       setShowQRModal(true);
-    } else if (statusText === "Request Certificate") {
+      return;
+    }
+
+    if (["pending", "rejected"].includes(status) || !status) {
       handleCertificateRequest();
     }
   };
-
   console.log('dataVVVVVVVVVVVV', data);
 
 
@@ -473,19 +507,30 @@ const CourseWidget = ({
                 </div>
               </div>
 
+
+
               <div className="rbt-card-bottom">
                 <button
                   onClick={handleCertificateClick}
-                  className={`rbt-btn btn-sm w-100 text-center ${getCertificateStatus() === "Download Certificate"
-                    ? "btn-gradient"
-                    : "bg-primary-opacity"
+                  className={`rbt-btn btn-sm w-100 text-center ${["approved", "downloaded"].includes(data?.certificate?.request_status?.toLowerCase())
+                    ? "btn-gradient" : data?.certificate?.request_status?.toLowerCase() === "requested" ? "bg-gradient" : "bg-primary-opacity"
                     }`}
-                  disabled={data?.certificate?.request_status === "requested" ? true : false}
+                  disabled={data?.certificate?.request_status?.toLowerCase() === "requested"}
                 >
                   {getCertificateStatus()}
                 </button>
-                {data.certificateMessage && (
-                  <div style={{ marginTop: "10px", padding: "8px", backgroundColor: "#fff3cd", borderRadius: "4px", fontSize: "12px", color: "#856404" }}>
+
+                {data?.certificateMessage && (
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      padding: "8px",
+                      backgroundColor: "#fff3cd",
+                      borderRadius: "4px",
+                      fontSize: "12px",
+                      color: "#856404",
+                    }}
+                  >
                     {data.certificateMessage}
                   </div>
                 )}
@@ -494,6 +539,12 @@ const CourseWidget = ({
           ) : (
             ""
           )}
+
+
+
+
+
+
 
           {/* Review Modal */}
           {showReviewModal && renderPortal()}

@@ -89,7 +89,19 @@ const SingleCourse = ({ getParams }) => {
 
   const { settings, loading } = useSettings();
 
+  const formatLanguage = (lang) => {
+    if (!lang) return "English";
+    return lang.charAt(0).toUpperCase() + lang.slice(1).toLowerCase();
+  };
 
+  // Format validity
+  const formatValidity = (unit, duration) => {
+    if (unit === "unlimited") return "Lifetime";
+    if (unit === "days") return `${duration} Days`;
+    if (unit === "months") return `${duration} Months`;
+    if (unit === "years") return `${duration} Years`;
+    return "Lifetime";
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -108,9 +120,13 @@ const SingleCourse = ({ getParams }) => {
 
           const singleCourseRes = await UserCoursesServices.UserGetCourse(courseId);
 
+
+
+
           if (singleCourseRes && singleCourseRes.status === "success" && isMounted) {
             const apiData = singleCourseRes.data;
             const instructors = apiData.instructors?.map((instructor) => (instructor))
+            console.log('v>>>>singleCourseRes>>>>', apiData);
 
             // const x = apiData.topics?.map(topic => (topic.course_contents?.map(content => (content))))
             const adaptedData = {
@@ -264,9 +280,19 @@ const SingleCourse = ({ getParams }) => {
                 rating: related.average_star_rating,
                 review: related.total_star_ratings,
                 lesson: related.number_of_lectures,
+
+                language: formatLanguage(related.language),
+                validity: formatValidity(related.validity_unit, related.validity_duration),
+                validity_unit: related.validity_unit,
+
+
                 student: related.enrolled_users_count,
-                author: apiData.instructor?.name || "Instructor",
-                avatar: apiData.instructor?.file?.url || "/images/client/avatar-02.png",
+
+                author: instructors && instructors[0]?.display_name || "Unknown Instructor",
+                avatar: instructors && instructors[0]?.file?.url || "/images/client/avatar-02.png",
+                userCategory: instructors && instructors[0]?.short_description || "Instructor",
+                // author: apiData.instructor?.name || "Instructor",
+                // avatar: apiData.instructor?.file?.url || "/images/client/avatar-02.png",
                 post: "Instructor",
                 link: `/course-details/${related.slug}`,
                 desc: related.short_description

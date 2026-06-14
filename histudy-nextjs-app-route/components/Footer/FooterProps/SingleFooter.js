@@ -1,12 +1,6 @@
 import Link from "next/link";
 
-const SingleFooter = ({
-  classOne,
-  title,
-  footerType,
-  footerSocial,
-  icons,
-}) => {
+const SingleFooter = ({ classOne, title, footerType, footerSocial, icons, }) => {
   return (
     <div className={classOne}>
       <div className="footer-widget">
@@ -14,10 +8,15 @@ const SingleFooter = ({
 
         <ul className="ft-link">
           {footerType?.links?.map((item, index) => (
-            <li key={index}>
-              {item.url ? <Link href={item.url || "#"}>
-              </Link> :
-                <span >{item.label}</span>}
+
+            < li key={index} >
+              {
+                item.url ?
+                  <Link href={item.url || "#"}>
+                    <span >{item.label}</span>
+                  </Link>
+                  : <span >{item.label}</span>
+              }
             </li>
           ))}
         </ul>
@@ -40,7 +39,7 @@ const SingleFooter = ({
           </ul>
         )} */}
       </div>
-    </div>
+    </div >
   );
 };
 

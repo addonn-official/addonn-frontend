@@ -257,7 +257,6 @@ const LessonPage = () => {
           );
           if (enrollment?.id) {
             setEnrollmentId(enrollment.id);
-            console.log("[LessonPage] Found enrollment_id (UUID):", enrollment.id);
           }
         }
       } catch (err) {
@@ -323,16 +322,6 @@ const LessonPage = () => {
     if (m > 0) return `${m}m ${sec}s`;
     return `${sec}s`;
   };
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -542,9 +531,6 @@ const LessonPage = () => {
             savedTotal = prog?.lesson?.duration_seconds || prog?.total_duration || 0;
             const rawPercent = prog?.completion_percentage || "0";
             savedPercent = parseFloat(rawPercent.replace("%", "")) || 0;
-
-            console.log(`[LessonPage] Loaded progress from API: ${savedTime}s / ${savedTotal}s (${savedPercent}%)`);
-
             // Logic: If video is already completed, start from 0 for re-watching
             if (prog?.is_completed || savedPercent >= 98) {
               console.log("[LessonPage] Lesson is completed. Resetting seek time to 0 for re-watch.");
@@ -863,7 +849,7 @@ const LessonPage = () => {
     //     statusColor = "text-secondry"; // not submitted
     //     break;
     // }
-
+    const showForm = !latestSubmission || latestSubmission?.application_status === "Rejected";
 
     return (
       <div ref={submissionRef} className="lesson-assignment-submission-container mt--40">
@@ -871,10 +857,9 @@ const LessonPage = () => {
           <h4 className="mb--20">Assignment Submission</h4>
         </div>
 
-        {latestSubmission?.application_status !== 'Rejected' ? (
+        {!latestSubmission || latestSubmission?.application_status === 'Rejected' ? (
           <>
             <div className="bg-color-white rbt-shadow-box p--30">
-              
               <div className="submission-status-item mb--20 d-flex align-items-center gap-3">
                 <span className="h6 mb--0 text-white">Status:</span>
                 <span className={`status-badge ${latestSubmission?.is_approved ? "approved" : "pending"}`}
@@ -888,11 +873,9 @@ const LessonPage = () => {
                   }}>
                   <i className={`feather-${latestSubmission?.is_approved ? "check-circle" : "clock"} mr--5`}></i>
 
-                  {latestSubmission?.application_status}
+                  {!latestSubmission ? "Not Submited" : latestSubmission?.application_status}
                 </span>
               </div>
-
-
 
               {latestSubmission?.feedback && (
                 <div className="submission-feedback mt--20 p--15 bg-color-light rounded shadow-sm">
@@ -900,14 +883,96 @@ const LessonPage = () => {
                   <p className="mb--0 text-secondary">{latestSubmission?.feedback}</p>
                 </div>
               )}
-              <div className="mt--20 text-secondary small">
+              {latestSubmission && <div className="mt--20 text-secondary small">
                 <p className="mb--0">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
                 {/* <p className="mb--0">Attempt: {latestSubmission.attempt}</p> */}
-              </div>
+              </div>}
+
+              {/* Not submitted status */}
+              {<div className="bg-color-white rbt-shadow-box p--30">
+                {!latestSubmission &&
+                  <div className="submission-status-item mb--20 d-flex align-items-center gap-3">
+                    <span className="h6 mb--0 text-white">Status:</span>
+                    <span className={`status-badge ${latestSubmission?.is_approved ? "approved" : "pending"}`}
+                      style={{
+                        padding: "4px 12px",
+                        borderRadius: "4px",
+                        fontSize: "14px",
+                        backgroundColor: latestSubmission?.is_approved ? "rgba(34, 197, 94, 0.1)" : "rgba(245, 158, 11, 0.1)",
+                        color: latestSubmission?.is_approved ? "#22c55e" : "#f59e0b",
+                        border: `1px solid ${latestSubmission?.is_approved ? "#22c55e" : "#f59e0b"}`
+                      }}>
+                      <i className={`feather-${latestSubmission?.is_approved ? "check-circle" : "clock"} mr--5`}></i>
+
+                      {latestSubmission?.application_status}
+                    </span>
+                  </div>
+                }
+
+                {latestSubmission?.feedback && (
+                  <div className="submission-feedback mt--20 p--15 bg-color-light rounded shadow-sm">
+                    <h6 className="mb--5 text-primary">Feedback from Instructor:</h6>
+                    <p className="mb--0 text-secondary">{latestSubmission?.feedback}</p>
+                  </div>
+                )}
+                <div className="mt--20 text-secondary small">
+                  <p className="mb-4">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
+                </div>
+
+                <form onSubmit={handleAssignmentSubmit}>
+                  <div className="assignment-answer-form mb--20">
+                    <textarea
+                      rows="6"
+                      placeholder="Add your assignment content here..."
+                      className="w-100 p--15 rounded border"
+                      value={assignmentText}
+                      onChange={(e) => setAssignmentText(e.target.value)}
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    ></textarea>
+                  </div>
+
+                  <div className="mt--30">
+                    <label className="mb--10 d-block font-weight-bold h6 text-white">Upload files (optional)</label>
+                    <div className="custom-file-upload-wrapper p--20 border-dashed rounded text-center bg-color-light">
+                      <input
+                        type="file"
+                        id="assignment-file"
+                        className="d-none"
+                        onChange={(e) => setAssignmentFile(e.target.files[0])}
+                      />
+                      <label htmlFor="assignment-file" className="cursor-pointer mb--0 d-block">
+                        <i className="feather-upload-cloud h3 d-block mb--10 text-primary"></i>
+                        <span className="d-block">{assignmentFile ? assignmentFile.name : "Click to upload or drag and drop"}</span>
+                        {!assignmentFile && <small className="text-secondary">(Images, PDFs, or ZIP files recommended)</small>}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="submit-btn mt--35">
+                    <button
+                      type="submit"
+                      className="rbt-btn btn-gradient hover-icon-reverse w-100"
+                      disabled={submittingAssignment}
+                    >
+                      <span className="icon-reverse-wrapper">
+                        <span className="btn-text">
+                          {submittingAssignment ? "Submitting..." : "Submit Assignment"}
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </div>}
+              {/* ddddddddd */}
             </div>
           </>
         ) :
-
           (
             <div className="bg-color-white rbt-shadow-box p--30">
               {latestSubmission?.application_status === 'Rejected' &&
@@ -1285,6 +1350,7 @@ const LessonPage = () => {
                         enrollmentId={enrollmentId}
                         latestAttempt={latestAttempt}
                         remainingAttempt={remainingAttempt}
+                        courseId={courseData?.id}
                       />
                     );
                   })() : (
@@ -1337,7 +1403,7 @@ const LessonPage = () => {
                                       </select>
                                     </div>
 
-                                    {!courseData?.is_comment_enabled ?
+                                    {courseData?.is_comment_enabled ?
                                       <div className="lesson-chat-messages" ref={chatMessagesRef}>
                                         {filteredComments.length === 0 ? (
                                           <p className="lesson-chat-empty">
@@ -1658,7 +1724,7 @@ const LessonPage = () => {
                                         )}
                                       </div> :
                                       <div className="text-center mt-4">
-                                        Comments have been disabled.
+                                        The comments has been disabled for this Course, Please contact us for further details.
                                       </div>}
                                     {/* <div className="lesson-chat-messages">
                                       {!Array.isArray(comments) || comments.length === 0 ? (<p className="lesson-chat-empty">No messages yet. Start the conversation!</p>) : (
@@ -1756,7 +1822,7 @@ const LessonPage = () => {
                                     </div> */}
 
 
-                                    {!courseData?.is_comment_enabled && <div className="lesson-chat-input-bar">
+                                    {courseData?.is_comment_enabled && <div className="lesson-chat-input-bar">
                                       <input
                                         type="text"
                                         placeholder="Type a Message"
@@ -1802,9 +1868,9 @@ const LessonPage = () => {
             )}
             {/* ── Sentinel + Pagination: Reveal logic ── */}
             <div ref={sentinelRef} className="lesson-pagination-sentinel" />
-            <div className={`lesson-pagination-reveal ${showPagination ? "visible" : ""}`}>
+            {/* <div className={`lesson-pagination-reveal ${showPagination ? "visible" : ""}`}>
               <LessonPagination urlPrev={prevLesson} urlNext={nextLesson} />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

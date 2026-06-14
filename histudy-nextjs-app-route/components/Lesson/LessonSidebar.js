@@ -147,6 +147,7 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
   const searchParams = useSearchParams();
   const currentContentId = searchParams.get("content_id");
   const router = useRouter();
+  const [openTabs, setOpenTabs] = useState([]);
 
   const isActive = (contentId) => currentContentId === String(contentId);
 
@@ -156,7 +157,12 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
         const matchedItem = topic.course_contents?.find(
           (item) => String(item.id) === currentContentId
         );
-        if (matchedItem) setActiveTab(topic.id);
+        // if (matchedItem) setActiveTab(topic.id);
+        if (matchedItem) {
+          setOpenTabs((prev) =>
+            prev.includes(topic.id) ? prev : [...prev, topic.id]
+          );
+        }
       });
     } else {
       LessonData.lesson.forEach((lesson) => {
@@ -242,9 +248,9 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
     const minutes = parseInt(match[1] || 0, 10);
     const seconds = parseInt(match[2] || 0, 10);
 
-    const roundedMinutes = Math.round(minutes + seconds / 60);
+    const totalMinutes = Math.floor(minutes + seconds / 60);
 
-    return `${roundedMinutes}M`;
+    return `${totalMinutes}M`;
   }
 
   return (
@@ -269,6 +275,8 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
             <i className="feather-arrow-left"></i>
           </button>
           <span className="sidebar-course-name">{courseData?.title || courseData?.name || "Course"}</span> */}
+
+          <span className="sidebar-course-name">{courseData?.title || courseData?.name || "Course"}</span>
         </div>
 
         {/* ── Progress Card: circle LEFT | divider | stats RIGHT ── */}
@@ -302,14 +310,22 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
             ? topics.map((data, index) => {
               const topicTotalSec = (data.course_contents || [])
                 .reduce((a, c) => a + toTotalSeconds(c.hours, c.minutes, c.seconds), 0);
-              const isTopicOpen = data.id === activeTab;
+              // const isTopicOpen = data.id === activeTab;
+              const isTopicOpen = openTabs.includes(data.id);
 
               return (
                 <div className="sidebar-topic" key={index}>
                   {/* Topic header */}
                   <button
                     className={`sidebar-topic-header ${isTopicOpen ? "open" : ""}`}
-                    onClick={() => setActiveTab(isTopicOpen ? false : data.id)}
+                    // onClick={() => setActiveTab(isTopicOpen ? false : data.id)}
+                    onClick={() => {
+                      setOpenTabs((prev) =>
+                        prev.includes(data.id)
+                          ? prev.filter((id) => id !== data.id) // close
+                          : [...prev, data.id] // open
+                      );
+                    }}
                   >
                     <span className="sidebar-topic-num">{index + 1}.</span>
                     <span className="sidebar-topic-name">{data.name}</span>

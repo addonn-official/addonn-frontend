@@ -23,7 +23,7 @@ const Certificate = {
    */
   downloadCertificate: {
     url: "/api/v1/certificate/download",
-    method: "GET",
+    method: "POST",
   },
 };
 

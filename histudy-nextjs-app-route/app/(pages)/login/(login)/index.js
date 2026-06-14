@@ -2,6 +2,7 @@
 
 import BreadCrumb from "@/components/Common/BreadCrumb";
 import FooterOne from "@/components/Footer/Footer-One";
+import FooterThree from "@/components/Footer/Footer-Three";
 import HeaderStyleTen from "@/components/Header/HeaderStyle-Ten";
 import MobileMenu from "@/components/Header/MobileMenu";
 import Cart from "@/components/Header/Offcanvas/Cart";
@@ -34,7 +35,7 @@ const LoginPage = () => {
             <NewsletterThree />
           </div>
 
-          <FooterOne />
+          <FooterThree />
         </Context>
       </Provider>
     </>

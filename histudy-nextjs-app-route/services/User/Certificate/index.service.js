@@ -32,7 +32,7 @@ export const CertificateServices = {
     try {
       const payload = {
         ...Certificate.downloadCertificate,
-        queryParams: params,
+        bodyData: params,
       };
       const res = await APIrequest(payload);
       return res;

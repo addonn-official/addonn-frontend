@@ -229,7 +229,7 @@ const Assignments = () => {
                           <p className="b3">{attempt}</p>
                         </td> */}
                         <td>
-                          <span className={`b3 text-secondry ${statusColor}`}>{assSubm?.application_status || 'Not Submited'}</span>
+                          <span className={`b3 text-secondry ${statusColor}`}>{assSubm?.application_status === "Submitted" ? "Approved" : assSubm?.application_status || 'Not Submited'}</span>
                         </td>
                         <td>
                           <span className="b3">{assSubm?.marks || '-'}</span>
@@ -275,7 +275,7 @@ const Assignments = () => {
                                 className="rbt-btn btn-sm radius-round"
                                 disabled
                               >
-                                {status}
+                                Upload
                               </button>
                             )}
 

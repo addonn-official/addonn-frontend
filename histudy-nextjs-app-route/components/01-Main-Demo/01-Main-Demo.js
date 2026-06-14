@@ -44,7 +44,6 @@ const MainDemo = ({ blogs }) => {
 		const fetchCourses = async () => {
 			try {
 				const res = await UserHomeServices.getAllCourses();
-				console.log('res>>adaptedCourses>>>', res);
 
 				if (res && res.data) {
 					const adaptedCourses = res.data.map((item) => {
@@ -62,9 +61,6 @@ const MainDemo = ({ blogs }) => {
 							if (unit === "years") return `${duration} Years`;
 							return "Lifetime";
 						};
-						console.log('item.instructor<<<<', item.instructors);
-
-
 
 						return {
 							id: item.id,

@@ -3,6 +3,8 @@ import Link from "next/link";
 import React from "react";
 
 const SimilarCourses = ({ checkMatchCourses }) => {
+  { console.log("item>>>>", checkMatchCourses) }
+
   return (
     <>
       <div className="container">
@@ -13,12 +15,15 @@ const SimilarCourses = ({ checkMatchCourses }) => {
           <h4 className="title">Related Courses</h4>
         </div>
         <div className="row g-5">
+
           {checkMatchCourses &&
             checkMatchCourses.map((item, innerIndex) => (
               <div
                 className="col-lg-4 col-md-6 col-sm-6 col-12"
                 key={innerIndex}
               >
+
+
                 <div className="rbt-card variation-01 rbt-hover">
                   <div className="rbt-card-img">
                     <Link href={item.link}>
@@ -65,7 +70,26 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                     <h4 className="rbt-card-title">
                       <Link href={item.link}>{item.title}</Link>
                     </h4>
+
                     <ul className="rbt-meta">
+                      <li>
+                        <i className="feather-book"></i>
+                        {item.number_of_lectures || item.lesson} Lectures
+                      </li>
+                      <li>
+                        <i className="feather-clock"></i>
+                        {item.validity || "Lifetime"}
+                      </li>
+                      <li>
+                        <i className="feather-globe"></i>
+                        {item.language}
+                      </li>
+                    </ul>
+
+
+
+
+                    {/* <ul className="rbt-meta">
                       <li>
                         <i className="feather-book"></i>
                         {item.lesson} Lessons
@@ -74,7 +98,7 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                         <i className="feather-users"></i>
                         {item.student} Students
                       </li>
-                    </ul>
+                    </ul> */}
 
                     <p className="rbt-card-text">{item.desc}</p>
 
@@ -91,15 +115,21 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                       </div>
                       <div className="rbt-author-info">
                         By
-                        <Link href={`/profile/${item.id}`}>{item.author}</Link>
+                        {/* <Link href={`/profile/${item.id}`}></Link> */}
+                        <span>{" "}{item.author}{" "}</span>
                         In
                         <Link href="#">{item.post}</Link>
                       </div>
                     </div>
                     <div className="rbt-card-bottom">
                       <div className="rbt-price">
-                        <span className="current-price">${item.price}</span>
-                        <span className="off-price">${item.offPrice}</span>
+                        {item.price ?
+                          <>
+                            <span className="current-price">₹{item.price}</span>
+                            <span className="off-price">₹{item.offPrice}</span>
+                          </> :
+                          <span className="current-price">Free</span>
+                        }
                       </div>
                       <Link className="rbt-btn-link" href="/course-details">
                         Learn More<i className="feather-arrow-right"></i>
