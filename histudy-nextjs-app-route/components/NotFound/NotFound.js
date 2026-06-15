@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import HeaderStyleTen from "../Header/HeaderStyle-Ten";
 import Separator from "../Common/Separator";
 import FooterOne from "../Footer/Footer-One";
+import FooterThree from "../Footer/Footer-Three";
 
 const NotFound = () => {
   return (
@@ -36,7 +37,7 @@ const NotFound = () => {
           </div>
 
           <Separator />
-          <FooterOne />
+          <FooterThree />
         </Context>
       </Provider>
     </>

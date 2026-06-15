@@ -112,7 +112,7 @@
 //     </div>
 //   );
 
-  
+
 
 //   return (
 //     <main className="rbt-main-wrapper">
@@ -205,6 +205,7 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { UserReviewServices } from "../../../services/User";
 import MirrorLoader from "../../../components/Common/MirrorLoader";
+import FooterThree from "@/components/Footer/Footer-Three";
 
 const ReviewPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -320,7 +321,7 @@ const ReviewPage = () => {
                 {review.user_profession ? (
                   <p className="designation">{review.user_profession}</p>
                 ) : (
-                  <p className="designation">Student</p>
+                  <p className="designation">{review?.item?.title}</p>
                 )}
               </div>
             </div>
@@ -339,11 +340,10 @@ const ReviewPage = () => {
                   {[...Array(5)].map((_, i) => (
                     <i
                       key={i}
-                      className={`fas fa-star ${
-                        i < Math.round(Number(review.rating || 0))
+                      className={`fas fa-star ${i < Math.round(Number(review.rating || 0))
                           ? ""
                           : "off"
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>
@@ -481,13 +481,13 @@ const ReviewPage = () => {
                 </div>
               )}
 
-            {!hasMore &&
+            {/* {!hasMore &&
               reviews.length > 0 &&
               !error && (
                 <div className="col-12 text-center">
                   No more reviews
                 </div>
-              )}
+              )} */}
           </div>
         </div>
       </div>

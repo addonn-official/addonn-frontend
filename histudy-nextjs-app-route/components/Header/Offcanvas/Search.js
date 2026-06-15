@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +9,11 @@ import { searchCourses } from "@/redux/action/CourseAction";
 import { useAppContext } from "@/context/Context";
 
 const Search = () => {
-  const { search } = useAppContext();
+  const { search, setSearch } = useAppContext();
   const [searchCours, setSearchCours] = useState("");
+
+  const inputRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -30,17 +33,63 @@ const Search = () => {
     return () => clearTimeout(timer);
   }, [searchCours, dispatch]);
 
+  useEffect(() => {
+    if (!search && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 100);
+    }
+  }, [search]);
+
   const handleSearch = (e) => {
     setSearchCours(e.target.value);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target)
+      ) {
+        setSearch(true);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, [setSearch]);
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (searchCours.trim() === "") {
+        setSearch(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [searchCours, setSearch]);
+
   return (
-    <div className={`rbt-search-dropdown ${!search ? "active" : ""}`}>
+    <div
+      ref={wrapperRef}
+      className={`rbt-search-dropdown ${!search ? "active" : ""}`}>
       <div className="wrapper">
         <div className="row">
           <div className="col-lg-12">
             <form onSubmit={(e) => e.preventDefault()}>
               <input
+                ref={inputRef}
                 type="text"
                 placeholder="What are you looking for?"
                 value={searchCours}

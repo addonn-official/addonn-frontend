@@ -22,7 +22,7 @@ const PrivacyPolicyPage = () => {
           <Cart />
 
           <PrivacyPolicy />
-          <Instagram />
+          {/* <Instagram /> */}
 
           {/* <FooterOne /> */}
           <FooterThree />

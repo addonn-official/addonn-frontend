@@ -13,6 +13,20 @@ const ComparisonTable = ({ settings }) => {
 
   const logoSrc = site?.logo?.url || site?.logo || null;
 
+
+  const scrollToCourses = (e) => {
+    e.preventDefault();
+
+    const section = document.getElementById("top-popular-course");
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   // const normalizeKey = (text) =>
   //   text?.toString().toLowerCase().replace(/[^a-z0-9]+/g, "") || "";
 
@@ -138,12 +152,13 @@ const ComparisonTable = ({ settings }) => {
 
               {/* FOOTER */}
               <div className="card-footer-custom">
-                {provider.highlight === "1" && <Link
-                  href="#live-courses"
+                {provider.highlight === "1" && <button
+                  // href="#live-courses"
                   className={`choose-btn ${provider.highlight === "1" ? "active-btn" : ""}`}
+                  onClick={scrollToCourses}
                 >
                   Explore
-                </Link>}
+                </button>}
               </div>
             </div>
           ))}

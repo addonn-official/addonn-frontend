@@ -75,6 +75,10 @@ const ReviewSection = () => {
   const firstRow = reviews.slice(0, half);
   const secondRow = reviews.slice(half);
 
+
+
+
+
   const renderReviewCard = (review) => (
     <div className="rbt-testimonial-box testimonial-card-style" key={review.id}>
       <div className="inner">
@@ -90,11 +94,15 @@ const ReviewSection = () => {
             </div>
             <div className="client-info">
               <h5 className="title">{review.name}</h5>
+              <span>{review?.item?.title}</span>
+
               {review.user_profession && <p className="designation">{review.user_profession}</p>}
             </div>
           </div>
           <div className="quote-icon">
             <i className="feather-quote"></i>
+            {/* <div className="course-title">
+            </div> */}
           </div>
         </div>
         <div className="description">

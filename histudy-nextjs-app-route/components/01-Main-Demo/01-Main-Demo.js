@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import sal from "sal.js";
 
+import { FiPlus, FiMinus } from "react-icons/fi";
+
 import MainDemoBanner from "./MainDemoBanner";
 import Counter from "../Counters/Counter";
 import ReviewSection from "../Reviews/ReviewSection";
@@ -25,7 +27,7 @@ import { useAppContext } from "@/context/Context";
 const MainDemo = ({ blogs }) => {
 	const [topCourses, setTopCourses] = useState([]);
 	const [topCoursesWithBestSaller, setTopCoursesWithBestSaller] = useState([]);
-
+	const [openFaq, setOpenFaq] = useState({});
 	const [upcomingCourses, setUpcomingCourses] = useState([]);
 	const [bundleCourses, setBundleCourses] = useState([]);
 
@@ -169,7 +171,9 @@ const MainDemo = ({ blogs }) => {
 	}, []);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <div>
+			<MainDemoBanner courses={topCoursesWithBestSaller} settings={homeSettings.hero_section} loading={loading} />
+		</div>;
 	}
 
 	const categories = Object.keys(faqs);
@@ -249,8 +253,9 @@ const MainDemo = ({ blogs }) => {
 					</div>
 				</div>
 
-				{/* AddOnn Advantage */}
 				{/* <AddonAdvantage /> */}
+
+				{/* Comparision table */}
 				{homeSettings.comparison ? (
 					<ComparisonTable settings={{ ...homeSettings.comparison, subTitle: "Why We Are Best", site: homeSettings.site }} />
 				) : !loading ? (
@@ -328,7 +333,6 @@ const MainDemo = ({ blogs }) => {
 					<div className="container">
 						<div className="section-title text-center">
 							<span className="subtitle bg-primary-opacity">FAQ's</span>
-							{/* <h2 className="title">FAQ's</h2> */}
 						</div>
 						<div className="row">
 							{categories.length > 0 ? (
@@ -373,6 +377,13 @@ const MainDemo = ({ blogs }) => {
 																	style={{
 																		backgroundColor: "transparent",
 																	}}
+
+																	onClick={() =>
+																		setOpenFaq((prev) => ({
+																			...prev,
+																			[item.id]: !prev[item.id],
+																		}))
+																	}
 																>
 																	<div className="d-flex align-items-center w-100">
 																		<div
@@ -384,12 +395,25 @@ const MainDemo = ({ blogs }) => {
 																			{item.question}
 																		</div>
 																	</div>
-																	<span
+																	{/* <span
 																		className="faq-toggle-icon fs-1 ms-3"
 																		style={{
-																			color: isLightTheme ? "#000408" : "#ffffff",
+																			color: isLightTheme ? "#000000" : "#ffffff",
 																		}}
-																	></span>
+																	></span> */}
+																	<span className="ms-3">
+																		{openFaq[item.id] ? (
+																			<FiMinus
+																				size={28}
+																				color={isLightTheme ? "#000" : "#fff"}
+																			/>
+																		) : (
+																			<FiPlus
+																				size={28}
+																				color={isLightTheme ? "#000" : "#fff"}
+																			/>
+																		)}
+																	</span>
 																</button>
 															</h2>
 															<div
@@ -456,6 +480,13 @@ const MainDemo = ({ blogs }) => {
 																			style={{
 																				backgroundColor: "transparent",
 																			}}
+
+																			onClick={() =>
+																				setOpenFaq((prev) => ({
+																					...prev,
+																					[item.id]: !prev[item.id],
+																				}))
+																			}
 																		>
 																			<div className="d-flex align-items-center w-100">
 																				<div
@@ -467,12 +498,25 @@ const MainDemo = ({ blogs }) => {
 																					{item.question}
 																				</div>
 																			</div>
-																			<span
+																			{/* <span
 																				className="faq-toggle-icon fs-1 ms-3"
 																				style={{
 																					color: isLightTheme ? "#00060c" : "#ffffff",
 																				}}
-																			></span>
+																			></span> */}
+																			<span className="ms-3">
+																				{openFaq[item.id] ? (
+																					<FiMinus
+																						size={28}
+																						color={isLightTheme ? "#000" : "#fff"}
+																					/>
+																				) : (
+																					<FiPlus
+																						size={28}
+																						color={isLightTheme ? "#000" : "#fff"}
+																					/>
+																				)}
+																			</span>
 																		</button>
 																	</h2>
 

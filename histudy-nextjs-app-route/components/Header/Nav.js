@@ -60,7 +60,7 @@ const Nav = ({onMenuClick}) => {
             className={`${isActive("/instructors") ? "active" : ""}`}
             href="/instructors"
           >
-            Mentors
+            Instructors
           </Link>
         </li>
         <li className="has-dropdown has-menu-child-item">

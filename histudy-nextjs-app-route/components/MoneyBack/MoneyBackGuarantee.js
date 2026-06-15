@@ -5,6 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 const MoneyBackGuarantee = ({ settings }) => {
+    const scrollToCourses = (e) => {
+        e.preventDefault();
+
+        const section = document.getElementById("top-popular-course");
+
+        if (section) {
+            section.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
+    };
     return (
         <section className="rbt-section-gap px-md-4 mw_money_v3_new">
             <div className="container">
@@ -49,7 +61,9 @@ const MoneyBackGuarantee = ({ settings }) => {
                                 </div>
                             </div>
                             <div className="mw-money-back-btn">
-                                <div className="btn btn-light mw-btn jump-to-plans mw-money-btn py-2 px-4 fw-bold text-primary bg-opacity-10"
+                                <div
+                                    onClick={scrollToCourses}
+                                    className="btn btn-light mw-btn jump-to-plans mw-money-btn py-2 px-4 fw-bold text-primary bg-opacity-10"
                                     style={{ background: '#eef5ff' }}><span className="fs-4">Enroll Risk-Free</span></div>
                             </div>
                         </div>

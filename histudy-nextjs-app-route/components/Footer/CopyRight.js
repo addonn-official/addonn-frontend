@@ -4,7 +4,7 @@ import { useSettings } from "@/context/SettingsContext";
 
 const CopyRight = () => {
   const { settings } = useSettings();
-  const copyright = settings?.footer?.copyright || "Copyright © 2026 Courses by Addonn. All Rights Reserved";
+  const copyright = settings?.footer?.copyright || "Copyright © 2026 Addhyan Online Private Limited. All Rights Reserved";
 
   return (
     <>

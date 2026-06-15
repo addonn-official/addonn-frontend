@@ -47,7 +47,11 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
           <Link
             className={`search-trigger-active rbt-round-btn ${search ? "" : "open"}`}
             href="#"
-            onClick={() => setSearch(!search)}
+            // onClick={() => setSearch(!search)}
+            onClick={(e) => {
+              e.preventDefault();
+              setSearch(false);
+            }}
           >
             <i className="feather-search"></i>
           </Link>

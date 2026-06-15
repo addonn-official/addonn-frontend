@@ -1472,18 +1472,22 @@
 }
 
 /* Default state = collapsed */
-.faq-toggle-icon::before {
-    content: "+";
-    font-size: 32px;
-    font-weight: 600;
-    color: currentColor;
-}
+// .faq-toggle-icon::before {
+//     content: "+";
+//     font-size: 32px;
+//     font-weight: 600;
+//     color: currentColor;
+// }
 
-/* Open state */
-.accordion-button:not(.collapsed) .faq-toggle-icon::before {
-    content: "-";
-}
 
+// /* Open state */
+// .accordion-button:not(.collapsed) .faq-toggle-icon::before {
+//     content: "-";
+// }
+
+.accordion-button::after {
+    display: none !important;
+}
     .accordion-button:not(.collapsed) {
         color: var(--color-white);
     }

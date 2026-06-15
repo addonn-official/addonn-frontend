@@ -1,16 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import img from "../../public/images/banner/banner-01.png";
-import shape1 from "../../public/images/shape/shape-01.png";
-import shape2 from "../../public/images/shape/shape-02.png";
-
 import MirrorLoader from "../Common/MirrorLoader";
 
 import HomeCourses from "./Home-Sections/HomeCourse";
 
 const MainDemoBanner = ({ courses, settings, loading }) => {
   const hero = settings;
+
+  const scrollToCourses = (e) => {
+    e.preventDefault();
+
+    const section = document.getElementById("top-popular-course");
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   return (
     <>
@@ -48,22 +57,28 @@ const MainDemoBanner = ({ courses, settings, loading }) => {
                   </p>
                 )}
 
-                <div className="slider-btn">
-                  <Link
-                    className="rbt-btn btn-gradient hover-icon-reverse"
-                    href="#"
-                  >
-                    <span className="icon-reverse-wrapper">
-                      <span className="btn-text">View Course</span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
+                {loading ?
+                  <>
+                    <MirrorLoader widthClass="w-full-banner" className="h-banner" radiusClass="radius-15" />
+                  </>
+                  : <div className="slider-btn">
+                    <button
+                      onClick={scrollToCourses}
+                      className="rbt-btn btn-gradient hover-icon-reverse"
+                      href="#top-popular-course"
+                    >
+                      <span className="icon-reverse-wrapper">
+
+                        <span className="btn-text">View Course</span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
                       </span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                    </span>
-                  </Link>
-                </div>
+                    </button>
+                  </div>}
               </div>
               <div className="shape-wrapper" id="scene">
                 {loading || !hero?.banner ? (

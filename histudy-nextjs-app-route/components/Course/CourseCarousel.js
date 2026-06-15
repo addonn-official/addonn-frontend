@@ -9,7 +9,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) => {
   return (
     <div id={sectionId} className="rbt-course-area">
-      <div className="container">
+      <div className="container" id="top-popular-course">
         <div className="row mb--60 mt--60">
           <div className="col-lg-12">
             <div className="section-title text-center">
