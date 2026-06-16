@@ -15,11 +15,11 @@ const FooterThree = () => {
   const site = settings?.site
 
   const icons = {
-    facebook: "feather-facebook",
+    // facebook: "feather-facebook",
     instagram: "feather-instagram",
     linkedin: "feather-linkedin",
     whatsapp: "feather-message-circle",
-    github: "feather-github",
+    // github: "feather-github",
     youtube: "feather-youtube",
   };
 

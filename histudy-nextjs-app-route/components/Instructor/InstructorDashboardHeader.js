@@ -20,8 +20,6 @@ const InstructorDashboardHeader = () => {
   const reviewsCount = u.reviews_count || 0;
   const totalCouses = u?.total_courses || 0;
   const enrolledCertificatesCount = u?.enrolled_certificates_count || 0;
-  console.log('site>>>>>>>', u);
-
 
   return (
     <>

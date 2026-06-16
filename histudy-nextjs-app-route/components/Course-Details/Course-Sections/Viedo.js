@@ -12,12 +12,14 @@ import { useAppContext } from "@/context/Context";
 import { addToCartAction } from "@/redux/action/CartAction";
 import { getToken, getUser } from "@/utils/storage";
 import { getLocalStorageToken } from "@/utils/common.util";
+import { useCountdown } from "@/hooks/useCountdown";
 
 const Viedo = ({ checkMatchCourses }) => {
   const pathname = usePathname();
   const { cartToggle, setCart } = useAppContext();
   const [toggle, setToggle] = useState(false);
   const [hideOnScroll, setHideOnScroll] = useState(false);
+const timeLeft = useCountdown(checkMatchCourses?.days);
 
   const disableVideo = [
     "/course-detail-2",
@@ -137,7 +139,7 @@ const Viedo = ({ checkMatchCourses }) => {
           </div>
           {checkMatchCourses?.days > 0 && <div className="discount-time">
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
-              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {checkMatchCourses?.days} days
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {timeLeft} days
               left!
             </span>
           </div>}

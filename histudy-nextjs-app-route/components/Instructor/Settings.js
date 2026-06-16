@@ -16,6 +16,7 @@ const Setting = () => {
   const site = settings?.site;
 
   const { userData, fetchUserProfile } = useAppContext();
+  const { isLightTheme } = useAppContext();
 
   const occupationOptions = [
     { value: "", label: "Select Occupation" },
@@ -56,6 +57,22 @@ const Setting = () => {
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
   const [coverPhotoLoading, setCoverPhotoLoading] = useState(false);
+
+
+
+  const [showPassword, setShowPassword] = useState({
+    current_password: false,
+    password: false,
+    password_confirmation: false,
+  });
+
+  const togglePassword = (field) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
 
   useEffect(() => {
     if (userData) {
@@ -212,7 +229,7 @@ const Setting = () => {
           password_confirmation: "",
         });
       } else {
-        toast.error(res?.message || "Failed to update password");
+        // toast.error(res?.message || "Failed to update password");
       }
     } catch (err) {
       openInfoModal("Password update error", err.message || "Password update error");
@@ -462,10 +479,11 @@ const Setting = () => {
                     <label htmlFor="occupationField">
                       {occupationType === "Working Professional" ? "Company" : occupationType ? "University" : "University/Company"}
                     </label>
+                    {console.log("Theme:", isLightTheme)}
                     <input
                       id="occupationField"
                       type="text"
-                      className="text-dark"
+                      className={!isLightTheme? "text-light" : "text-dark"}
                       value={occupationType === "Working Professional" ? form.profession : form.university}
                       onChange={(e) => {
                         if (occupationType === "Working Professional") {
@@ -473,6 +491,9 @@ const Setting = () => {
                         } else {
                           setForm((s) => ({ ...s, university: e.target.value }));
                         }
+                      }}
+                      style={{
+                        color: !isLightTheme  ? "#adb5bd" : "#212529",
                       }}
                     />
                   </div>
@@ -484,11 +505,11 @@ const Setting = () => {
                       <input
                         id="email"
                         type="email"
-                        className="text-dark"
+                        className={!isLightTheme? "text-light" : "text-dark"}
                         value={form.email}
                         onChange={handleChange}
                         readOnly={!isEmailEditable}
-                        style={!isEmailEditable ? { backgroundColor: '#f8f9fa' } : { borderColor: '#6b7385' }}
+                        style={isEmailEditable ? { backgroundColor: '#f8f9fa' } : { borderColor: '#6b7385' }}
                         autoFocus={isEmailEditable}
                       />
                       <i
@@ -510,13 +531,13 @@ const Setting = () => {
                     <label htmlFor="phone">Number</label>
                     <div className="position-relative">
                       <input
-                        className="text-dark"
+                        className={!isLightTheme? "text-light" : "text-dark"}
                         id="phone"
                         type="tel"
                         value={form.phone}
                         onChange={handleChange}
                         readOnly={!isPhoneEditable}
-                        style={!isPhoneEditable ? { backgroundColor: '#f8f9fa' } : { borderColor: '#6b7385' }}
+                        style={isPhoneEditable ? { backgroundColor: '#f8f9fa' } : { borderColor: '#6b7385' }}
                         autoFocus={isPhoneEditable}
                       />
                       <i
@@ -580,7 +601,7 @@ const Setting = () => {
                 </div>
               </form>
             </div>
-
+            {/* -------------------------------------- */}
             <div
               className="tab-pane fade"
               id="password"
@@ -592,7 +613,7 @@ const Setting = () => {
                 className="rbt-profile-row rbt-default-form row row--15"
               >
                 <div className="col-12">
-                  <div className="rbt-form-group">
+                  {/* <div className="rbt-form-group">
                     <label htmlFor="current_password">Current Password</label>
                     <input
                       id="current_password"
@@ -602,10 +623,49 @@ const Setting = () => {
                       onChange={handlePasswordChange}
                       required
                     />
+                  </div> */}
+                  <div className="rbt-form-group">
+                    <label htmlFor="current_password">Current Password</label>
+
+                    <div style={{ position: "relative" }}>
+                      <input
+                        id="current_password"
+                        type={showPassword.current_password ? "text" : "password"}
+                        placeholder="Current Password"
+                        value={passwordForm.current_password}
+                        onChange={handlePasswordChange}
+                        required
+                        style={{ paddingRight: "45px" }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => togglePassword("current_password")}
+                        style={{
+                          position: "absolute",
+                          right: "15px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        <i
+                          className={
+                            showPassword.current_password
+                              ? "feather-eye-off"
+                              : "feather-eye"
+                          }
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
+
                 <div className="col-12">
-                  <div className="rbt-form-group">
+                  {/* <div className="rbt-form-group">
                     <label htmlFor="password">New Password</label>
                     <input
                       id="password"
@@ -615,10 +675,51 @@ const Setting = () => {
                       onChange={handlePasswordChange}
                       required
                     />
+                  </div> */}
+
+                  <div className="rbt-form-group">
+                    <label htmlFor="password">New Password</label>
+
+                    <div style={{ position: "relative" }}>
+                      <input
+                        id="password"
+                        type={showPassword.password ? "text" : "password"}
+                        placeholder="New Password"
+                        value={passwordForm.password}
+                        onChange={handlePasswordChange}
+                        required
+                        style={{ paddingRight: "45px" }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => togglePassword("password")}
+                        style={{
+                          position: "absolute",
+                          right: "15px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        <i
+                          className={
+                            showPassword.password
+                              ? "feather-eye-off"
+                              : "feather-eye"
+                          }
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
+
+                {/* Re-type new password */}
                 <div className="col-12">
-                  <div className="rbt-form-group">
+                  {/* <div className="rbt-form-group">
                     <label htmlFor="password_confirmation">
                       Re-type New Password
                     </label>
@@ -630,8 +731,56 @@ const Setting = () => {
                       onChange={handlePasswordChange}
                       required
                     />
+                  </div> */}
+
+                  <div className="rbt-form-group">
+                    <label htmlFor="password_confirmation">
+                      Re-type New Password
+                    </label>
+
+                    <div style={{ position: "relative" }}>
+                      <input
+                        id="password_confirmation"
+                        type={
+                          showPassword.password_confirmation
+                            ? "text"
+                            : "password"
+                        }
+                        placeholder="Re-type New Password"
+                        value={passwordForm.password_confirmation}
+                        onChange={handlePasswordChange}
+                        required
+                        style={{ paddingRight: "45px" }}
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => togglePassword("password_confirmation")}
+                        style={{
+                          position: "absolute",
+                          right: "15px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                      >
+                        <i
+                          className={
+                            showPassword.password_confirmation
+                              ? "feather-eye-off"
+                              : "feather-eye"
+                          }
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
+
+
+
                 <div className="col-12 mt--10">
                   <div className="rbt-form-group">
                     <button className="rbt-btn btn-gradient" type="submit">
@@ -641,7 +790,7 @@ const Setting = () => {
                 </div>
               </form>
             </div>
-
+            {/* -------------------------------------- */}
             <div
               className="tab-pane fade"
               id="social"

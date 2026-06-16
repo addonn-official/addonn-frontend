@@ -157,15 +157,15 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
                           {/* Instructor & Category */}
                           <div className="rbt-author-meta mb--20">
                             <div className="rbt-avater">
-                              <Link href="#">
-                                {/* Placeholder avatar or from data if available */}
-                                <Image
-                                  src={data.userImg || "/images/client/avatar-02.png"}
-                                  width={30}
-                                  height={30} // Small avatar
-                                  alt={data.instructor}
-                                />
-                              </Link>
+                              {/* <Link href="#"> */}
+                              {/* Placeholder avatar or from data if available */}
+                              <Image
+                                src={data?.userImg || "/images/client/avatar-02.png"}
+                                width={30}
+                                height={30} // Small avatar
+                                alt={data.instructor}
+                              />
+                              {/* </Link> */}
                             </div>
                             <div className="rbt-author-info">
                               By <span>{data.instructor}</span> In <span>{data.category}</span>

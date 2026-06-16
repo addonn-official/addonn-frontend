@@ -1,8 +1,10 @@
+import { useAppContext } from "@/context/Context";
 import Image from "next/image";
 import Link from "next/link";
 
 const CourseBreadcrumb = ({ getMatchCourse }) => {
 
+  const { isLightTheme } = useAppContext();
 
   return (
     <>
@@ -43,27 +45,28 @@ const CourseBreadcrumb = ({ getMatchCourse }) => {
             </div>
 
             <div className="feature-sin rating">
-              <Link href="#">{getMatchCourse.star}</Link>
-              <Link href="#">
+              <span >{getMatchCourse.star}</span>
+              <span >
                 <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
+              </span>
+              <span >
                 <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
+              </span>
+              <span >
                 <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
+              </span>
+              <span >
                 <i className="fa fa-star"></i>
-              </Link>
-              <Link href="#">
+              </span>
+              <span >
                 <i className="fa fa-star"></i>
-              </Link>
+              </span>
             </div>
 
             <div className="feature-sin total-rating">
               <Link className="rbt-badge-4" href="#">
-                {getMatchCourse.ratingNumber} rating
+               <span className="rbt-badge-4"> 
+                {getMatchCourse.ratingNumber} rating</span>
               </Link>
             </div>
 
@@ -86,11 +89,11 @@ const CourseBreadcrumb = ({ getMatchCourse }) => {
                 )}
               </Link>
             </div>
-            <div className="rbt-author-info">
+            <div className={`rbt-author-info ${isLightTheme ? 'text-dark' : "text-light"}`}>
               By
-              <Link className="px-1" href={`/profile/${getMatchCourse.id}`}>
-                {getMatchCourse.userName}
-              </Link>
+              {/* <Link className="px-1" href={`/profile/${getMatchCourse.id}`}> */}
+              <span className="px-1">  {getMatchCourse.userName}</span>
+              {/* </Link> */}
               In <Link href="#">{getMatchCourse.category}</Link>
             </div>
           </div>

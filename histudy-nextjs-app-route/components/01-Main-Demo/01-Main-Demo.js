@@ -89,7 +89,7 @@ const MainDemo = ({ blogs }) => {
 							// New Maps
 							category: item.categories?.[0]?.name || "Category",
 							instructor: item.instructors[0]?.display_name || item.instructor?.name || "Instructor",
-							userImg: item.instructor?.file?.url || "/images/client/avatar-02.png",
+							userImg: item.instructors?.[0]?.file?.url,
 							duration: item.duration || "",
 						};
 					});
