@@ -9,6 +9,7 @@ import { isValidCouponFormat } from "@/validations/coupon";
 
 import CheckoutCartList from "./CheckoutCartList";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 const Checkout = () => {
   const [hoverTerms, setHoverTerms] = useState(false);
@@ -115,6 +116,7 @@ const Checkout = () => {
       const finalAmount = discountedTotal !== null ? discountedTotal : total_amount;
       const discountAmount = discountedTotal !== null ? (total_amount - discountedTotal) : 0;
 
+
       const orderPayload = {
         order_status: "create_order",
         courses: cart.map((item) => item.product?.id),
@@ -163,7 +165,9 @@ const Checkout = () => {
 
             if (verifyRes?.status === "success") {
               setStatus("success");
-              router.push("/student-enrolled-course");
+              Swal.fire("success!", '✅ Payment Successful');
+
+              router.push("/instructor-enrolled-course");
             } else {
               setStatus("pending");
             }
@@ -190,28 +194,50 @@ const Checkout = () => {
         },
       };
 
-      const rzp = new window.Razorpay(options);
+      if (res.gateway_key !== null) {
+        const rzp = new window.Razorpay(options);
+        /* 4️⃣ Payment Failed */
+        rzp.on("payment.failed", async (res) => {
+          setStatus("failed");
+          setError(res.error?.description || "Payment failed");
 
-      /* 4️⃣ Payment Failed */
-      rzp.on("payment.failed", async (res) => {
-        setStatus("failed");
-        setError(res.error?.description || "Payment failed");
+          await placeOrder({
+            ...orderPayload,
+            order_status: "failed",
+            gateway_order_id: res.error?.metadata?.order_id,
+            gateway_payment_id: res.error?.metadata?.payment_id,
+            reason: res.error?.description,
+            payload: res.error,
+          });
+        });
+
+        rzp.open();
+      } else {
 
         await placeOrder({
           ...orderPayload,
-          order_status: "failed",
-          gateway_order_id: res.error?.metadata?.order_id,
-          gateway_payment_id: res.error?.metadata?.payment_id,
-          reason: res.error?.description,
-          payload: res.error,
+          order_status: "verify_order_payment",
+          gateway_amount: 0,
+          gateway_currency: 'INR',
+          gateway_order_id: null,
+          gateway_payment_id: null,
+          gateway_signature: null
         });
-      });
+        setStatus("success");
+        Swal.fire("success!", '✅ Payment Successful');
 
-      rzp.open();
+        router.push("/instructor-enrolled-course");
+      }
+
+
+
+
     } catch (err) {
       setStatus("failed");
       setError("Unable to initiate payment");
       console.error(err);
+      Swal.fire("failed!", err.message);
+
     }
   };
 

@@ -33,8 +33,8 @@ const CartPage = () => {
                         <th className="pro-thumbnail">Image</th>
                         <th className="pro-title">Product</th>
                         <th className="pro-price">Price</th>
-                        <th className="pro-quantity">Quantity</th>
-                        <th className="pro-subtotal">Total</th>
+                        {/* <th className="pro-quantity">Quantity</th> */}
+                        {/* <th className="pro-subtotal">Total</th> */}
                         <th className="pro-remove">Remove</th>
                       </tr>
                     </thead>
@@ -47,8 +47,8 @@ const CartPage = () => {
                 </div>
               </form>
 
-              <div className="row g-5">
-                <div className="col-lg-6 col-12">
+              <div className="row g-5 justify-content-end">
+                {/* <div className="col-lg-6 col-12">
                   <div className="calculate-shipping edu-bg-shade">
                     <div className="section-title text-start">
                       <h4 className="title mb--30">Calculate Shipping</h4>
@@ -125,11 +125,11 @@ const CartPage = () => {
                       </div>
                     </form>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="col-lg-5 offset-lg-1 col-12">
+                <div className="col-lg-5 offset-lg-1 col-12 ">
                   <div className="cart-summary">
-                    <div className="cart-summary-wrap">
+                    {/* <div className="cart-summary-wrap">
                       <div className="section-title text-start">
                         <h4 className="title mb--30">CartPage Summary</h4>
                       </div>
@@ -143,7 +143,7 @@ const CartPage = () => {
                         Grand Total
                         <span>${total_amount + shipping_fee}.00</span>
                       </h2>
-                    </div>
+                    </div> */}
 
                     <div className="cart-submit-btn-group">
                       <div className="single-button w-50">
@@ -151,16 +151,16 @@ const CartPage = () => {
                           href="/checkout"
                           className="rbt-btn btn-gradient rbt-switch-btn rbt-switch-y w-100 text-center"
                         >
-                          <span data-text="Checkout">Checkout</span>
+                          <span className="fs-2" data-text="Checkout">Checkout</span>
                         </Link>
                       </div>
-                      <div className="single-button w-50">
+                      {/* <div className="single-button w-50">
                         <button className="rbt-btn rbt-switch-btn rbt-switch-y w-100 btn-border">
                           <span data-text="Update CartPage">
                             Update CartPage
                           </span>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

@@ -44,7 +44,7 @@
                 & th {
                     text-align: center;
                     border: none;
-                    font-size: 18px;
+                    font-size: 22px;
                     text-transform: inherit;
                     font-weight: 500;
                     color: var(--color-white);
@@ -133,7 +133,7 @@
 
     & td.pro-title {
         & a {
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--color-heading);
             transition: 0.4s;
@@ -147,7 +147,7 @@
     & td.pro-price {
         & span {
             display: block;
-            font-size: 15px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--color-body);
         }

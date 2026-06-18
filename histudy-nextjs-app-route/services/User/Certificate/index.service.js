@@ -33,6 +33,7 @@ export const CertificateServices = {
       const payload = {
         ...Certificate.downloadCertificate,
         bodyData: params,
+        responseType: "blob",
       };
       const res = await APIrequest(payload);
       return res;

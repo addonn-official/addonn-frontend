@@ -19,7 +19,7 @@ const Viedo = ({ checkMatchCourses }) => {
   const { cartToggle, setCart } = useAppContext();
   const [toggle, setToggle] = useState(false);
   const [hideOnScroll, setHideOnScroll] = useState(false);
-const timeLeft = useCountdown(checkMatchCourses?.days);
+  const timeLeft = useCountdown(checkMatchCourses?.days);
 
   const disableVideo = [
     "/course-detail-2",
@@ -40,6 +40,10 @@ const timeLeft = useCountdown(checkMatchCourses?.days);
   const { cart } = useSelector((state) => state.CartReducer);
 
   const [amount, setAmount] = useState(1);
+
+  const isAlreadyInCart = cart.some(
+    (item) => item.id === checkMatchCourses.id
+  );
 
   const addToCartFun = (id, amount, product) => {
     dispatch(addToCartAction(id, amount, product));
@@ -162,12 +166,24 @@ const timeLeft = useCountdown(checkMatchCourses?.days);
           ) : (
             <Link
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
-              href="#"
-              onClick={() =>
-                addToCartFun(checkMatchCourses.id, amount, checkMatchCourses)
-              }
+              href={isAlreadyInCart ? "/cart" : "#"}
+              onClick={(e) => {
+                if (isAlreadyInCart) {
+                  return; // Link ko normal navigation karne do
+                }
+
+                e.preventDefault();
+
+                addToCartFun(
+                  checkMatchCourses.id,
+                  amount,
+                  checkMatchCourses
+                );
+              }}
             >
-              <span className="btn-text">Add to Cart</span>
+              <span className="btn-text">
+                {isAlreadyInCart ? "View Cart" : "Add to Cart"}
+              </span>
               <span className="btn-icon">
                 <i className="feather-arrow-right"></i>
               </span>

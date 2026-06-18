@@ -50,9 +50,9 @@ const CartItems = ({ id, product, amount }) => {
         </Link>
       </td>
       <td className="pro-price">
-        <span>${product.price}.00</span>
+        <span>₹{product.price}.00</span>
       </td>
-      <td className="pro-quantity">
+      {/* <td className="pro-quantity">
         <div className="pro-qty">
           <span className="dec qtybtn" onClick={decreasePrice}>
             -
@@ -62,10 +62,10 @@ const CartItems = ({ id, product, amount }) => {
             +
           </span>
         </div>
-      </td>
-      <td className="pro-subtotal">
-        <span>${product.price * amount}.00</span>
-      </td>
+      </td> */}
+      {/* <td className="pro-subtotal">
+        <span>₹{product.price * amount}.00</span>
+      </td> */}
       <td className="pro-remove">
         <Link href="#" onClick={() => dispatch(deleteProduct(id))}>
           <i className="feather-x"></i>

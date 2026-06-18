@@ -7,6 +7,7 @@ import { CartReducer } from "./reducer/CartReducer";
 import { QuizReducer } from "./reducer/QuizReducer";
 import { SubmissionReducer } from "./reducer/SubmissionReducer";
 import { CourseReducer } from "./reducer/CourseReducer";
+import { OrderReducer } from "./reducer/OrderReducer";
 
 
 const root = combineReducers({
@@ -14,7 +15,8 @@ const root = combineReducers({
   CartReducer,
   QuizReducer,
   submission: SubmissionReducer,
-  courseReducer: CourseReducer
+  courseReducer: CourseReducer,
+  OrderReducer,
 });
 
 const middleware = [thunk];

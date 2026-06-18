@@ -33,70 +33,63 @@ export const CartReducer = (state = init, action) => {
       ...state,
       loading: false,
     };
-  } else if (action.type === "ADD_TO_CART") {
-    const { id, amount, product, category } = action.payload;
+  } 
+  else if (action.type === "ADD_TO_CART") {
+  const { id, amount, product } = action.payload;
 
-    const tempItem = state.cart.find((i) => i.id === id);
-    if (tempItem) {
-      const tempCart = state.cart.map((cartItem) => {
-        if (cartItem.id === id) {
-          let newAmount = cartItem.amount + amount;
-          if (newAmount > cartItem.max) {
-            newAmount = cartItem.max;
-          }
-          return { ...cartItem, amount: newAmount };
-        } else {
-          return cartItem;
-        }
-      });
+  const tempItem = state.cart.find((i) => i.id === id);
 
-      return {
-        ...state,
-        cart: tempCart,
-        msg: "already added !!!",
-      };
-    } else {
-      const newItem = {
-        id: id,
-        price: product.price,
-        product,
-        amount,
-      };
-
-      return {
-        ...state,
-        cart: [...state.cart, newItem],
-        msg: "item add successfully",
-      };
-    }
-  } else if (action.type === "TOGGLE_CART_AMOUNT") {
-    const { id, value } = action.payload;
-
-    const tempCart = state.cart.map((item) => {
-      if (item.id === id) {
-        if (value === "inc") {
-          let newAmount = item.amount + 1;
-          if (newAmount > item.max) {
-            newAmount = item.max;
-          }
-
-          return { ...item, amount: newAmount };
-        }
-        if (value === "dec") {
-          let newAmount = item.amount - 1;
-          if (newAmount < 1) {
-            newAmount = 1;
-          }
-          return { ...item, amount: newAmount };
-        }
-      }
-      return item;
-    });
-
+  // Already exists in cart
+  if (tempItem) {
     return {
       ...state,
-      cart: tempCart,
+      msg: "Course already added to cart",
     };
+  }
+
+  const newItem = {
+    id,
+    price: product.price,
+    product,
+    amount: 1,
+  };
+
+  return {
+    ...state,
+    cart: [...state.cart, newItem],
+    msg: "Course added successfully",
+  };
+}
+  
+  else if (action.type === "TOGGLE_CART_AMOUNT") {
+    // const { id, value } = action.payload;
+
+    // const tempCart = state.cart.map((item) => {
+    //   if (item.id === id) {
+    //     if (value === "inc") {
+    //       let newAmount = item.amount + 1;
+    //       if (newAmount > item.max) {
+    //         newAmount = item.max;
+    //       }
+
+    //       return { ...item, amount: newAmount };
+    //     }
+    //     if (value === "dec") {
+    //       let newAmount = item.amount - 1;
+    //       if (newAmount < 1) {
+    //         newAmount = 1;
+    //       }
+    //       return { ...item, amount: newAmount };
+    //     }
+    //   }
+    //   return item;
+    // });
+
+    // return {
+    //   ...state,
+    //   cart: tempCart,
+    // };
+     return state;
   } else if (action.type === "COUNT_CART_TOTALS") {
     const { total_items, total_amount } = state.cart.reduce(
       (total, cartItem) => {

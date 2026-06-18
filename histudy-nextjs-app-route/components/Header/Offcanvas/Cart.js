@@ -89,7 +89,7 @@ const Cart = () => {
 
                         <span className="quantity">
                           {data.amount} *
-                          <span className="price">${data.product.price}</span>
+                          <span className="price">₹{data.product.price}</span>
                         </span>
                       </div>
                       <div className="close-btn">
@@ -111,11 +111,11 @@ const Cart = () => {
                 <p className="subtotal">
                   <strong>Subtotal:</strong>
                 </p>
-                <p className="price">${total_amount}</p>
+                <p className="price">₹{total_amount}</p>
               </div>
               <hr className="mb--0" />
               <div className="rbt-minicart-bottom mt--20">
-                <div className="view-cart-btn">
+                {/* <div className="view-cart-btn">
                   <Link
                     className="rbt-btn btn-border icon-hover w-100 text-center"
                     href="/cart"
@@ -125,7 +125,7 @@ const Cart = () => {
                       <i className="feather-arrow-right"></i>
                     </span>
                   </Link>
-                </div>
+                </div> */}
                 <div className="checkout-btn mt--20">
                   <Link
                     className="rbt-btn btn-gradient icon-hover w-100 text-center"

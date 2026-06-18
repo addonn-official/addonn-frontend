@@ -60,6 +60,7 @@ const APIrequest = async ({
   queryParams,
   bodyData,
   headers: extraHeaders,
+  responseType
 }) => {
   const apiToken = getLocalStorageToken() || getToken();
 
@@ -80,6 +81,7 @@ const APIrequest = async ({
         "X-Frame-Options": "sameorigin",
         timezone: momentTimezone.tz.guess(true),
       },
+      responseType
     };
 
     if (url) {
@@ -138,6 +140,9 @@ const APIrequest = async ({
     }
 
     const res = await axios(axiosConfig);
+    if (responseType === "blob") {
+      return res;
+    }
     return res.data;
   } catch (error) {
     if (axios.isCancel(error)) {
