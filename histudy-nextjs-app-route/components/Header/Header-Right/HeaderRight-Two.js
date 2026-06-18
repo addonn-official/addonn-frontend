@@ -1,18 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { IoMdCart } from "react-icons/io";
+
+
 import { useAppContext } from "@/context/Context";
 import User from "../Offcanvas/User";
 import { getToken, getUser } from "../../../utils/storage";
 import { getLocalStorageToken } from "../../../utils/common.util";
+import { useDispatch, useSelector } from "react-redux";
 
 const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
   const pathname = usePathname();
   const { mobile, setMobile, search, setSearch } = useAppContext();
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState(null);
+
+  const router = useRouter()
+
+  const path = typeof window !== "undefined" ? window.location.pathname : "";
+
+  const dispatch = useDispatch();
+  const { cart, total_amount } = useSelector((state) => state.CartReducer);
+
+  const { cartToggle, setCart } = useAppContext();
 
   useEffect(() => {
     // Helper to check auth
@@ -40,14 +53,46 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
     };
   }, []);
 
+
+  useEffect(() => {
+    dispatch({ type: "COUNT_CART_TOTALS" });
+    localStorage.setItem("hiStudy", JSON.stringify(cart));
+
+    if (path === "/cart") {
+      setCart(true);
+    }
+  }, [cart, path]);
+
+
+
+
+
   return (
     <div className="header-right">
       <ul className="quick-access">
+
+
+        <li className="access-icon">
+          <button
+            className="rbt-round-btn position-relative"
+            onClick={() => router.push("/cart")}
+          >
+            <IoMdCart size={30} />
+
+            {cart?.length > 0 && (
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+              >
+                {cart.length > 99 ? "99+" : cart.length}
+              </span>
+            )}
+          </button>
+        </li>
+
         <li className="access-icon">
           <Link
             className={`search-trigger-active rbt-round-btn ${search ? "" : "open"}`}
             href="#"
-            // onClick={() => setSearch(!search)}
             onClick={(e) => {
               e.preventDefault();
               setSearch(false);

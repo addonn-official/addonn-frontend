@@ -61,6 +61,8 @@ const LessonPage = () => {
   const [prevLesson, setPrevLesson] = useState(null);
   const [nextLesson, setNextLesson] = useState(null);
   const [sidebar, setSidebar] = useState(true);
+
+  const actionMenuRef = useRef(null);
   const chatMessagesRef = useRef(null);
   // ── Map of content_id → completion_percentage from API ──────
   const [lessonProgressMap, setLessonProgressMap] = useState({});
@@ -418,11 +420,47 @@ const LessonPage = () => {
 
 
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        actionMenuRef.current &&
+        !actionMenuRef.current.contains(event.target)
+      ) {
+        setActiveActionMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
 
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        actionMenuRef.current &&
+        !actionMenuRef.current.contains(event.target)
+      ) {
+        setActiveActionMenuId(null);
+      }
+    };
 
+    const handleScroll = () => {
+      setActiveActionMenuId(null);
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, []);
 
 
 
@@ -594,6 +632,16 @@ const LessonPage = () => {
       console.error("[LessonPage] Error fetching comments:", err);
     }
   }, [content_id]);
+
+
+  const scrollToBottom = () => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTo({
+        top: chatMessagesRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     fetchComments();
@@ -823,6 +871,13 @@ const LessonPage = () => {
     });
   }, [content_id, postProgress]);
 
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [comments]);
+
+
+
   /* ─── Render Assignment UI ───────────────────────────────── */
   const renderAssignmentUI = () => {
     if (!isAssignment && !isProject) return null;
@@ -831,24 +886,6 @@ const LessonPage = () => {
     const latestSubmission = submission?.latest_submission;
     const is_approved = latestSubmission?.application_status;
 
-    // let statusColor;
-
-    // switch (is_approved) {
-    //   case "Pending":
-    //     statusColor = "text-warning"; // or yellow
-    //     break;
-    //   case "Rejected":
-    //     statusColor = "text-danger";
-    //     break;
-
-    //   case "Submitted":
-    //     statusColor = "text-success";
-    //     break;
-
-    //   default:
-    //     statusColor = "text-secondry"; // not submitted
-    //     break;
-    // }
     const showForm = !latestSubmission || latestSubmission?.application_status === "Rejected";
 
     return (
@@ -908,7 +945,7 @@ const LessonPage = () => {
                     </span>
                   </div>
                 }
-
+                {/* 
                 {latestSubmission?.feedback && (
                   <div className="submission-feedback mt--20 p--15 bg-color-light rounded shadow-sm">
                     <h6 className="mb--5 text-primary">Feedback from Instructor:</h6>
@@ -917,7 +954,7 @@ const LessonPage = () => {
                 )}
                 <div className="mt--20 text-secondary small">
                   <p className="mb-4">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
-                </div>
+                </div> */}
 
                 <form onSubmit={handleAssignmentSubmit}>
                   <div className="assignment-answer-form mb--20">
@@ -1210,7 +1247,34 @@ const LessonPage = () => {
   const isChatDisabled =
     String(chatVal).toLowerCase() === "no" ||
     String(chatVal).toLowerCase() === "disabled";
-  const filteredComments = Array.isArray(comments) ? comments : [];
+  // const filteredComments = Array.isArray(comments) ? comments : [];
+
+  const filteredComments = Array.isArray(comments)
+    ? comments.filter((c) => {
+      if (chatFilter === "current") {
+        return (
+          c.commentable &&
+          String(c.commentable.id) === String(content_id)
+        );
+      }
+
+      return true; // all lessons
+    })
+    : [];
+
+
+  chatFilter === "current"
+    ? comments.filter(
+      (c) =>
+        c.commentable &&
+        String(c.commentable.id) === String(content_id)
+    )
+    : comments;
+
+  console.log("Filtered Count", filteredComments.length);
+  console.log("Original Count", comments.length);
+  console.log("Filtered Data", filteredComments);
+
   // ── Overall course progress for header indicator ──
   const calculateOverallProgress = () => {
     if (!courseData?.topics) return 0;
@@ -1231,6 +1295,13 @@ const LessonPage = () => {
   };
 
   const coursePct = calculateOverallProgress();
+
+
+
+
+
+
+
 
   /* ─── Render ─────────────────────────────────────────────── */
   return (
@@ -1460,6 +1531,7 @@ const LessonPage = () => {
 
                                                           {activeActionMenuId === c.id && (
                                                             <div
+                                                              ref={actionMenuRef}
                                                               className="chat-action-dropdown"
                                                               style={{
                                                                 position: 'absolute',
@@ -1603,6 +1675,8 @@ const LessonPage = () => {
 
                                                                 {activeActionMenuId === r.id && (
                                                                   <div
+                                                                    ref={actionMenuRef}
+
                                                                     className="chat-action-dropdown"
                                                                     style={{
                                                                       position: 'absolute',
@@ -1726,6 +1800,8 @@ const LessonPage = () => {
                                       <div className="text-center mt-4">
                                         The comments has been disabled for this Course, Please contact us for further details.
                                       </div>}
+
+
                                     {/* <div className="lesson-chat-messages">
                                       {!Array.isArray(comments) || comments.length === 0 ? (<p className="lesson-chat-empty">No messages yet. Start the conversation!</p>) : (
                                         <div className="chat-list">

@@ -6,7 +6,6 @@ import { showInfo } from "../../utils/swal";
 import { useAppContext } from "../../context/Context";
 import { useDispatch, useSelector } from "react-redux";
 import { refundRequestAction, resetRefundRequest } from "@/redux/action/OrderAction";
-import Swal from "sweetalert2";
 
 const OrderHistory = () => {
   const { userData, loadingUser } = useAppContext();
