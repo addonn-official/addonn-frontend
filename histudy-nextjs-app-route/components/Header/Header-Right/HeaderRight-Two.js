@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { IoMdCart } from "react-icons/io";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 
 import { useAppContext } from "@/context/Context";
@@ -17,6 +17,7 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
   const { mobile, setMobile, search, setSearch } = useAppContext();
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState(null);
+  const { isLightTheme } = useAppContext();
 
   const router = useRouter()
 
@@ -77,11 +78,11 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
             className="rbt-round-btn position-relative"
             onClick={() => router.push("/cart")}
           >
-            <IoMdCart size={30} />
+            <MdOutlineShoppingCart size={25} className={`${isLightTheme ? 'text-dark' : 'text-light'}`} />
 
             {cart?.length > 0 && (
               <span
-                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+                className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary ${isLightTheme ? 'text-light' : 'text-light'}`}
               >
                 {cart.length > 99 ? "99+" : cart.length}
               </span>
@@ -95,7 +96,9 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setSearch(false);
+              // setSearch(false);
+              setSearch((prev) => !prev);
+
             }}
           >
             <i className="feather-search"></i>

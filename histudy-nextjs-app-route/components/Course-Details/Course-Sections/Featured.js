@@ -64,18 +64,6 @@ const Featured = ({ coursesFeatured }) => {
                   </div>
                   <div className="content">
                     <p className="description">{user.desc}</p>
-                    <ul className="social-icon social-default transparent-with-border justify-content-start">
-                      <li>
-                        <Link href="#">
-                          <i className="feather-thumbs-up"></i>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="#">
-                          <i className="feather-thumbs-down"></i>
-                        </Link>
-                      </li>
-                    </ul>
                   </div>
                 </div>
               </div>

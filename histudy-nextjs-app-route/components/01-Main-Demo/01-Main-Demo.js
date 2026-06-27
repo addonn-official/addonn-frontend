@@ -27,7 +27,7 @@ import { useAppContext } from "@/context/Context";
 const MainDemo = ({ blogs }) => {
 	const [topCourses, setTopCourses] = useState([]);
 	const [topCoursesWithBestSaller, setTopCoursesWithBestSaller] = useState([]);
-	const [openFaq, setOpenFaq] = useState({});
+	const [openFaq, setOpenFaq] = useState(null);
 	const [upcomingCourses, setUpcomingCourses] = useState([]);
 	const [bundleCourses, setBundleCourses] = useState([]);
 
@@ -170,13 +170,26 @@ const MainDemo = ({ blogs }) => {
 		fetchFAQs();
 	}, []);
 
+	const categories = Object.keys(faqs);
+	useEffect(() => {
+		if (categories.length === 0) return;
+
+		const firstCategory = categories[0];
+
+		const firstFaq = [...(faqs[firstCategory] || [])]
+			.sort((a, b) => a.order - b.order)[0];
+
+		if (firstFaq) {
+			setOpenFaq(firstFaq.id);
+		}
+	}, [faqs]);
+
 	if (isLoading) {
 		return <div>
 			<MainDemoBanner courses={topCoursesWithBestSaller} settings={homeSettings.hero_section} loading={loading} />
 		</div>;
 	}
 
-	const categories = Object.keys(faqs);
 
 	return (
 		<>
@@ -366,23 +379,26 @@ const MainDemo = ({ blogs }) => {
 																id={`heading-${item.id}`}
 															>
 																<button
-																	className={`accordion-button px-0 py-4 shadow-none ${innerIndex !== 0
-																		? "collapsed text-secondary"
-																		: "text-dark"
+																	className={`accordion-button px-0 py-4 shadow-none ${openFaq === item.id
+																		? "text-dark"
+																		: "collapsed text-secondary"
 																		}`}
 																	type="button"
 																	data-bs-toggle="collapse"
 																	data-bs-target={`#collapse-${item.id}`}
-																	aria-expanded={innerIndex === 0}
+																	// aria-expanded={innerIndex === 0}
+																	aria-expanded={openFaq === item.id}
 																	style={{
 																		backgroundColor: "transparent",
 																	}}
 
 																	onClick={() =>
-																		setOpenFaq((prev) => ({
-																			...prev,
-																			[item.id]: !prev[item.id],
-																		}))
+																		setOpenFaq(openFaq === item.id ? null : item.id)
+
+																		// setOpenFaq((prev) => ({
+																		// 	...prev,
+																		// 	[item.id]: !prev[item.id],
+																		// }))
 																	}
 																>
 																	<div className="d-flex align-items-center w-100">
@@ -402,7 +418,7 @@ const MainDemo = ({ blogs }) => {
 																		}}
 																	></span> */}
 																	<span className="ms-3">
-																		{openFaq[item.id] ? (
+																		{openFaq === item.id ? (
 																			<FiMinus
 																				size={28}
 																				color={isLightTheme ? "#000" : "#fff"}
@@ -418,7 +434,10 @@ const MainDemo = ({ blogs }) => {
 															</h2>
 															<div
 																id={`collapse-${item.id}`}
-																className={`accordion-collapse collapse ${innerIndex === 0 ? "show" : ""
+																className={`accordion-collapse collapse ${
+																	// innerIndex === 0 ? "show" : ""
+																	openFaq === item.id ? "show" : ""
+
 																	}`}
 																data-bs-parent={`#accordion-${index}`}
 															>
@@ -469,23 +488,27 @@ const MainDemo = ({ blogs }) => {
 																		id={`heading-hidden-${item.id}`}
 																	>
 																		<button
-																			className={`accordion-button px-0 py-4 shadow-none ${innerIndex !== 0
-																				? "collapsed text-secondary"
-																				: "text-dark"
+																			className={`accordion-button px-0 py-4 shadow-none ${
+																				// innerIndex !== 0
+																				openFaq === item.id
+																					? "collapsed text-secondary"
+																					: "text-dark"
 																				}`}
 																			type="button"
 																			data-bs-toggle="collapse"
 																			data-bs-target={`#collapse-hidden-${item.id}`}
-																			aria-expanded={innerIndex === 0}
+																			aria-expanded={openFaq === item.id}
 																			style={{
 																				backgroundColor: "transparent",
 																			}}
 
 																			onClick={() =>
-																				setOpenFaq((prev) => ({
-																					...prev,
-																					[item.id]: !prev[item.id],
-																				}))
+																				// setOpenFaq((prev) => ({
+																				// 	...prev,
+																				// 	[item.id]: !prev[item.id],
+																				// }))
+																				setOpenFaq(openFaq === item.id ? null : item.id)
+
 																			}
 																		>
 																			<div className="d-flex align-items-center w-100">
@@ -505,7 +528,7 @@ const MainDemo = ({ blogs }) => {
 																				}}
 																			></span> */}
 																			<span className="ms-3">
-																				{openFaq[item.id] ? (
+																				{openFaq === item.id ? (
 																					<FiMinus
 																						size={28}
 																						color={isLightTheme ? "#000" : "#fff"}

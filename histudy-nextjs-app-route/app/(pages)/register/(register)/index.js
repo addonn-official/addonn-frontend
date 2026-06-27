@@ -11,6 +11,7 @@ import Context from "@/context/Context";
 import Store from "@/redux/store";
 import React from "react";
 import { Provider } from "react-redux";
+import FooterThree from "@/components/Footer/Footer-Three";
 
 const RegisterPage = () => {
   return (
@@ -30,11 +31,11 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          <div className="rbt-newsletter-area bg-gradient-6 ptb--50">
+          {/* <div className="rbt-newsletter-area bg-gradient-6 ptb--50">
             <NewsletterThree />
-          </div>
+          </div> */}
 
-          <FooterOne />
+          <FooterThree />
         </Context>
       </Provider>
     </>

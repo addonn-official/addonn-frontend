@@ -13,6 +13,8 @@ import { showSuccess, showError } from "../../utils/swal";
 import { getToken, setUser } from "../../utils/storage";
 import { setLocalStorageToken } from "../../utils/common.util";
 import config from "../../config";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useAppContext } from "@/context/Context";
 
 const Login = () => {
   const router = useRouter();
@@ -21,6 +23,9 @@ const Login = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [otpProps, setOtpProps] = useState(null);
   const [showHint, setShowHint] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const { isLightTheme } = useAppContext();
+
 
   const handleSocialLogin = async (socialData) => {
     try {
@@ -225,12 +230,47 @@ const Login = () => {
                         <p style={{ color: "#999", fontSize: "12px", marginTop: "6px" }}>Must be in format: example@email.com</p>
                       )}
                     </div>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                       <Field name="password" type="password" placeholder="Password *" />
                       <span className="focus-border"></span>
                       <div className="text-danger"><ErrorMessage name="password" /></div>
-                    </div>
+                    </div> */}
+                    <div
+                      className="form-group position-relative"
+                    >
+                      <Field
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password *"
+                      />
 
+                      <span className="focus-border"></span>
+
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{
+                          position: "absolute",
+                          right: "15px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          zIndex: 5,
+                        }}
+                      >
+                        {showPassword ? (
+                          <FiEyeOff size={20} className={`${isLightTheme ? 'text-dark' : 'text-light'}`} />
+                        ) : (
+                          <FiEye size={20} className={`${isLightTheme ? 'text-dark' : 'text-light'}`} />
+                        )}
+                      </button>
+
+                      <div className="text-danger">
+                        <ErrorMessage name="password" />
+                      </div>
+                    </div>
                     <div className="row mb--30">
                       <div className="col-lg-6">
                         <div className="rbt-checkbox">

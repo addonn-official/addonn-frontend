@@ -11,8 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppContext } from "@/context/Context";
 import { addToCartAction } from "@/redux/action/CartAction";
 import { getToken, getUser } from "@/utils/storage";
-import { getLocalStorageToken } from "@/utils/common.util";
+import { getDaysLeft, getLocalStorageToken, getOfferTime } from "@/utils/common.util";
 import { useCountdown } from "@/hooks/useCountdown";
+import { useSettings } from "@/context/SettingsContext";
 
 const Viedo = ({ checkMatchCourses }) => {
   const pathname = usePathname();
@@ -20,6 +21,9 @@ const Viedo = ({ checkMatchCourses }) => {
   const [toggle, setToggle] = useState(false);
   const [hideOnScroll, setHideOnScroll] = useState(false);
   const timeLeft = useCountdown(checkMatchCourses?.days);
+  const { settings, loading } = useSettings();
+    const offer = settings?.offer;
+
 
   const disableVideo = [
     "/course-detail-2",
@@ -76,6 +80,8 @@ const Viedo = ({ checkMatchCourses }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const offerTime =getOfferTime(offer?.end_date)
 
   return (
     <>
@@ -142,8 +148,9 @@ const Viedo = ({ checkMatchCourses }) => {
             }
           </div>
           {checkMatchCourses?.days > 0 && <div className="discount-time">
+            {/* offer */}
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
-              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {timeLeft} days
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {offerTime} days
               left!
             </span>
           </div>}
