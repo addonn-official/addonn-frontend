@@ -19,10 +19,9 @@ const FooterThree = () => {
     instagram: "feather-instagram",
     linkedin: "feather-linkedin",
     whatsapp: "feather-message-circle",
-    // github: "feather-github",
     youtube: "feather-youtube",
+    // github: "feather-github",
   };
-
 
   return (
     <>
@@ -37,7 +36,7 @@ const FooterThree = () => {
                     <Link href="/">
                       {isLightTheme ? (
                         <Image
-                          src={site?.logo||"/images/logo/logo.png"}
+                          src={site?.logo || "/images/logo/logo.png"}
                           width={152}
                           height={50}
                           priority
@@ -45,7 +44,7 @@ const FooterThree = () => {
                         />
                       ) : (
                         <Image
-                          src={site?.logo||'/images/logo/logo.png'}
+                          src={site?.logo || '/images/logo/logo.png'}
                           width={152}
                           height={50}
                           priority
@@ -106,12 +105,9 @@ const FooterThree = () => {
                   {Object.entries(footerSocial || {}).map(
                     ([platform, url]) => (
                       <li key={platform}>
+                        {console.log(platform)}
                         <Link
-                          href={
-                            url?.startsWith("http")
-                              ? url
-                              : `https://${url}`
-                          }
+                          href={url?.startsWith("http") ? url : `https://${url}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

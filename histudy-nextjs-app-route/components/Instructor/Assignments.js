@@ -222,28 +222,51 @@ const Assignments = () => {
                     return (
                       <tr key={index}>
                         <th>
-                          <span className="h6 mb--5 t">{assignment?.title}</span>
-                          {/* {submissions?.title ? <p className="b3">Course: {submissions?.latest_submission?.title}</p> : null} */}
+                          <span className="h6 mb--5">{assignment?.title}</span>
                         </th>
-                        {/* <td className="d-none d-sm-table-cell">
-                          <p className="b3">{attempt}</p>
-                        </td> */}
+
                         <td>
-                          <span className={`b3 text-secondry ${statusColor}`}>{assSubm?.application_status === "Submitted" ? "Approved" : assSubm?.application_status || 'Not Submited'}</span>
-                        </td>
-                        <td>
-                          <span className="b3">{assSubm?.marks || '-'}</span>
-                        </td>
-                        <td className="d-md-table-cell">
-                          <span className="b3">{formatDate(assSubm?.submitted_at) || '-'}</span>
+                          <span className={`b3 text-secondry ${statusColor}`}>
+                            {assSubm?.application_status === "Submitted"
+                              ? "Approved"
+                              : assSubm?.application_status || "Not Submitted"}
+                          </span>
                         </td>
 
                         <td>
-                          <div className="rbt-button-group justify-content-end align-items-center">
-                            {status === "Not Submitted" || status === undefined && (
+                          <span className="b3">{assSubm?.marks || "-"}</span>
+                        </td>
+
+                        <td>
+                          <span className="b3">
+                            {formatDate(assSubm?.submitted_at) || "-"}
+                          </span>
+                        </td>
+
+                        <td
+                          style={{
+                            minWidth: "190px",
+                            whiteSpace: "nowrap",
+                            textAlign: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "8px",
+                              flexWrap: "nowrap",
+                            }}
+                          >
+                            {(status === "Not Submitted" || status === undefined) && (
                               <Link
-                                className="rbt-btn btn-sm bg-primary-opacity radius-round"
                                 href={uploadUrl}
+                                className="rbt-btn btn-sm bg-primary-opacity radius-round"
+                                style={{
+                                  fontSize: "14px",
+                                  whiteSpace: "nowrap",
+                                }}
                               >
                                 Upload
                               </Link>
@@ -252,59 +275,50 @@ const Assignments = () => {
                             {status === "Rejected" && (
                               <>
                                 <Link
-                                  className="rbt-btn btn-sm bg-primary-opacity radius-round"
                                   href={uploadUrl}
+                                  className="rbt-btn btn-sm bg-primary-opacity radius-round"
+                                  style={{
+                                    fontSize: "14px",
+                                    whiteSpace: "nowrap",
+                                  }}
                                 >
                                   Re-Upload
                                 </Link>
 
                                 <button
                                   type="button"
-                                  className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
+                                  className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round"
                                   onClick={() => handleShowMessage(assSubm?.feedback)}
                                   title="View rejection reason"
+                                  style={{
+                                    width: "40px",
+                                    minWidth: "40px",
+                                    height: "40px",
+                                    padding: 0,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
                                 >
                                   <i className="feather-info" />
                                 </button>
                               </>
                             )}
 
-                            {(status === "Submitted") && (
+                            {(status === "Submitted" || status === "Pending") && (
                               <button
                                 type="button"
                                 className="rbt-btn btn-sm radius-round"
                                 disabled
+                                style={{
+                                  width: "95px",
+                                  whiteSpace: "nowrap",
+                                }}
                               >
                                 Upload
                               </button>
                             )}
-
-                            {/* {!assSubm?.latest_submission ? <Link
-                              className="rbt-btn btn-sm bg-primary-opacity radius-round"
-                              href="/lesson-assignments-submit"
-                            >
-                              Uploadssss
-                            </Link>
-                              : (assSubm?.application_status === 'Not Submitted' || assSubm?.application_status === 'Rejected' ? (
-                                <button
-                                  type="button"
-                                  className="rbt-btn btn-sm bg-color-info-opacity color-info radius-round ms--10"
-                                  onClick={() => handleShowMessage(assSubm?.feedback)}
-                                  title="View submission message"
-                                >
-                                  <i className="feather-info" />
-                                </button>
-                              ) :
-                                <Link
-                                  className="rbt-btn btn-sm bg-primary-opacity radius-round"
-                                  href={`/lesson?course_slug=${submissions?.title
-                                    ?.toLowerCase()
-                                    ?.trim()
-                                    ?.replace(/\s+/g, "-")}&topic_id=${assignment?.topic_id}&content_id=${assSubm?.content_id}`}
-                                >
-                                  {assSubm?.application_status === 'Rejected' && "Re-Upload"}
-                                </Link>)
-                            } */}
                           </div>
                         </td>
                       </tr>

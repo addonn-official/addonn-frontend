@@ -224,7 +224,7 @@ export const getOfferTime = (date) => {
   const oneDay = 24 * 60 * 60 * 1000;
 
   if (diff > oneDay) {
-    return `${Math.ceil(diff / oneDay)} Days Left`;
+    return `${Math.ceil(diff / oneDay)} Days Left!`;
   }
 
   const hours = Math.floor(diff / (1000 * 60 * 60));

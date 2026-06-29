@@ -150,8 +150,8 @@ const Viedo = ({ checkMatchCourses }) => {
           {checkMatchCourses?.days > 0 && <div className="discount-time">
             {/* offer */}
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
-              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {offerTime} days
-              left!
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {offerTime} 
+              
             </span>
           </div>}
         </div>

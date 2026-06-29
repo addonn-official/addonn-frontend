@@ -31,9 +31,9 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="rbt-newsletter-area bg-gradient-6 ptb--50">
+          {/* <div className="rbt-newsletter-area bg-gradient-6 ptb--50">
             <NewsletterThree />
-          </div>
+          </div> */}
 
           <FooterThree />
         </Context>
