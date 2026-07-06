@@ -51,7 +51,7 @@ export const CartReducer = (state = init, action) => {
     id,
     price: product.price,
     product,
-    amount: 1,
+    amount: 0,
   };
 
   return {

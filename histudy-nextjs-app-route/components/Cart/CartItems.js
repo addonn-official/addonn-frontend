@@ -50,7 +50,7 @@ const CartItems = ({ id, product, amount }) => {
         </Link>
       </td>
       <td className="pro-price">
-        <span>₹{product.price}.00</span>
+        <span>₹{product.price}</span>
       </td>
       {/* <td className="pro-quantity">
         <div className="pro-qty">

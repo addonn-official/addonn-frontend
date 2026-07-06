@@ -88,7 +88,7 @@ const Cart = () => {
                         </h6>
 
                         <span className="quantity">
-                          {data.amount} *
+                          {/* {data.amount} * */}
                           <span className="price">₹{data.product.price}</span>
                         </span>
                       </div>

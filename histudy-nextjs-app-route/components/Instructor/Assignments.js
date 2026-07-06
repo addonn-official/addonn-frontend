@@ -192,7 +192,7 @@ const Assignments = () => {
                 </tr>
               </thead>
               <tbody>
-                {submissions?.contents?.length > 0 ? (
+                {submissions?.contents?.length > 5 ? (
                   submissions?.contents?.map((assignment, index) => {
                     const assSubm = assignment?.latest_submission
                     const is_approved = assSubm?.application_status;
@@ -327,8 +327,8 @@ const Assignments = () => {
                 ) : (
                   <tr>
                     <td colSpan={6} className="text-center py-5">
-                      <Loader />
-                      {/* <p className="b3">No assignments or projects found for the selected course.</p> */}
+                      {/* <Loader /> */}
+                      <p className="b3">It looks like you aren't enrolled in any courses yet, or this course doesn't have any quizzes or assignments.</p>
                     </td>
                   </tr>
                 )}

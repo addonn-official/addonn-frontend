@@ -24,7 +24,7 @@ const CartPage = () => {
       <div className="cart_area">
         <div className="container">
           <div className="row">
-            <div className="col-12">
+            {cart.length > 0 ? <div className="col-12">
               <form action="#">
                 <div className="cart-table table-responsive mb--60">
                   <table className="table">
@@ -165,7 +165,7 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> : <p className="text-center fs-1">The cart is feeling lonely, kindly add something</p>}
           </div>
         </div>
       </div>

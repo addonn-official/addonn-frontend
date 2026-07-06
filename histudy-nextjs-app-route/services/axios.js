@@ -14,6 +14,8 @@ const buildToastOptions = (message) => {
 };
 
 const getErrorMessage = (errorRes, error) => {
+  let isMaintenanceRedirecting = false;
+
   if (!errorRes) {
     return "Network error. Please check your connection.";
   }
@@ -46,9 +48,21 @@ const getErrorMessage = (errorRes, error) => {
     }
     return backendMessage || "Validation failed. Please check your input.";
   }
-  if (statusCode >= 500) {
-    return "Something went wrong on server. Please try again later.";
+  if (statusCode === 503) {
+    if (
+      typeof window !== "undefined" &&
+      !isMaintenanceRedirecting &&
+      window.location.pathname !== "/maintenance"
+    ) {
+      isMaintenanceRedirecting = true;
+      window.location.replace("/maintenance");
+    }
+
+    return error?.message;
   }
+  // if (statusCode >= 500) {
+  //   return "Something went wrong on server. Please try again later.";
+  // }
 
   return backendMessage || error?.message || "An error occurred. Please try again.";
 };

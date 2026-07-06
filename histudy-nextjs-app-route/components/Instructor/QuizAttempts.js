@@ -177,7 +177,7 @@ const QuizAttempts = () => {
                   ) : (
                     <tr>
                       <td colSpan={5} className="text-center py-5">
-                        <p className="b3">No quiz attempts found for the selected course.</p>
+                        <p className="b3">It looks like you aren't enrolled in any courses yet, or this course doesn't have any quizzes or assignments.</p>
                       </td>
                     </tr>
                   )}

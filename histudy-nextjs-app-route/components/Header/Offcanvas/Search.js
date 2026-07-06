@@ -45,25 +45,27 @@ const Search = () => {
     setSearchCours(e.target.value);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target)
-      ) {
-        setSearch(true);
-      }
-    };
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    // Ignore clicks on search button
+    if (event.target.closest(".search-trigger-active")) {
+      return;
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target)
+    ) {
+      setSearch(true);
+    }
+  };
 
-    return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
-    };
-  }, [setSearch]);
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
 
   useEffect(() => {

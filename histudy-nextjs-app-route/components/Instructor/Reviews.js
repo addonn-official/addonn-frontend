@@ -23,8 +23,8 @@ const Reviews = () => {
   const role = u?.role
 
   const handleEditClick = (review) => {
-    console.log('review<<<',review);
-    
+    console.log('review<<<', review);
+
     setCurrentReview(review);
     setEditRating(review.rating || 0);
     setEditReviewText(review.review || "");
@@ -157,7 +157,7 @@ const Reviews = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="3" className="text-center">No reviews found</td>
+                          <td colSpan="3" className="text-center">It looks like you aren't enrolled in any courses, or you haven't given any reviews to display here.</td>
                         </tr>
                       )}
                     </tbody>
@@ -183,51 +183,56 @@ const Reviews = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {reviews.map((review, index) => (
-                      <tr key={index}>
-                        <th>{review.item?.title || review.item?.course?.title || review.course?.title || review.item?.name || "N/A"}</th>
-                        <td>
-                          <div className="rbt-review">
-                            <div className="rating">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <i
-                                  key={star}
-                                  className={`${star <= (currentReview?.id === review.id ? editRating : review.rating) ? "fas" : "far"} fa-star`}
-                                  style={{ color: star <= (currentReview?.id === review.id ? editRating : review.rating) ? "#E5BA12" : "#e1e1e1" }}
-                                />
-                              ))}
+                    {reviews.length > 0 ? (
+                      reviews.map((review, index) => (
+                        <tr key={index}>
+                          <th>{review.item?.title || review.item?.course?.title || review.course?.title || review.item?.name || "N/A"}</th>
+                          <td>
+                            <div className="rbt-review">
+                              <div className="rating">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <i
+                                    key={star}
+                                    className={`${star <= (currentReview?.id === review.id ? editRating : review.rating) ? "fas" : "far"} fa-star`}
+                                    style={{ color: star <= (currentReview?.id === review.id ? editRating : review.rating) ? "#E5BA12" : "#e1e1e1" }}
+                                  />
+                                ))}
+                              </div>
+                              <span className="rating-count"> ({review.rating} Stars)</span>
                             </div>
-                            <span className="rating-count"> ({review.rating} Stars)</span>
-                          </div>
-                          <p className="b3">{review.review}</p>
-                        </td>
-                        <td>{review.created_at}</td>
-                        <td>
-                          <div className="rbt-button-group">
-                            {review.status !== "verified" ? (
-                              <>
-                                <button
-                                  className="rbt-btn btn-xs bg-primary-opacity radius-round"
-                                  onClick={() => handleEditClick(review)}
-                                  disabled={review.item.verified}
-                                >
-                                  <i className="feather-edit pl--0"></i>
-                                </button>
-                                <button
-                                  className="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger"
-                                  onClick={() => handleDelete(review)}
-                                  disabled={review.item.verified}
-                                >
-                                  <i className="feather-trash-2 pl--0"></i>
-                                </button>
-                              </>
-                            ) : (
-                              <span className="rbt-badge-5 bg-color-success-opacity color-success">Verified</span>
-                            )}
-                          </div>
-                        </td>
+                            <p className="b3">{review.review}</p>
+                          </td>
+                          <td>{review.created_at}</td>
+                          <td>
+                            <div className="rbt-button-group">
+                              {review.status !== "verified" ? (
+                                <>
+                                  <button
+                                    className="rbt-btn btn-xs bg-primary-opacity radius-round"
+                                    onClick={() => handleEditClick(review)}
+                                    disabled={review.item.verified}
+                                  >
+                                    <i className="feather-edit pl--0"></i>
+                                  </button>
+                                  <button
+                                    className="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger"
+                                    onClick={() => handleDelete(review)}
+                                    disabled={review.item.verified}
+                                  >
+                                    <i className="feather-trash-2 pl--0"></i>
+                                  </button>
+                                </>
+                              ) : (
+                                <span className="rbt-badge-5 bg-color-success-opacity color-success">Verified</span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))) : (
+                      <tr>
+                        <td colSpan="4" className="text-center">It looks like you aren't enrolled in any courses, or you haven't given any reviews to display here.</td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
