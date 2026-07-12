@@ -165,7 +165,18 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-            </div> : <p className="text-center fs-1">The cart is feeling lonely, kindly add something</p>}
+            </div> : <>
+              <div className="col-12 text-center mb-4">
+                <Link
+                  href="/#live-courses"
+                  className="rbt-btn btn-gradient rbt-switch-btn rbt-switch-y w-25 text-center"
+                >
+                  <span className="fs-2" data-text="Courses">Go to Courses</span>
+                </Link>
+              </div>
+              <p className="text-center fs-1">The cart is feeling lonely, kindly add something</p>
+            </>
+            }
           </div>
         </div>
       </div>

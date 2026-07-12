@@ -412,16 +412,45 @@ const CourseWidget = ({
   };
 
 
+
+  console.log("Rendering", data.title, {
+  last_watch_topic_id: data?.last_watch_topic_id,
+  topic0: data?.contents?.[0]?.topic?.id,
+  href: `/lesson?course_slug=${data?.title
+    ?.toLowerCase()
+    ?.trim()
+    ?.replace(/\s+/g, "-")}&topic_id=${
+      data?.last_watch_topic_id || data?.contents?.[0]?.topic?.id
+    }&content_id=${
+      data?.last_watch_content_id || data?.contents?.[0]?.id
+    }`,
+});
+
+  const topicId = data?.last_watch_topic_id ?? data?.contents?.[0]?.topic?.id;
+
+  const contentId = data?.last_watch_content_id ?? data?.contents?.[0]?.id;
+
   return (
     <>
       <div className="rbt-card variation-01 rbt-hover">
         <div className="rbt-card-img">
-          
-          <Link
+          {/* {
+            console.log("href data", {
+              title: data?.title,
+              topicId: data?.last_watch_topic_id || data?.contents?.[0]?.topic?.id,
+              contentId: data?.last_watch_content_id || data?.contents?.[0]?.id,
+            })} */}
+          {/* <Link
 
             href={`/lesson?course_slug=${data?.title?.toLowerCase()
               ?.trim()
-              ?.replace(/\s+/g, "-")}&topic_id=${data?.last_watch_topic_id || data?.topics?.[0]?.id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+              ?.replace(/\s+/g, "-")}&topic_id=${data?.last_watch_topic_id || data?.contents?.[0]?.topic?.id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+          > */}
+          <Link
+            href={`/lesson?course_slug=${data?.title
+              ?.toLowerCase()
+              ?.trim()
+              ?.replace(/\s+/g, "-")}&topic_id=${topicId}&content_id=${contentId}`}
           >
             {data.courseThumbnail ? (
               <Image
@@ -502,7 +531,7 @@ const CourseWidget = ({
                 <Link
                   href={`/lesson?course_slug=${data?.title?.toLowerCase()
                     ?.trim()
-                    ?.replace(/\s+/g, "-")}&topic_id=${data?.topics?.[0]?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+                    ?.replace(/\s+/g, "-")}&topic_id=${data?.contents?.[0]?.topic?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
                 >{data?.title}</Link>
               </h4>
             </>

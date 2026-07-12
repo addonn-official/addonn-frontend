@@ -62,8 +62,17 @@ const FreeCheckout = ({ course, onSuccess }) => {
         confirmButtonText: "OK",
       });
 
-      if (onSuccess) {
-        await onSuccess();
+      // if (onSuccess) {
+      //   await onSuccess();
+      // }
+
+      if (verifyRes?.status === "success") {
+        // Parent ko notify karo
+        onSuccess?.({
+          courseId: course.id,
+          isPurchased: true,
+          data: verifyRes.data,
+        });
       }
     } catch (err) {
       console.error(err);
@@ -80,7 +89,8 @@ const FreeCheckout = ({ course, onSuccess }) => {
 
   return (
     <button
-      className="rbt-btn btn-border icon-hover w-100"
+      // className="rbt-btn btn-border icon-hover w-100"
+      className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
       disabled={loading}
       onClick={handleEnroll}
     >

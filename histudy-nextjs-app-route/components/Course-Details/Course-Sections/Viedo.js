@@ -56,6 +56,19 @@ const Viedo = ({ checkMatchCourses }) => {
     setCart(!cartToggle);
   };
 
+
+
+
+  const handleEnrollSuccess = ({ courseId, isPurchased, data }) => {
+    console.log("Enroll Success", courseId, isPurchased, data);
+
+    setCourseData((prev) => ({
+      ...prev,
+      isPurchased: true,
+    }));
+  };
+
+
   useEffect(() => {
     dispatch({ type: "COUNT_CART_TOTALS" });
     localStorage.setItem("hiStudy", JSON.stringify(cart));
@@ -205,7 +218,7 @@ const Viedo = ({ checkMatchCourses }) => {
           )}
         </div>
         <div className="buy-now-btn mt--15">
-          {!checkMatchCourses.isPurchased && checkMatchCourses.price ?  (
+          {!checkMatchCourses.isPurchased && checkMatchCourses.price ? (
             <Link
               className="rbt-btn btn-border icon-hover w-100 d-block text-center"
               href="#"
@@ -247,16 +260,18 @@ const Viedo = ({ checkMatchCourses }) => {
             //     <i className="feather-arrow-right"></i>
             //   </span>
             // </Link>
-            (!checkMatchCourses.isPurchased && 
-            <FreeCheckout
-              course={courseData}
-              onSuccess={() => {
-                setCourseData(prev => ({
-                  ...prev,
-                  isPurchased: true
-                }));
-              }}
-            />)
+            (!checkMatchCourses.isPurchased &&
+              <FreeCheckout
+                course={courseData}
+                onSuccess={handleEnrollSuccess}
+
+              // onSuccess={() => {
+              //   setCourseData(prev => ({
+              //     ...prev,
+              //     isPurchased: true
+              //   }));
+              // }}
+              />)
           )}
         </div>
 

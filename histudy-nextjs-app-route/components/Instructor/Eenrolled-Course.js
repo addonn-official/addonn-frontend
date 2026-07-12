@@ -13,6 +13,13 @@ const EnrolledCourses = () => {
 
   const mapEnrollmentToCourse = (enrollment) => {
     const c = enrollment?.course || {};
+
+
+    console.log('enrollment?.course_-------------------------->', enrollment?.course);
+
+
+
+
     return {
       enrollment_id: enrollment.id,
       last_watch_topic_id: c.last_watch_topic_id,
@@ -39,6 +46,7 @@ const EnrolledCourses = () => {
       userRating: enrollment?.review?.rating || 0,
       userReviews: c?.reviews,
       progress: c?.progress,
+      contents: c?.contents || [],
       rating: {
         average: c.reviews_avg_rating || 0,
       },
@@ -134,12 +142,12 @@ const EnrolledCourses = () => {
                     <div
                       className="col-lg-4 col-md-6 col-12"
                       key={`course-enrolled-${index}`}
-                      onClick={() => console.log('data?.title>>>', enrollment.course?.title)}
+                      onClick={() => console.log('data?.title>>>', enrollment.course)}
                     >
 
 
                       {console.log({
-                        enrollment
+                        "enrollment.course?sssssssssssssss.title": enrollment,
                       })}
 
                       <CourseWidgets
