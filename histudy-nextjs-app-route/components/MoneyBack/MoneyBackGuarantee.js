@@ -33,7 +33,7 @@ const MoneyBackGuarantee = ({ settings }) => {
                         <div className="col-md-9 ps-md-4">
                             {settings?.subTitle && (
                                 <div className="section-title text-start mb-3">
-                                    <span className="subtitle bg-primary-opacity">
+                                    <span className="subtitle bg-primary-opacity"style={{color:'#f68816'}}>
                                         {settings.subTitle}
                                     </span>
                                 </div>

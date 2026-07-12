@@ -94,7 +94,7 @@ const MainDemo = ({ blogs }) => {
 						};
 					});
 
-					setTopCourses(adaptedCourses.filter(c => c.status).slice(0, 4));
+					setTopCourses(adaptedCourses.filter(c => c.status).slice(0, ));
 					setTopCoursesWithBestSaller(adaptedCourses.filter(c => c.status && c.is_bestseller).slice(0, 4));
 					setUpcomingCourses(adaptedCourses.filter(c => !c.status).slice(0, 4));
 
@@ -198,7 +198,7 @@ const MainDemo = ({ blogs }) => {
 					<MainDemoBanner courses={topCoursesWithBestSaller} settings={homeSettings.hero_section} loading={loading} />
 					{!homeSettings.hero_section && !loading && <p className="text-center">hero_section I didn't find</p>}
 				</div>
-
+{console.log('topCourses>>>>',topCourses)}
 				{/* Top Courses */}
 				{topCourses && topCourses.length > 0 && (
 					<CourseCarousel
@@ -305,7 +305,7 @@ const MainDemo = ({ blogs }) => {
 				</div>
 
 				{/* Testimonials */}
-				<div className="rbt-event-area rbt-section-gap bg-gradient-3">
+				{/* <div className="rbt-event-area rbt-section-gap bg-gradient-3">
 					<div className="container">
 						<div className="row mb--55">
 							<div className="section-title text-center">
@@ -321,7 +321,7 @@ const MainDemo = ({ blogs }) => {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 
 				{/* Team */}
 				<div className="rbt-team-area bg-color-white rbt-section-gap">

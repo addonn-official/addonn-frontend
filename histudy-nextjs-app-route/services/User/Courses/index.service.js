@@ -55,6 +55,10 @@ export const UserCoursesServices = {
           .replace("{content_id}", content_id),
       };
       const res = await APIrequest(payload);
+
+console.log('sresPPP',res);
+
+
       return res;
     } catch (error) {
       logger(error);

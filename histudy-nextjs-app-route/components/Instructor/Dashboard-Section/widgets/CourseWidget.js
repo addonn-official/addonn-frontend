@@ -416,11 +416,12 @@ const CourseWidget = ({
     <>
       <div className="rbt-card variation-01 rbt-hover">
         <div className="rbt-card-img">
+          
           <Link
 
             href={`/lesson?course_slug=${data?.title?.toLowerCase()
               ?.trim()
-              ?.replace(/\s+/g, "-")}&topic_id=${data?.topics?.[0]?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+              ?.replace(/\s+/g, "-")}&topic_id=${data?.last_watch_topic_id || data?.topics?.[0]?.id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
           >
             {data.courseThumbnail ? (
               <Image
@@ -582,7 +583,7 @@ const CourseWidget = ({
           {/* Review Modal */}
           {showReviewModal && renderPortal()}
 
-         
+
 
           {courseStyle === "one" && (
             <h4 className="rbt-card-title">
@@ -651,29 +652,29 @@ const CourseWidget = ({
       </div>
 
 
-       {/* QR Modal */}
-          {showQRModal && (
-            <div className="modal fade show d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)", position: "fixed", top: "0", left: "0", width: "100%", height: "100%", zIndex: "9999", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setShowQRModal(false)}>
-              {console.log("QR Modal Rendered", showQRModal)}
-              <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: "500px" }} onClick={(e) => e.stopPropagation()}>
-                <div className="modal-content rbt-shadow-box pt--30 pb--30">
-                  <div className="modal-header border-0 pb-0 justify-content-end">
-                    <button type="button" className="btn-close" onClick={() => setShowQRModal(false)}></button>
-                  </div>
-                  <div className="modal-body text-center pt-0">
-                    <i className="feather-help-circle text-primary mb--20" style={{ fontSize: "50px" }}></i>
-                    <h5 className="mb--20">QR Confirmation</h5>
-                    <p>Do you want to print QR on the certificate to publicly access your report card?</p>
-                  </div>
-                  <div className="modal-footer justify-content-center border-0 gap-3">
-                    <button className="rbt-btn btn-gradient btn-sm radius-round-10" style={{ height: "40px", lineHeight: "40px", padding: "0 25px" }} onClick={() => handleDownloadCertificate(true)}>Yes</button>
-                    <button className="rbt-btn btn-border btn-sm radius-round-10" style={{ height: "40px", lineHeight: "40px", padding: "0 25px" }} onClick={() => handleDownloadCertificate(false)}>No</button>
-                    <button className="rbt-btn btn-sm radius-round-10 bg-color-danger-opacity color-danger" style={{ height: "40px", lineHeight: "40px", padding: "0 25px", border: "none" }} onClick={() => setShowQRModal(false)}>Cancel</button>
-                  </div>
-                </div>
+      {/* QR Modal */}
+      {showQRModal && (
+        <div className="modal fade show d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)", position: "fixed", top: "0", left: "0", width: "100%", height: "100%", zIndex: "9999", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setShowQRModal(false)}>
+          {console.log("QR Modal Rendered", showQRModal)}
+          <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: "500px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content rbt-shadow-box pt--30 pb--30">
+              <div className="modal-header border-0 pb-0 justify-content-end">
+                <button type="button" className="btn-close" onClick={() => setShowQRModal(false)}></button>
+              </div>
+              <div className="modal-body text-center pt-0">
+                <i className="feather-help-circle text-primary mb--20" style={{ fontSize: "50px" }}></i>
+                <h5 className="mb--20">QR Confirmation</h5>
+                <p>Do you want to print QR on the certificate to publicly access your report card?</p>
+              </div>
+              <div className="modal-footer justify-content-center border-0 gap-3">
+                <button className="rbt-btn btn-gradient btn-sm radius-round-10" style={{ height: "40px", lineHeight: "40px", padding: "0 25px" }} onClick={() => handleDownloadCertificate(true)}>Yes</button>
+                <button className="rbt-btn btn-border btn-sm radius-round-10" style={{ height: "40px", lineHeight: "40px", padding: "0 25px" }} onClick={() => handleDownloadCertificate(false)}>No</button>
+                <button className="rbt-btn btn-sm radius-round-10 bg-color-danger-opacity color-danger" style={{ height: "40px", lineHeight: "40px", padding: "0 25px", border: "none" }} onClick={() => setShowQRModal(false)}>Cancel</button>
               </div>
             </div>
-          )}
+          </div>
+        </div>
+      )}
     </>
   );
 };

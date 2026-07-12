@@ -19,19 +19,14 @@ const Checkout = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
 
-  const { cart: reduxCart, total_amount: reduxTotal } =
-    useSelector((state) => state.CartReducer);
+  const { cart: reduxCart, total_amount: reduxTotal } = useSelector((state) => state.CartReducer);
 
   const searchParams = useSearchParams();
   const buyNowId = searchParams.get("id");
 
-  const cart = buyNowId
-    ? reduxCart.filter((item) => item.id == buyNowId)
-    : reduxCart;
+  const cart = buyNowId ? reduxCart.filter((item) => item.id == buyNowId) : reduxCart;
 
-  const total_amount = buyNowId
-    ? cart.reduce((total, item) => total + item.price * 1, 0)
-    : reduxTotal;
+  const total_amount = buyNowId ? cart.reduce((total, item) => total + item.price * 1, 0) : reduxTotal;
 
   const [couponOpen, setCouponOpen] = useState(false);
   const [couponCode, setCouponCode] = useState("");

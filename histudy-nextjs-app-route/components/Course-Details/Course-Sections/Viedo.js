@@ -14,6 +14,7 @@ import { getToken, getUser } from "@/utils/storage";
 import { getDaysLeft, getLocalStorageToken, getOfferTime } from "@/utils/common.util";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useSettings } from "@/context/SettingsContext";
+import FreeCheckout from "@/components/FreeCourseEnroll";
 
 const Viedo = ({ checkMatchCourses }) => {
   const pathname = usePathname();
@@ -22,7 +23,8 @@ const Viedo = ({ checkMatchCourses }) => {
   const [hideOnScroll, setHideOnScroll] = useState(false);
   const timeLeft = useCountdown(checkMatchCourses?.days);
   const { settings, loading } = useSettings();
-    const offer = settings?.offer;
+  const offer = settings?.offer;
+  const [courseData, setCourseData] = useState(checkMatchCourses);
 
 
   const disableVideo = [
@@ -81,7 +83,12 @@ const Viedo = ({ checkMatchCourses }) => {
     };
   }, []);
 
-  const offerTime =getOfferTime(offer?.end_date)
+
+  useEffect(() => {
+    setCourseData(checkMatchCourses);
+  }, [checkMatchCourses]);
+
+  const offerTime = getOfferTime(offer?.end_date)
 
   return (
     <>
@@ -150,8 +157,8 @@ const Viedo = ({ checkMatchCourses }) => {
           {checkMatchCourses?.days > 0 && <div className="discount-time">
             {/* offer */}
             <span className="rbt-badge color-danger bg-color-danger-opacity" style={{ color: '#e33e36', background: 'rgba(227, 62, 54, 0.05)' }}>
-              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {offerTime} 
-              
+              <i className="feather-clock" style={{ color: '#e33e36' }}></i> {offerTime}
+
             </span>
           </div>}
         </div>
@@ -163,14 +170,14 @@ const Viedo = ({ checkMatchCourses }) => {
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
               href={`/lesson?course_slug=${checkMatchCourses?.courseTitle?.toLowerCase()
                 ?.trim()
-                ?.replace(/\s+/g, "-")}&topic_id=${checkMatchCourses?.topics?.[0]?.id || checkMatchCourses?.last_watch_topic_id}&content_id=${checkMatchCourses?.last_watch_content_id || checkMatchCourses?.contents?.[0]?.id || checkMatchCourses?.courseContent?.[0]?.contentList?.[0]?.listItem?.[0]?.contentId}`}
+                ?.replace(/\s+/g, "-")}&topic_id=${checkMatchCourses?.last_watch_topic_id || checkMatchCourses?.topics?.[0]?.id}&content_id=${checkMatchCourses?.last_watch_content_id || checkMatchCourses?.contents?.[0]?.id || checkMatchCourses?.courseContent?.[0]?.contentList?.[0]?.listItem?.[0]?.contentId}`}
             >
               <span className="btn-text">Continue Learning</span>
               <span className="btn-icon">
                 <i className="feather-arrow-right"></i>
               </span>
             </Link>
-          ) : (
+          ) : (!checkMatchCourses.isPurchased && checkMatchCourses.price &&
             <Link
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
               href={isAlreadyInCart ? "/cart" : "#"}
@@ -197,9 +204,8 @@ const Viedo = ({ checkMatchCourses }) => {
             </Link>
           )}
         </div>
-
         <div className="buy-now-btn mt--15">
-          {!checkMatchCourses.isPurchased && (
+          {!checkMatchCourses.isPurchased && checkMatchCourses.price ?  (
             <Link
               className="rbt-btn btn-border icon-hover w-100 d-block text-center"
               href="#"
@@ -223,8 +229,37 @@ const Viedo = ({ checkMatchCourses }) => {
                 <i className="feather-arrow-right"></i>
               </span>
             </Link>
+          ) : (
+            // <Link
+            //   className="rbt-btn btn-border icon-hover w-100 d-block text-center"
+            //   href="#"
+            //   onClick={(e) => {
+            //     e.preventDefault();
+            //     const t = getLocalStorageToken() || getToken();
+            //     const u = getUser();
+            //     if (!t && !u) {
+            //       window.location.href = "/login";
+            //     }
+            //   }}
+            // >
+            //   <span className="btn-text">Enroll Now</span>
+            //   <span className="btn-icon">
+            //     <i className="feather-arrow-right"></i>
+            //   </span>
+            // </Link>
+            (!checkMatchCourses.isPurchased && 
+            <FreeCheckout
+              course={courseData}
+              onSuccess={() => {
+                setCourseData(prev => ({
+                  ...prev,
+                  isPurchased: true
+                }));
+              }}
+            />)
           )}
         </div>
+
         <span className="subtitle">
           <i className="feather-rotate-ccw"></i> {checkMatchCourses.hasMoneyBackGuarantee ? `${checkMatchCourses.moneyBackDuration || 30}-Day Money-Back Guarantee` : 'Secure Payment Gateway'}
         </span>

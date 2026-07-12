@@ -94,9 +94,10 @@ export const CartReducer = (state = init, action) => {
     const { total_items, total_amount } = state.cart.reduce(
       (total, cartItem) => {
         const { amount, price } = cartItem;
+console.log('total_amount>>>>',cartItem);
 
         total.total_items += amount;
-        total.total_amount += price * amount;
+        total.total_amount += price ;
         return total;
       },
       {
@@ -104,6 +105,9 @@ export const CartReducer = (state = init, action) => {
         total_amount: 0,
       }
     );
+
+
+
     return {
       ...state,
       total_items,

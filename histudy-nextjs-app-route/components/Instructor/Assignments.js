@@ -192,7 +192,7 @@ const Assignments = () => {
                 </tr>
               </thead>
               <tbody>
-                {submissions?.contents?.length > 5 ? (
+                {submissions?.contents?.length > 0 ? (
                   submissions?.contents?.map((assignment, index) => {
                     const assSubm = assignment?.latest_submission
                     const is_approved = assSubm?.application_status;

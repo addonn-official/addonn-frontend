@@ -42,7 +42,7 @@ const ServiceSplash = ({ settings }) => {
             <div className="col-lg-12">
                 <div className="section-title text-center">
                     {settings?.subTitle && (
-                        <span className="subtitle bg-primary-opacity">
+                        <span className="subtitle bg-primary-opacity" style={{color:'#f68816'}}>
                             {settings.subTitle}
                         </span>
                     )}

@@ -105,7 +105,6 @@ const FooterThree = () => {
                   {Object.entries(footerSocial || {}).map(
                     ([platform, url]) => (
                       <li key={platform}>
-                        {console.log(platform)}
                         <Link
                           href={url?.startsWith("http") ? url : `https://${url}`}
                           target="_blank"

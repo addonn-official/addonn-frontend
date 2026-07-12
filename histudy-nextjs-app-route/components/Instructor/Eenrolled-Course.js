@@ -12,7 +12,7 @@ const EnrolledCourses = () => {
   const u = userData || {};
 
   const mapEnrollmentToCourse = (enrollment) => {
-    const c = enrollment.course || {};
+    const c = enrollment?.course || {};
     return {
       enrollment_id: enrollment.id,
       last_watch_topic_id: c.last_watch_topic_id,
@@ -24,28 +24,28 @@ const EnrolledCourses = () => {
       total_watched_in_txt: c.total_watched_in_txt,
       total_remaining_watched_in_txt: c.total_remaining_watched_in_txt,
 
-      id: c.id,
-      title: c.title,
-      lectures: c.number_of_lectures,
-      courseDuration: c.duration || "N/A",
-      enrolledStudent: c.enrolled_users_count || "N/A",
-      courseThumbnail: c.file?.url || "/images/course/course-01.jpg",
-      coursePrice: c.actual_price,
-      offerPrice: c.discounted_price,
-      progressValue: enrollment.completion_percentage,
-      certificateStatus: enrollment.certificate_status,
-      certificateMessage: enrollment.certificate_message,
-      userReviewText: enrollment.review?.review || "",
-      userRating: enrollment.review?.rating || 0,
-      userReviews: c.reviews,
-      progress: c.progres,
+      id: c?.id,
+      title: c?.title,
+      lectures: c?.number_of_lectures,
+      courseDuration: c?.duration || "N/A",
+      enrolledStudent: c?.enrolled_users_count || "N/A",
+      courseThumbnail: c?.file?.url || "/images/course/course-01.jpg",
+      coursePrice: c?.actual_price,
+      offerPrice: c?.discounted_price,
+      progressValue: enrollment?.completion_percentage,
+      certificateStatus: enrollment?.certificate_status,
+      certificateMessage: enrollment?.certificate_message,
+      userReviewText: enrollment?.review?.review || "",
+      userRating: enrollment?.review?.rating || 0,
+      userReviews: c?.reviews,
+      progress: c?.progress,
       rating: {
         average: c.reviews_avg_rating || 0,
       },
       reviews: {
         oneStar: 0, twoStar: 0, threeStar: 0, fourStar: 0, fiveStar: 0, // Mocking for now
       },
-      certificate:enrollment.certificate
+      certificate: enrollment.certificate
     };
   };
 
@@ -134,7 +134,14 @@ const EnrolledCourses = () => {
                     <div
                       className="col-lg-4 col-md-6 col-12"
                       key={`course-enrolled-${index}`}
+                      onClick={() => console.log('data?.title>>>', enrollment.course?.title)}
                     >
+
+
+                      {console.log({
+                        enrollment
+                      })}
+
                       <CourseWidgets
                         data={mapEnrollmentToCourse(enrollment)}
                         courseStyle="two"
