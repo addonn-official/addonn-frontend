@@ -66,7 +66,7 @@ const ContactForm = ({ gap }) => {
             <div className="col-lg-6">
               <div className="rbt-contact-form contact-form-style-1 max-width-auto">
                 <div className="section-title text-start">
-                  <span className="subtitle bg-primary-opacity">
+                  <span className="subtitle bg-secondry-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
                     Connect With Us
                   </span>
                 </div>

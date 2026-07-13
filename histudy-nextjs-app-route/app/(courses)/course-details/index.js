@@ -110,23 +110,15 @@ const SingleCourse = ({ getParams }) => {
       try {
         if (courseId) {
 
-
           const offer = settings?.offer;
 
-          const leftDays =
-            offer?.end_date
-              ? getDaysLeft(offer.end_date)
-              : 0;
+          const leftDays = offer?.end_date ? getDaysLeft(offer.end_date) : 0;
 
           const singleCourseRes = await UserCoursesServices.UserGetCourse(courseId);
-
-
-
 
           if (singleCourseRes && singleCourseRes.status === "success" && isMounted) {
             const apiData = singleCourseRes.data;
             const instructors = apiData.instructors?.map((instructor) => (instructor))
-            console.log('v>>>>singleCourseRes>>>>', apiData);
 
             // const x = apiData.topics?.map(topic => (topic.course_contents?.map(content => (content))))
             const adaptedData = {

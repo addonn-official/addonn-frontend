@@ -33,7 +33,7 @@ const Counter = ({ isDesc, head, settings }) => {
             {head === undefined && settings?.heading ? (
               <div className="section-title text-center mb--40">
                 {settings?.subTitle && (
-                  <span className="subtitle bg-primary-opacity">
+                  <span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
                     {settings.subTitle}
                   </span>
                 )}

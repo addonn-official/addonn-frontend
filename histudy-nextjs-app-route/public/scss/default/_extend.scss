@@ -425,14 +425,21 @@
 ---------------------------------------*/
 
 .bg-primary-opacity {
-    background: var(--primary-opacity) !important;
-    color: var(--color-primary) !important;
+    // background: var(--primary-opacity) !important;
+    // color: var(--color-primary) !important;
 }
 
 .bg-secondary-opacity {
-    background: var(--secondary-opacity) !important;
+    // background: var(--secondary-opacity) !important;
     // color: var(--color-secondary) !important;
 }
+
+.btn-gradient-tab{
+    background: "linear-gradient(90deg, #673AB7 0%, #7b54dc 100%)",
+
+}
+
+
 
 .bg-coral-opacity {
     background: var(--coral-opacity) !important;

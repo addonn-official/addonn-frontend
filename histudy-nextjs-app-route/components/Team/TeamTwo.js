@@ -76,7 +76,7 @@ const TeamTwo = () => {
         <div className="row mb--60">
           <div className="col-lg-12">
             <div className="section-title text-center">
-              <span className="subtitle bg-primary-opacity">Our Instructors</span>
+              <span className="subtitle bg-secondry-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>Our Instructors</span>
               <h2 className="title">Turning Curiosity into Capability</h2>
             </div>
           </div>

@@ -198,7 +198,6 @@ const MainDemo = ({ blogs }) => {
 					<MainDemoBanner courses={topCoursesWithBestSaller} settings={homeSettings.hero_section} loading={loading} />
 					{!homeSettings.hero_section && !loading && <p className="text-center">hero_section I didn't find</p>}
 				</div>
-{console.log('topCourses>>>>',topCourses)}
 				{/* Top Courses */}
 				{topCourses && topCourses.length > 0 && (
 					<CourseCarousel
@@ -281,7 +280,7 @@ const MainDemo = ({ blogs }) => {
 						<div className="row align-items-center">
 							<div className="col-lg-3 left-content">
 								<div className="section-title">
-									<span className="subtitle bg-primary-opacity">
+									<span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
 										REVIEWS
 									</span>
 									<h2 className="title">
@@ -345,7 +344,7 @@ const MainDemo = ({ blogs }) => {
 				<div className="rbt-team-area rbt-section-gap">
 					<div className="container">
 						<div className="section-title text-center">
-							<span className="subtitle bg-primary-opacity">FAQ's</span>
+							<span className="subtitle bg-secondry-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>FAQ's</span>
 						</div>
 						<div className="row">
 							{categories.length > 0 ? (

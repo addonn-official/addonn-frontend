@@ -10,6 +10,7 @@ import { refundRequestAction, resetRefundRequest } from "@/redux/action/OrderAct
 const OrderHistory = () => {
   const { userData, loadingUser } = useAppContext();
   const [refundStatusMap, setRefundStatusMap] = useState({});
+  const { isLightTheme } = useAppContext();
 
   const [isRefundReq, setIsRefundReq] = useState(false)
   const [refundReqReason, setRefundReqReason] = useState('')
@@ -126,7 +127,7 @@ const OrderHistory = () => {
                     Course/Bundle
                   </th>
 
-                  <th style={{ minWidth: "150px" }}>
+                  <th style={{ minWidth: "300px", textAlign: "center" }}>
                     Date
                   </th>
 
@@ -145,6 +146,10 @@ const OrderHistory = () => {
                   <th style={{ minWidth: "150px" }}>
                     Refund
                   </th>
+
+                  <th style={{ minWidth: "120px" }}>
+                    Coupon
+                  </th>
                 </tr>
               </thead>
 
@@ -153,11 +158,13 @@ const OrderHistory = () => {
                   orders.map((order, index) => {
                     const { date, time } = formatDate(order.created_at);
                     const statusText = normalizeOrderStatus(order);
-                    const orderRefundStatus = order?.status_label || "";
+                    const orderRefundStatus = order?.refund?.status || "";
                     const infoMessage = getInfoMessage(order);
 
-                    const canRefund = order?.status === "paid" || order?.status === "partially_refunded" && !orderRefundStatus;
-                    console.log('order>>>>', order)
+                    const canRefund = order?.can_request_refund
+                    const orderStatus = order?.transaction?.status?.charAt(0).toUpperCase() + order?.transaction?.status?.slice(1)
+
+                    console.log('order>>>>', order?.can_request_refund)
 
                     return (
                       <tr key={index}
@@ -175,10 +182,10 @@ const OrderHistory = () => {
                         >{order.items?.map((item) => item.course?.title).join(", ") || "N/A"}</div></td>
                         <td>
                           <td>
-                            <div className="fw-bold">{date}</div>
-                            <small className="text">
-                              {time}
-                            </small>
+                            <div className="fw-bold">{date} {" "}   {time}</div>
+                            {/* <small className="text"> */}
+
+                            {/* </small> */}
                           </td>
                         </td>
                         <td>₹{order.final_amount}</td>
@@ -195,7 +202,7 @@ const OrderHistory = () => {
                                   : "bg-color-danger-opacity color-danger"
                                 } fs-2`}
                             >
-                              {order?.transaction?.status.charAt(0).toUpperCase() + order?.transaction?.status.slice(1)}
+                              {orderStatus}
                             </span>
                             {infoMessage ? (
                               <button
@@ -226,7 +233,7 @@ const OrderHistory = () => {
                             {canRefund ? (
                               <button
                                 type="button"
-                                className="rbt-btn btn-xs bg-color-danger-opacity radius-round color-danger"
+                                className="rbt-btn btn-xs bg-color-danger radius-round color-light"
                                 onClick={() => handleRefundClick(order?.id)}
                               // disabled={Number(order.final_amount) === 0}    
                               >
@@ -234,7 +241,17 @@ const OrderHistory = () => {
                               </button>
                             ) :
                               orderRefundStatus ? (
-                                <span className="b3">{orderRefundStatus}</span>
+                                <button
+                                  type="button"
+                                  className="rbt-btn btn-xs radius-round color-light"
+                                  // className={`b3 `}
+                                  style={{
+                                    backgroundColor:
+                                      orderRefundStatus === "rejected" ? "#cfcaca"
+                                        : orderRefundStatus === "requested" ? "#f97316"
+                                          : orderRefundStatus === "approved" ? "#16a34a" : "#e7120b",
+                                  }}
+                                >{orderRefundStatus}</button>
                               ) : (
                                 <span className="b3">-</span>
                               )}
@@ -269,7 +286,7 @@ const OrderHistory = () => {
 
                   {/* Header */}
                   <div className="modal-header">
-                    <h5 className="modal-title">
+                    <h5 className={`modal-title ${isLightTheme ? "text-dark" : "text-dark"}`}>
                       Refund Request
                     </h5>
 
@@ -285,11 +302,11 @@ const OrderHistory = () => {
 
                     {/* Refund Type */}
                     <div className="mb-4">
-                      <label className="form-label fw-semibold">
+                      <label className={`form-label fw-semibold  ${isLightTheme ? "text-dark" : "text-dark"}`}>
                         Refund Type
                       </label>
 
-                      <div className="d-flex flex-wrap gap-4">
+                      <div className={`d-flex flex-wrap gap-4  ${isLightTheme ? "text-dark" : "text-dark"}`}>
 
                         <div className="form-check">
                           <input
@@ -310,7 +327,7 @@ const OrderHistory = () => {
                           </label>
                         </div>
 
-                        <div className="form-check">
+                        {/* <div className="form-check">
                           <input
                             className="form-check-input"
                             type="radio"
@@ -327,7 +344,7 @@ const OrderHistory = () => {
                           >
                             Partial Amount
                           </label>
-                        </div>
+                        </div> */}
 
                       </div>
                     </div>
@@ -353,13 +370,13 @@ const OrderHistory = () => {
                     )}
 
                     {/* Reason */}
-                    <div>
+                    <div className={`${isLightTheme ? "text-dark" : "text-dark"}`}>
                       <label className="form-label fw-semibold">
                         How can we Improve?
                       </label>
 
                       <textarea
-                        className="form-control"
+                        className="form-control bg-light text-dark"
                         rows="4"
                         placeholder="Some suggestions for us..."
                         value={refundReqReason}

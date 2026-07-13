@@ -58,9 +58,9 @@ const ComparisonTable = ({ settings }) => {
     <section className="comparison-section bg-color-extra2 ">
       <div className="container">
         {/* SECTION TITLE */}
-        <div className="comparison-title-wrapper">
+        <div className="section-title text-center">
           {settings?.subTitle && (
-            <span className="comparison-subtitle">
+            <span className="subtitle bg-secondry-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
               {settings?.subTitle}
             </span>
           )}

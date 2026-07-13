@@ -190,7 +190,8 @@ const Viedo = ({ checkMatchCourses }) => {
                 <i className="feather-arrow-right"></i>
               </span>
             </Link>
-          ) : (!checkMatchCourses.isPurchased && checkMatchCourses.price &&
+          ) : (
+            !checkMatchCourses.isPurchased && checkMatchCourses.price !== 0 &&
             <Link
               className="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
               href={isAlreadyInCart ? "/cart" : "#"}
@@ -217,6 +218,9 @@ const Viedo = ({ checkMatchCourses }) => {
             </Link>
           )}
         </div>
+
+
+
         <div className="buy-now-btn mt--15">
           {!checkMatchCourses.isPurchased && checkMatchCourses.price ? (
             <Link

@@ -14,7 +14,7 @@ const CourseCarousel = ({ courses, title, subTitle, isComingSoon, sectionId }) =
           <div className="col-lg-12">
             <div className="section-title text-center">
               {subTitle && (
-                <span className="subtitle bg-secondary-opacity" style={{color:'#f68816'}}>
+                <span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
                   {subTitle}
                 </span>
               )}
