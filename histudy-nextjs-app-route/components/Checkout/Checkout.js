@@ -25,6 +25,7 @@ const Checkout = () => {
   const buyNowId = searchParams.get("id");
 
   const cart = buyNowId ? reduxCart.filter((item) => item.id == buyNowId) : reduxCart;
+  console.log('cart>>>', cart);
 
   const total_amount = buyNowId ? cart.reduce((total, item) => total + item.price * 1, 0) : reduxTotal;
 

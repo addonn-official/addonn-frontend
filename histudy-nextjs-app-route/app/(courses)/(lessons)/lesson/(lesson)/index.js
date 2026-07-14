@@ -920,14 +920,16 @@ const LessonPage = () => {
                   <p className="mb--0 text-secondary">{latestSubmission?.feedback}</p>
                 </div>
               )}
-              {latestSubmission && <div className="mt--20 text-secondary small">
-                <p className="mb--0">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
-                {/* <p className="mb--0">Attempt: {latestSubmission.attempt}</p> */}
-              </div>}
+              {latestSubmission &&
+                <div className="mt--20 text-secondary small">
+                  <p className="mb--0">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
+                  {/* <p className="mb--0">Attempt: {latestSubmission.attempt}</p> */}
+                </div>
+              }
 
               {/* Not submitted status */}
               {<div className="bg-color-white rbt-shadow-box p--30">
-                {!latestSubmission &&
+                {/* {!latestSubmission &&
                   <div className="submission-status-item mb--20 d-flex align-items-center gap-3">
                     <span className="h6 mb--0 text-white">Status:</span>
                     <span className={`status-badge ${latestSubmission?.is_approved ? "approved" : "pending"}`}
@@ -944,7 +946,7 @@ const LessonPage = () => {
                       {latestSubmission?.application_status}
                     </span>
                   </div>
-                }
+                } */}
                 {/* 
                 {latestSubmission?.feedback && (
                   <div className="submission-feedback mt--20 p--15 bg-color-light rounded shadow-sm">
@@ -1012,7 +1014,7 @@ const LessonPage = () => {
         ) :
           (
             <div className="bg-color-white rbt-shadow-box p--30">
-              {latestSubmission?.application_status === 'Rejected' &&
+              {latestSubmission?.application_status !== 'Rejected' &&
                 <div className="submission-status-item mb--20 d-flex align-items-center gap-3">
                   <span className="h6 mb--0 text-white">Status:</span>
                   <span className={`status-badge ${latestSubmission?.is_approved ? "approved" : "pending"}`}
@@ -1041,7 +1043,7 @@ const LessonPage = () => {
                 <p className="mb-4">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
               </div>
 
-              <form onSubmit={handleAssignmentSubmit}>
+              {latestSubmission.application_status !== 'Pending' && <form onSubmit={handleAssignmentSubmit}>
                 <div className="assignment-answer-form mb--20">
                   <textarea
                     rows="6"
@@ -1089,7 +1091,7 @@ const LessonPage = () => {
                     </span>
                   </button>
                 </div>
-              </form>
+              </form>}
             </div>
           )}
       </div>
@@ -1270,10 +1272,6 @@ const LessonPage = () => {
         String(c.commentable.id) === String(content_id)
     )
     : comments;
-
-  console.log("Filtered Count", filteredComments.length);
-  console.log("Original Count", comments.length);
-  console.log("Filtered Data", filteredComments);
 
   // ── Overall course progress for header indicator ──
   const calculateOverallProgress = () => {

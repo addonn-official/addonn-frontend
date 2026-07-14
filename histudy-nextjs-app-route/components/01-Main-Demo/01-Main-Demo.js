@@ -94,7 +94,7 @@ const MainDemo = ({ blogs }) => {
 						};
 					});
 
-					setTopCourses(adaptedCourses.filter(c => c.status).slice(0, ));
+					setTopCourses(adaptedCourses.filter(c => c.status).slice(0,));
 					setTopCoursesWithBestSaller(adaptedCourses.filter(c => c.status && c.is_bestseller).slice(0, 4));
 					setUpcomingCourses(adaptedCourses.filter(c => !c.status).slice(0, 4));
 
@@ -304,11 +304,11 @@ const MainDemo = ({ blogs }) => {
 				</div>
 
 				{/* Testimonials */}
-				{/* <div className="rbt-event-area rbt-section-gap bg-gradient-3">
+				<div className="rbt-event-area rbt-section-gap bg-gradient-3">
 					<div className="container">
 						<div className="row mb--55">
 							<div className="section-title text-center">
-								<span className="subtitle bg-white-opacity">
+								<span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
 									Testimonials
 								</span>
 								<h2 className="title color-white">Hear directly from our learners</h2>
@@ -320,7 +320,7 @@ const MainDemo = ({ blogs }) => {
 							</div>
 						</div>
 					</div>
-				</div> */}
+				</div>
 
 				{/* Team */}
 				<div className="rbt-team-area bg-color-white rbt-section-gap">

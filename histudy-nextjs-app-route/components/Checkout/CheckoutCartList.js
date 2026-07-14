@@ -102,7 +102,7 @@ const CheckoutCartList = ({ cart, buyNowId }) => {
                                             Rs.{" "}
                                             {buyNowId
                                                 ? data.product.price
-                                                : data.product.price * data.amount}
+                                                : data.product.price}
                                         </span>
                                     </td>
 
