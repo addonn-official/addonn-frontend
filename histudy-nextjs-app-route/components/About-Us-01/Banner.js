@@ -8,7 +8,7 @@ const Banner = ({ props }) => {
           <div className="col-lg-12">
             <div className="inner text-center">
               <div className="section-title mb--20">
-                <span className="subtitle bg-coral-opacity">How We Work</span>
+                <span className="subtitle bg-secondary-opacity"  style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>How We Work</span>
               </div>
               <h1 className="title display-one text-white">
                 {props?.bannerarea_title}

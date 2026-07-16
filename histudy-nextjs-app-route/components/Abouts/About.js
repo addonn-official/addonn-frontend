@@ -27,7 +27,7 @@ const About = ({ props }) => {
         <div className="col-lg-6">
           <div className="inner pl--50 pl_sm--0 pl_md--0">
             <div className="section-title text-start">
-              <span className="subtitle bg-coral-opacity">KNOW ABOUT US</span>
+              <span className="subtitle bg-secondary-opacity"  style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>KNOW ABOUT US</span>
               <h2 className="title">
                 {props?.title} <br />
               </h2>

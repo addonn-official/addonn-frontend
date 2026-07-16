@@ -1,3 +1,5 @@
+// CourseDetailsOne is in use
+
 import Content from "./Course-Sections/Content";
 import CourseBanner from "./Course-Sections/Course-Banner";
 import CourseMenu from "./Course-Sections/Course-Menu";
@@ -33,7 +35,7 @@ const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
             id="coursecontent"
           >
             {checkMatchCourses && checkMatchCourses.courseContent.map((data, index) => (
-              <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} />
+              <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} lesson={checkMatchCourses.lesson} />
             ))}
           </div>
 
@@ -68,10 +70,9 @@ const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
             className="rbt-instructor rbt-shadow-box intructor-wrapper mt--30"
             id="intructor"
           >
-            {checkMatchCourses &&
-              checkMatchCourses.courseInstructor.map((data, index) => (
-                <Instructor {...data} key={index} checkMatchCourses={data} />
-              ))}
+            {checkMatchCourses && checkMatchCourses.courseInstructor.map((data, index) => (
+              <Instructor {...data} key={index} checkMatchCourses={data} />
+            ))}
           </div>
           <div
             className="rbt-review-wrapper rbt-shadow-box review-wrapper mt--30"
@@ -86,10 +87,9 @@ const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
             ))}
         </div>
         <div className="related-course mt--60">
-          {checkMatchCourses &&
-            checkMatchCourses.relatedCourse.map((data, index) => (
-              <RelatedCourse {...data} key={index} checkMatchCourses={data} />
-            ))}
+          {checkMatchCourses && checkMatchCourses.relatedCourse.map((item, index) => (
+            <RelatedCourse {...data} key={index} checkMatchCourses={item} />
+          ))}
         </div>
       </div>
 

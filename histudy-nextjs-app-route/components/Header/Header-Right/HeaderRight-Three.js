@@ -17,7 +17,7 @@ const HeaderRightThree = ({ btnClass, btnText }) => {
   return (
     <div className="header-right">
       <ul className="quick-access">
-        <li className="access-icon">
+        <li className="access-icon">ss
           <Link
             className={`search-trigger-active rbt-round-btn ${search ? "" : "open"}`}
             href="#"

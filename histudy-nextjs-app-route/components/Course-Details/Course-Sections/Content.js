@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import "venobox/dist/venobox.min.css";
 import Link from "next/link";
 
-const Content = ({ checkMatchCourses, courseSlug }) => {
+const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
   const router = useRouter();
   const { userData, fetchUserProfile } = useAppContext();
   const [expandedLessons, setExpandedLessons] = React.useState([]);
@@ -102,6 +102,7 @@ const Content = ({ checkMatchCourses, courseSlug }) => {
         </div>
         <div className="rbt-accordion-style rbt-accordion-02 accordion">
           <div className="accordion" id="accordionExampleb2">
+
             {checkMatchCourses.contentList.map((item, innerIndex) => (
 
               <div className="accordion-item card" key={innerIndex}>
@@ -124,7 +125,7 @@ const Content = ({ checkMatchCourses, courseSlug }) => {
                     </span>
                     <span className="accordion-title-right">
                       {item.listItem?.length > 0 && (
-                        <span className="lec-count">{item.listItem.length} lectures</span>
+                        <span className="lec-count">{lesson} lectures</span>
                       )}
                       {item.time && (
                         <span className="section-time">{item.time}</span>
@@ -176,7 +177,7 @@ const Content = ({ checkMatchCourses, courseSlug }) => {
                                           aria-label={isExpanded ? "Collapse summary" : "Expand summary"}
                                           onClick={(e) => {
                                             e.preventDefault();
-                                            e.stopPropagation();
+                                            e.scheckMatchCoursestopPropagation();
                                             toggleLessonSummary(e, lessonId);
                                           }}
                                         >
@@ -186,16 +187,16 @@ const Content = ({ checkMatchCourses, courseSlug }) => {
                                     </div>
                                     {list.summary && isExpanded && (
                                       <div className="lesson-summary-content mt--5"
-                                      onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            router.push(
-                                              `/lesson?course_slug=${courseSlug}&topic_id=${list.topicId}&content_id=${list.contentId}`
-                                            );
-                                          }}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          router.push(
+                                            `/lesson?course_slug=${courseSlug}&topic_id=${list.topicId}&content_id=${list.contentId}`
+                                          );
+                                        }}
                                       >
                                         <p style={{ fontSize: "14px" }}>{list.summary}</p>
-                                       
+
                                       </div>
                                     )}
                                   </div>

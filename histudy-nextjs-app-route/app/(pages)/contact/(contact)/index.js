@@ -32,7 +32,7 @@ const ContactPage = () => {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="section-title text-center mb--60">
-                    <span className="subtitle bg-secondary-opacity">
+                    <span className="subtitle bg-secondary-opacity"  style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
                       Contact Us
                     </span>
                     {loading ? (

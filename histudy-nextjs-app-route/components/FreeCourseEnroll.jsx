@@ -5,10 +5,13 @@ import Swal from "sweetalert2";
 import { UserOrderServices } from "@/services/User";
 import { getToken, getUser } from "@/utils/storage";
 import { getLocalStorageToken } from "@/utils";
+import { useRouter } from "next/navigation";
+
 // import { getLocalStorageToken, getToken, getUser } from "@/utils/auth";
 
 const FreeCheckout = ({ course, onSuccess }) => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleEnroll = async () => {
     try {
@@ -55,24 +58,45 @@ const FreeCheckout = ({ course, onSuccess }) => {
         );
       }
 
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Course enrolled successfully.",
-        confirmButtonText: "OK",
-      });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Success",
+      //   text: "Course enrolled successfully.",
+      //   confirmButtonText: "OK",
+      // });
 
       // if (onSuccess) {
       //   await onSuccess();
       // }
 
+      // if (verifyRes?.status === "success") {
+      //   // Parent ko notify karo
+      //   onSuccess?.({
+      //     courseId: course.id,
+      //     isPurchased: true,
+      //     data: verifyRes.data,
+      //   });
+
+      //   router.push("/instructor-enrolled-course");
+      // }
+
       if (verifyRes?.status === "success") {
-        // Parent ko notify karo
+        await Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Course enrolled successfully.",
+          confirmButtonText: "OK",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+
         onSuccess?.({
           courseId: course.id,
           isPurchased: true,
           data: verifyRes.data,
         });
+
+        router.push("/instructor-enrolled-course");
       }
     } catch (err) {
       console.error(err);

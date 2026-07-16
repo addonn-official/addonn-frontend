@@ -28,9 +28,6 @@ const AboutUsPage = () => {
   // Use centralized settings from SettingsContext — avoids duplicate API call
   const { settings: homeSettings, loading } = useSettings();
 
-  console.log('homeSettings>>>>', homeSettings?.aboutus_section);
-
-
   return (
     <>
       <Provider store={Store}>
@@ -98,14 +95,14 @@ const AboutUsPage = () => {
               <div className="row align-items-center">
                 <div className="col-lg-3 left-content">
                   <div className="section-title">
-                    <span className="subtitle bg-primary-opacity">
-                      EDUCATION FOR EVERYONE
+                    <span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
+                      REVIEWS
                     </span>
                     <h2 className="title">
                       What Our <br /> Learners Say
                     </h2>
                   </div>
-                  <p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p>
+                  {/* <p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p> */}
                   <div className="mt--30">
                     <Link href="/review" className="rbt-btn btn-gradient">
                       View All Reviews
@@ -126,10 +123,10 @@ const AboutUsPage = () => {
             <div className="container">
               <div className="row mb--55">
                 <div className="section-title text-center">
-                  <span className="subtitle bg-white-opacity">
-                    STIMULATED TO TAKE PART IN?
+                  <span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
+                    Testimonials
                   </span>
-                  <h2 className="title color-white">Testimonials</h2>
+                  <h2 className="title color-white">Hear directly from our learners</h2>
                 </div>
               </div>
               <div className="row">

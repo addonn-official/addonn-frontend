@@ -82,7 +82,8 @@ const HeaderRightTwo = ({ btnClass, btnText, userType }) => {
 
             {cart?.length > 0 && (
               <span
-                className={`position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary ${isLightTheme ? 'text-light' : 'text-light'}`}
+                style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
+                className={`position-absolute top-0 start-100 translate-middle badge rounded-pill  ${isLightTheme ? 'text-light' : 'text-light'}`}
               >
                 {cart.length > 99 ? "99+" : cart.length}
               </span>
