@@ -10,6 +10,7 @@ import { isValidCouponFormat } from "@/validations/coupon";
 import CheckoutCartList from "./CheckoutCartList";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { useAppContext } from "@/context/Context";
 
 const Checkout = () => {
   const [hoverTerms, setHoverTerms] = useState(false);
@@ -25,7 +26,6 @@ const Checkout = () => {
   const buyNowId = searchParams.get("id");
 
   const cart = buyNowId ? reduxCart.filter((item) => item.id == buyNowId) : reduxCart;
-  console.log('cart>>>', cart);
 
   const total_amount = buyNowId ? cart.reduce((total, item) => total + item.price * 1, 0) : reduxTotal;
 
@@ -39,6 +39,7 @@ const Checkout = () => {
   const [error, setError] = useState(null);
 
   const router = useRouter();
+  const { isLightTheme } = useAppContext();
 
   const handleApplyCoupon = async () => {
     setCouponError(null);
@@ -278,7 +279,7 @@ const Checkout = () => {
                       className="checkout-coupon-toggle d-flex justify-content-between align-items-center"
                       onClick={() => setCouponOpen(!couponOpen)}
                     >
-                      <span>Got a coupon? Enter here</span>
+                      <span className={isLightTheme ? "text-dark" : "text-light"}>Got a coupon? Enter here</span>
                       <i
                         className={`feather-${couponOpen ? "chevron-up" : "chevron-down"
                           }`}

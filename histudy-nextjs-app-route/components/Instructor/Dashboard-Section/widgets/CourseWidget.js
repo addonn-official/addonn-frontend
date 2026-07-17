@@ -7,15 +7,7 @@ import Image from "next/image";
 import { showError, showSuccess } from "../../../../utils";
 import { UserReviewServices, CertificateServices } from "../../../../services/User";
 
-const CourseWidget = ({
-  data,
-  courseStyle,
-  showDescription,
-  showAuthor,
-  isProgress,
-  isCompleted,
-  isEdit,
-}) => {
+const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgress, isCompleted, isEdit, }) => {
   const [userRating, setUserRating] = useState(data.rating.average || 0);
   const [reviewText, setReviewText] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
@@ -413,16 +405,7 @@ const CourseWidget = ({
 
 
 
-  console.log("Rendering", data.title, {
-    last_watch_topic_id: data?.last_watch_topic_id,
-    topic0: data?.contents?.[0]?.topic?.id,
-    href: `/lesson?course_slug=${data?.title
-      ?.toLowerCase()
-      ?.trim()
-      ?.replace(/\s+/g, "-")}&topic_id=${data?.last_watch_topic_id || data?.contents?.[0]?.topic?.id
-      }&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id
-      }`,
-  });
+  console.log("Rendering", data);
 
   const topicId = data?.last_watch_topic_id ?? data?.contents?.[0]?.topic?.id;
 
@@ -545,7 +528,7 @@ const CourseWidget = ({
             </li>
             <li>
               <i className="feather-clock" />
-              {data?.progress?.total} Duration
+              {data?.duration} Duration
             </li>
           </ul>
 

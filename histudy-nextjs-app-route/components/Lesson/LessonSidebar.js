@@ -39,13 +39,14 @@ const CircleProgress = ({ percent }) => {
         <circle
           cx="44" cy="44" r={r}
           fill="none"
-          stroke={strokeColor}
+          stroke="#eb9d4bfc"
+          // stroke={strokeColor}
           strokeWidth="6"
           strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={offset}
           transform="rotate(-90 44 44)"
-          style={{ transition: "stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)" }}
+          style={{ transition: "stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)", color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
         />
         <text x="44" y="46" textAnchor="middle" dominantBaseline="middle" className="sidebar-cp-pct">
           {percent}%
@@ -90,6 +91,7 @@ const ItemRing = ({ percent }) => {
         <circle
           cx="18" cy="18" r={r}
           fill="none"
+          // stroke="#eb9d4bfc" 
           stroke={`url(#${gradId})`}
           strokeWidth="3"
           strokeLinecap="round"
@@ -177,6 +179,30 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
   const totalContents = topics.reduce((acc, t) => acc + (t.course_contents?.length || 0), 0);
   const totalSecondsAll = topics.reduce((acc, t) =>
     acc + (t.course_contents || []).reduce((a, c) => a + toTotalSeconds(c.hours, c.minutes, c.seconds), 0), 0);
+
+
+  const totalSeconds = topics.reduce((topicAcc, topic) => {
+    return (
+      topicAcc +
+      (topic.course_contents || []).reduce((contentAcc, content) => {
+        return (
+          contentAcc +
+          (content.hours || 0) * 3600 +
+          (content.minutes || 0) * 60 +
+          (content.seconds || 0)
+        );
+      }, 0)
+    );
+  }, 0);
+
+
+const hours = Math.floor(totalSeconds / 3600);
+const minutes = Math.floor((totalSeconds % 3600) / 60);
+const seconds = totalSeconds % 60;
+const totalDuration = `${hours}h ${minutes}m`;
+
+// const totalDuration = `${hours}h ${minutes}m ${seconds}s`;
+
 
   const watchedSeconds = topics.reduce((acc, t) => {
     return acc + (t.course_contents || []).reduce((a, c) => {
@@ -290,7 +316,8 @@ const LessonSidebar = ({ courseData, courseSlug, currentVideoProgress, lessonPro
 
             <div className="sidebar-progress-stats">
               <div className="sidebar-stat">
-                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{normalizeDuration(formatTime(totalSecondsAll))}</span></span>
+                {/* {console.log('totalDuration>>>', totalSeconds)} */}
+                <span className="sidebar-stat-label text-white">Total: <span className="text-primary">{totalDuration}</span></span>
               </div>
               <div className="sidebar-stat">
                 <span className="sidebar-stat-label text-white">Played: <span className="text-secondary">{formatTime(watchedSeconds)}</span></span>

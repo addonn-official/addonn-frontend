@@ -58,7 +58,7 @@ const CourseActionBottom = ({ checkMatchCourses }) => {
                       href="#"
                     >
                       <span className="icon-reverse-wrapper">
-                        <span className="btn-text">Purchase Now</span>
+                        <span className="btn-text">Enroll Now</span>
                         <span className="btn-icon">
                           <i className="feather-arrow-right"></i>
                         </span>

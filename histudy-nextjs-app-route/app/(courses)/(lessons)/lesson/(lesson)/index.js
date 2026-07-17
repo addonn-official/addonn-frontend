@@ -1391,7 +1391,8 @@ const LessonPage = () => {
                   <button
                     className="lesson-content-tab-btn active"
                     onClick={scrollToSubmission}
-                    style={{ borderRadius: '8px', marginLeft: showTabs ? '10px' : '0' }}
+                    style={{ borderRadius: '8px', marginLeft: showTabs ? '10px' : '0',color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
+
                   >
                     <i className="feather-external-link"></i> Submission
                   </button>
@@ -1467,8 +1468,8 @@ const LessonPage = () => {
                                         className="lesson-chat-filter-input"
                                         style={{ backgroundColor: "transparent", color: "white", cursor: "pointer", border: "none", outline: "none", width: "100%", paddingLeft: "10px" }}
                                       >
-                                        <option value="current" style={{ backgroundColor: "#1c1d20" }}>Current Lesson</option>
-                                        <option value="all" style={{ backgroundColor: "#1c1d20" }}>All Lessons</option>
+                                        <option value="current" style={{ backgroundColor: "#1c1d20" }}>Current Lactures</option>
+                                        <option value="all" style={{ backgroundColor: "#1c1d20" }}>All Lactures</option>
                                       </select>
                                     </div>
 

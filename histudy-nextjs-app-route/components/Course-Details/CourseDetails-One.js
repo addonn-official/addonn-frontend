@@ -12,6 +12,9 @@ import Review from "./Course-Sections/Review";
 import Viedo from "./Course-Sections/Viedo";
 
 const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
+console.log('v>>>>>>checkMatchCourses>>>>',checkMatchCourses);
+
+
 
   return (
     <>
@@ -34,8 +37,9 @@ const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
             className="course-content rbt-shadow-box coursecontent-wrapper mt--30"
             id="coursecontent"
           >
+
             {checkMatchCourses && checkMatchCourses.courseContent.map((data, index) => (
-              <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} lesson={checkMatchCourses.lesson} />
+              <Content {...data} key={index} checkMatchCourses={data} courseSlug={courseSlug} lesson={checkMatchCourses.lesson} course_id={checkMatchCourses?.id} courseData={checkMatchCourses} />
             ))}
           </div>
 

@@ -283,9 +283,12 @@ const SingleCourse = ({ getParams }) => {
                 author: instructors && instructors[0]?.display_name || "Unknown Instructor",
                 avatar: instructors && instructors[0]?.file?.url || "/images/client/avatar-02.png",
                 userCategory: instructors && instructors[0]?.short_description || "Instructor",
+                instructorCompanies: instructors && instructors[0]?.companies || [],
+              category: apiData.categories?.[0]?.name || "Uncategorized",
+
                 // author: apiData.instructor?.name || "Instructor",
                 // avatar: apiData.instructor?.file?.url || "/images/client/avatar-02.png",
-                post: "Instructor",
+                post: 'Instructor',
                 link: `/course-details/${related.slug}`,
                 desc: related.short_description
               })) || [],

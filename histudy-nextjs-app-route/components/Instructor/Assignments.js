@@ -30,7 +30,6 @@ const Assignments = () => {
 
 
 
-
   const assignments = useMemo(
     () =>
       userData?.assignments ||
@@ -191,14 +190,18 @@ const Assignments = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {submissions?.contents?.length > 0 ? (
                   submissions?.contents?.map((assignment, index) => {
                     const assSubm = assignment?.latest_submission
                     const is_approved = assSubm?.application_status;
 
+
                     const status = assSubm?.application_status;
-                    const uploadUrl = `/lesson?course_slug=html-masterclass&topic_id=${assignment?.topic_id}&content_id=${assignment?.id}`;
+                    const uploadUrl = `/lesson?course_slug=${selectedCourse?.label?.toLowerCase()
+                      ?.trim()
+                      ?.replace(/\s+/g, "-")}&topic_id=${assignment?.topic_id}&content_id=${assignment?.id}`;
 
                     let statusColor;
 

@@ -1836,9 +1836,9 @@ a.sidebar-item:hover .sidebar-playpause {
             }
 
             &.active {
-                background: linear-gradient(135deg, #6b46c1 0%, #f6ad55 100%);
+                background: #eb9d4bfc;
                 border-color: transparent;
-                color: #fff;
+                color: #f5f5f5fc;
                 box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
             }
         }
@@ -1892,7 +1892,7 @@ a.sidebar-item:hover .sidebar-playpause {
     }
 
     &:hover {
-        background: linear-gradient(135deg, #6b46c1 0%, #f6ad55 100%);
+        background: #eb9d4bfc;
         border-color: transparent;
         transform: translateY(-2px);
         color: #fff;

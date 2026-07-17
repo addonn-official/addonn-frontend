@@ -6,13 +6,35 @@ import { useAppContext } from "@/context/Context";
 import toast from "react-hot-toast";
 
 import "venobox/dist/venobox.min.css";
-import Link from "next/link";
+import Swal from "sweetalert2";
 
-const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
+import { UserOrderServices } from "@/services/User";
+import { getUser } from "@/utils/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCartAction } from "@/redux/action/CartAction";
+
+const Content = ({ checkMatchCourses, courseSlug, lesson, course_id, courseData }) => {
+
   const router = useRouter();
   const { userData, fetchUserProfile } = useAppContext();
   const [expandedLessons, setExpandedLessons] = React.useState([]);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+
+
+  const dispatch = useDispatch();
+
+  const { cart } = useSelector((state) => state.CartReducer);
+
+  const { cartToggle, setCart } = useAppContext();
+
+  const amount = 1;
+
+
+  const addToCartFun = (id, amount, product) => {
+    dispatch(addToCartAction(id, amount, product));
+    setCart(!cartToggle);
+  };
 
   const token = getLocalStorageToken() || getToken();
   const isLoggedIn = Boolean(token);
@@ -40,14 +62,14 @@ const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
     );
   };
 
-  const handleLessonClick = (e, list, lessonId) => {
+  const handleLessonClick = async (e, list, lessonId) => {
     e.preventDefault();
     e.stopPropagation();
     const token = getLocalStorageToken() || getToken();
     const hasAccess = list.status || (isLoggedIn && isEnrolled);
 
-    console.log(`/lesson?course_slug=${courseSlug}&topic_id=${list.topicId}&content_id=${list.contentId}`);
-    console.log({ hasAccess });
+    // console.log(`/lesson?course_slug=${courseSlug}&topic_id=${list.topicId}&content_id=${list.contentId}`);
+    // console.log({ hasAccess });
 
 
     // if (!token && !list.status) {
@@ -83,8 +105,112 @@ const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
       return;
     }
 
-    router.push(`/checkout?id=${courseSlug}`);
+    // router.push(`/checkout?id=${courseSlug}`);
+
+    const result = await Swal.fire({
+      title: "Enroll Required",
+      text: "Unlock full access by enrolling in the course.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Enroll Now",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#2f57ef",
+      cancelButtonColor: "#6c757d",
+    });
+
+    if (result.isConfirmed) {
+      await handleEnrollCourse();
+    }
   };
+
+
+  const handleEnrollCourse = async () => {
+    try {
+      const token = getLocalStorageToken() || getToken();
+      const user = getUser();
+
+      if (!token || !user) {
+        router.push("/login");
+        return;
+      }
+
+      // Paid Course
+      if (Number(courseData.price) > 0) {
+
+        const itemInCart = cart.find(
+          (item) => item.id === courseData.id
+        );
+
+        if (!itemInCart) {
+          addToCartFun(
+            courseData.id,
+            amount,
+            courseData
+          );
+        }
+
+        window.location.href = `/checkout?id=${courseData.id}`;
+        return;
+      }
+
+      // ==========================
+      // Free Course
+      // ==========================
+
+      const orderPayload = {
+        order_status: "create_order",
+        courses: [courseData.id],
+        bundles: [],
+        coupon_code: "",
+        order_sub_total: 0,
+        order_total: 0,
+      };
+
+      const createRes = await UserOrderServices.placeOrder(orderPayload);
+
+      if (createRes?.status !== "success") {
+        throw new Error(createRes?.message || "Unable to create order.");
+      }
+
+      const verifyRes = await UserOrderServices.placeOrder({
+        ...orderPayload,
+        order_status: "verify_order_payment",
+        gateway_amount: 0,
+        gateway_currency: "INR",
+        gateway_order_id: null,
+        gateway_payment_id: null,
+        gateway_signature: null,
+      });
+
+      if (verifyRes?.status !== "success") {
+        throw new Error(
+          verifyRes?.message || "Unable to enroll in free course."
+        );
+      }
+
+      await Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Course enrolled successfully.",
+        confirmButtonText: "OK",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+
+      await fetchUserProfile();
+
+      router.push("/instructor-enrolled-course");
+
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: err.message || "Something went wrong.",
+      });
+    }
+  };
+
+
 
   useEffect(() => {
     import("venobox/dist/venobox.min.js").then((venobox) => {
@@ -105,7 +231,7 @@ const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
 
             {checkMatchCourses.contentList.map((item, innerIndex) => (
 
-              <div className="accordion-item card" key={innerIndex}>
+              < div className="accordion-item card" key={innerIndex} >
                 <h2
                   className="accordion-header card-header"
                   id={`headingTwo${innerIndex}`}
@@ -236,7 +362,7 @@ const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
             ))}
           </div>
         </div>
-      </div>
+      </div >
 
       {showLoginModal && (
         <div
@@ -295,7 +421,8 @@ const Content = ({ checkMatchCourses, courseSlug, lesson }) => {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 };

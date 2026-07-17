@@ -9,7 +9,7 @@ const SimilarCourses = ({ checkMatchCourses }) => {
     <>
       <div className="container">
         <div className="section-title mb--30">
-          <span className="subtitle bg-primary-opacity">
+          <span className="subtitle bg-secondary-opacity" style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}>
             More Similar Courses
           </span>
           <h4 className="title">Related Courses</h4>
@@ -117,8 +117,8 @@ const SimilarCourses = ({ checkMatchCourses }) => {
                         By
                         {/* <Link href={`/profile/${item.id}`}></Link> */}
                         <span>{" "}{item.author}{" "}</span>
-                        In
-                        <Link href="#">{item.post}</Link>
+                        In {" "}
+                        <Link href="#">{item.category}</Link>
                       </div>
                     </div>
                     <div className="rbt-card-bottom">
