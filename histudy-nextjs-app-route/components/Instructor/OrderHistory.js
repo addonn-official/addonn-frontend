@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { showInfo } from "../../utils/swal";
+import Swal from "sweetalert2";
 
 import { useAppContext } from "../../context/Context";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,6 +69,166 @@ const OrderHistory = () => {
     setIsRefundReq(!isRefundReq)
   };
 
+  const handleRefundSuccess = async (order) => {
+
+    if (order?.refund?.status !== "approved") {
+      await Swal.fire({
+        icon: "error",
+        title: "Refund Rejected",
+        width: 650,
+        html: `
+                  <div style="font-family: Arial, sans-serif; text-align:left;">
+                    <div style="
+                      background:#f8f9fa;
+                      border:1px solid #e9ecef;
+                      border-radius:10px;
+                      padding:16px;
+                    ">
+                      <table style="width:100%; border-collapse:collapse;">
+                        <tr>
+                            <td style="padding:8px 0; font-weight:600;">Status</td>
+                            <td style="padding:8px 0;">
+                              <span style="
+                                background:#d4edda;
+                                color:#155724;
+                                padding:4px 10px;
+                                border-radius:20px;
+                                font-size:13px;
+                                font-weight:600;
+                              ">
+                                ${order?.refund?.status ?? "-"}
+                              </span>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td style="padding:8px 0; font-weight:600;">Approved On</td>
+                            <td style="padding:8px 0;">
+                              ${order?.refund?.updated_at}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td style="padding:8px 0; font-weight:600;">Reason</td>
+                            <td style="padding:8px 0;">
+                              ${order?.refund?.reason ?? "-"}
+                            </td>
+                          </tr>
+                        </table>
+
+                      </div>
+
+                      <div style="
+                        margin-top:16px;
+                        background:#fff8e1;
+                        border-left:4px solid #ffc107;
+                        padding:12px;
+                        border-radius:6px;
+                        color:#6c5700;
+                        font-size:14px;
+                      ">
+                        <strong>Note:</strong><br>
+                        The refunded amount will be credited to your original payment method within
+                        <strong>3–7 business days</strong> from the date of processing.
+                      </div>
+
+                    </div>
+                  `,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3085d6",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    }
+    else {
+
+      await Swal.fire({
+        icon: "success",
+        title: "Refund Approved",
+        width: 650,
+        html: `
+  <div style="font-family: Arial, sans-serif; text-align:left;">
+
+    <div style="
+      background:#f8f9fa;
+      border:1px solid #e9ecef;
+      border-radius:10px;
+      padding:16px;
+    ">
+
+      <table style="width:100%; border-collapse:collapse;">
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Order ID</td>
+          <td style="padding:8px 0;">${order?.id ?? "-"}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Refund Type</td>
+          <td style="padding:8px 0;">${order?.refund?.type ?? "-"}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Refund Amount</td>
+          <td style="padding:8px 0;">₹${order?.refund?.amount ?? 0}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Status</td>
+          <td style="padding:8px 0;">
+            <span style="
+              background:#d4edda;
+              color:#155724;
+              padding:4px 10px;
+              border-radius:20px;
+              font-size:13px;
+              font-weight:600;
+            ">
+              ${order?.refund?.status ?? "-"}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Approved On</td>
+          <td style="padding:8px 0;">
+            ${order?.refund?.updated_at}
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 0; font-weight:600;">Reason</td>
+          <td style="padding:8px 0;">
+            ${order?.refund?.reason ?? "-"}
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div style="
+      margin-top:16px;
+      background:#fff8e1;
+      border-left:4px solid #ffc107;
+      padding:12px;
+      border-radius:6px;
+      color:#6c5700;
+      font-size:14px;
+    ">
+      <strong>Note:</strong><br>
+      The refunded amount will be credited to your original payment method within
+      <strong>3–7 business days</strong> from the date of processing.
+    </div>
+
+  </div>
+`,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3085d6",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+      });
+    }
+
+  };
 
   // useEffect(() => {
   //   if (refundSuccess) {
@@ -250,6 +411,7 @@ const OrderHistory = () => {
                                   type="button"
                                   className="rbt-btn btn-xs radius-round color-light"
                                   // className={`b3 `}
+                                  onClick={() => handleRefundSuccess(order)}
                                   style={{
                                     backgroundColor:
                                       orderRefundStatus === "rejected" ? "#cfcaca"
