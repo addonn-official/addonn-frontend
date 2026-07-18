@@ -135,7 +135,7 @@ const OtpVerification = forwardRef((props, ref) => {
         />
       </div>
       {!hideInternalButton && (
-        <div className="form-submit-group">
+        <div className="form-submit-group text-center mb-2">
           <button
             type="button"
             className="rbt-btn btn-md btn-gradient hover-icon-reverse"

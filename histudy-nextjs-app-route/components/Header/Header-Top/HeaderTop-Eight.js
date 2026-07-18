@@ -8,19 +8,14 @@ import { useAppContext } from "@/context/Context";
 import { useSettings } from "@/context/SettingsContext";
 import MirrorLoader from "../../Common/MirrorLoader";
 
-const HeaderTopEight = ({
-  bgColor,
-  gapSpaceBetween,
-  container,
-  flexDirection,
-}) => {
+const HeaderTopEight = ({ bgColor, gapSpaceBetween, container, flexDirection, }) => {
   const router = useRouter();
   const { toggle, setToggle } = useAppContext();
   const { settings, loading } = useSettings();
 
   const offer = settings?.offer;
   const socialLinks = settings?.social_links;
-  
+
   const renderSocialLinks = () => {
     if (loading) {
       return (
@@ -71,84 +66,87 @@ const HeaderTopEight = ({
     return null;
   };
 
+  const isExpired = new Date() > new Date(offer?.end_date);
   return (
     <>
-      <div
-        className={`rbt-header-top rbt-header-top-1 ${gapSpaceBetween} ${bgColor} top-expended-activation ${!toggle ? "d-none" : ""
-          }`}
-      >
-        <div className={`${container}`}>
-          <div className="top-expended-wrapper">
-            <div
-              className={`top-expended-inner rbt-header-sec align-items-center ${flexDirection}`}
-            >
-              <div className="rbt-header-sec-col rbt-header-left d-none d-xl-block">
-                <div className="rbt-header-content">
-                  <div className="header-info">
-                    {/* Left section now empty per user request */}
+      {!isExpired &&
+
+        <div
+          className={`rbt-header-top rbt-header-top-1 ${gapSpaceBetween} ${bgColor} top-expended-activation ${!toggle ? "d-none" : ""
+            }`}
+        >
+          <div className={`${container}`}>
+            <div className="top-expended-wrapper">
+              <div
+                className={`top-expended-inner rbt-header-sec align-items-center ${flexDirection}`}
+              >
+                <div className="rbt-header-sec-col rbt-header-left d-none d-xl-block">
+                  <div className="rbt-header-content">
+                    <div className="header-info">
+                      {/* Left section now empty per user request */}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="rbt-header-sec-col rbt-header-center">
-                <div className="rbt-header-content justify-content-center w-100">
-                  <div className="header-info">
-                    <div className="rbt-header-top-news">
-                      <div className="inner">
-                        <div className="content">
-                          {loading ? (
-                            <div className="d-flex align-items-center gap-2">
-                              <MirrorLoader widthClass="w-40" heightClass="h-20" radiusClass="radius-15" />
-                              <MirrorLoader widthClass="w-200" heightClass="h-20" />
-                            </div>
-                          ) : offer ? (
-                            <>
-                              <span className="rbt-badge variation-02 bg-color-primary color-white radius-round">
-                                {offer?.badge}
-                              </span>
-                              <span className="news-text">
-                                <Link className="text-decoration-none text-secondary offer-link"
-                                  href={offer.link}>
-                                  {offer?.title}
-                                </Link>
-                              </span>
-                            </>
-                          ) : (
-                            // Strictly dynamic: if no promo data, show shimmer or hide? 
-                            // Shimmer looks more "loading from API" even if it failed/empty.
-                            <div className="d-flex align-items-center gap-2">
-                              <MirrorLoader widthClass="w-40" heightClass="h-20" radiusClass="radius-15" />
-                              <MirrorLoader widthClass="w-200" heightClass="h-20" />
-                            </div>
-                          )}
+                <div className="rbt-header-sec-col rbt-header-center">
+                  <div className="rbt-header-content justify-content-center w-100">
+                    <div className="header-info">
+                      <div className="rbt-header-top-news">
+                        <div className="inner">
+                          <div className="content">
+                            {loading ? (
+                              <div className="d-flex align-items-center gap-2">
+                                <MirrorLoader widthClass="w-40" heightClass="h-20" radiusClass="radius-15" />
+                                <MirrorLoader widthClass="w-200" heightClass="h-20" />
+                              </div>
+                            ) : offer ? (
+                              <>
+                                <span className="rbt-badge variation-02 bg-color-primary color-white radius-round">
+                                  {offer?.badge}
+                                </span>
+                                <span className="news-text">
+                                  <Link className="text-decoration-none text-secondary offer-link"
+                                    href={offer.link}>
+                                    {offer?.title}
+                                  </Link>
+                                </span>
+                              </>
+                            ) : (
+                              // Strictly dynamic: if no promo data, show shimmer or hide? 
+                              // Shimmer looks more "loading from API" even if it failed/empty.
+                              <div className="d-flex align-items-center gap-2">
+                                <MirrorLoader widthClass="w-40" heightClass="h-20" radiusClass="radius-15" />
+                                <MirrorLoader widthClass="w-200" heightClass="h-20" />
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="rbt-header-sec-col rbt-header-right mt_md--10 mt_sm--10">
-                <div className="rbt-header-content justify-content-start justify-content-lg-end">
-                  <div className="header-info">
-                    <ul className="rbt-information-list">
-                      {renderSocialLinks()}
-                    </ul>
+                <div className="rbt-header-sec-col rbt-header-right mt_md--10 mt_sm--10">
+                  <div className="rbt-header-content justify-content-start justify-content-lg-end">
+                    <div className="header-info">
+                      <ul className="rbt-information-list">
+                        {renderSocialLinks()}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="header-info">
-              <div className="top-bar-expended d-block d-lg-none">
-                <button
-                  className="topbar-expend-button rbt-round-btn"
-                  onClick={() => setToggle(!toggle)}
-                >
-                  <i className="feather-plus"></i>
-                </button>
+              <div className="header-info">
+                <div className="top-bar-expended d-block d-lg-none">
+                  <button
+                    className="topbar-expend-button rbt-round-btn"
+                    onClick={() => setToggle(!toggle)}
+                  >
+                    <i className="feather-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>}
     </>
   );
 };

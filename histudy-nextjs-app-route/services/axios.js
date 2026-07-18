@@ -27,7 +27,7 @@ const getErrorMessage = (errorRes, error) => {
     return backendMessage || "Invalid request. Please try again.";
   }
   if (statusCode === 401) {
-    return "Session expired. Please login again.";
+    return "Unauthorized Access!";
   }
   if (statusCode === 403) {
     return backendMessage || "You do not have permission to access this.";

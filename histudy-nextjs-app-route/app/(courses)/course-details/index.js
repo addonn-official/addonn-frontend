@@ -192,6 +192,8 @@ const SingleCourse = ({ getParams }) => {
                   contentList: apiData.topics?.map(topic => ({
                     title: topic.name,
                     time: topic.progres?.total || "0m",
+                    numberOfLactures: topic?.number_of_lectures || 0,
+                    totalDuration: topic?.total_duration || "",
                     listItem: topic.course_contents?.map(content => ({
                       text: content.title,
                       playIcon: content.icon === "play" || content.category?.slug === "lesson",
@@ -284,7 +286,7 @@ const SingleCourse = ({ getParams }) => {
                 avatar: instructors && instructors[0]?.file?.url || "/images/client/avatar-02.png",
                 userCategory: instructors && instructors[0]?.short_description || "Instructor",
                 instructorCompanies: instructors && instructors[0]?.companies || [],
-              category: apiData.categories?.[0]?.name || "Uncategorized",
+                category: apiData.categories?.[0]?.name || "Uncategorized",
 
                 // author: apiData.instructor?.name || "Instructor",
                 // avatar: apiData.instructor?.file?.url || "/images/client/avatar-02.png",

@@ -236,9 +236,7 @@ const Content = ({ checkMatchCourses, courseSlug, lesson, course_id, courseData 
                   className="accordion-header card-header"
                   id={`headingTwo${innerIndex}`}
                 >
-                  <button
-                    className={`accordion-button ${!item.collapsed ? "collapsed" : ""
-                      }`}
+                  <button className={`accordion-button ${!item.collapsed ? "collapsed" : ""}`}
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target={`#collapseTwo${innerIndex + 1}`}
@@ -251,10 +249,12 @@ const Content = ({ checkMatchCourses, courseSlug, lesson, course_id, courseData 
                     </span>
                     <span className="accordion-title-right">
                       {item.listItem?.length > 0 && (
-                        <span className="lec-count">{lesson} lectures</span>
+                        <span className="lec-count">
+                          {item?.numberOfLactures} lecture{item?.numberOfLactures > 1 ? "s" : ""}
+                        </span>
                       )}
                       {item.time && (
-                        <span className="section-time">{item.time}</span>
+                        <span className="section-time">{item?.totalDuration}</span>
                       )}
                     </span>
                   </button>

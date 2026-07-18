@@ -923,7 +923,6 @@ const LessonPage = () => {
               {latestSubmission &&
                 <div className="mt--20 text-secondary small">
                   <p className="mb--0">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
-                  {/* <p className="mb--0">Attempt: {latestSubmission.attempt}</p> */}
                 </div>
               }
 
@@ -1042,56 +1041,56 @@ const LessonPage = () => {
               <div className="mt--20 text-secondary small">
                 <p className="mb-4">Submitted on: {new Date(latestSubmission?.submitted_at).toLocaleString()}</p>
               </div>
-
-              {latestSubmission.application_status !== 'Pending' && <form onSubmit={handleAssignmentSubmit}>
-                <div className="assignment-answer-form mb--20">
-                  <textarea
-                    rows="6"
-                    placeholder="Add your assignment content here..."
-                    className="w-100 p--15 rounded border"
-                    value={assignmentText}
-                    onChange={(e) => setAssignmentText(e.target.value)}
-                    style={{ backgroundColor: "#f9f9f9" }}
-                  ></textarea>
-                </div>
-
-                <div className="mt--30">
-                  <label className="mb--10 d-block font-weight-bold h6 text-white">Upload files (optional)</label>
-                  <div className="custom-file-upload-wrapper p--20 border-dashed rounded text-center bg-color-light">
-                    <input
-                      type="file"
-                      id="assignment-file"
-                      className="d-none"
-                      onChange={(e) => setAssignmentFile(e.target.files[0])}
-                    />
-                    <label htmlFor="assignment-file" className="cursor-pointer mb--0 d-block">
-                      <i className="feather-upload-cloud h3 d-block mb--10 text-primary"></i>
-                      <span className="d-block">{assignmentFile ? assignmentFile.name : "Click to upload or drag and drop"}</span>
-                      {!assignmentFile && <small className="text-secondary">(Images, PDFs, or ZIP files recommended)</small>}
-                    </label>
+              {latestSubmission.application_status !== 'Pending' && latestSubmission.application_status !== 'Submitted' &&
+                <form onSubmit={handleAssignmentSubmit}>
+                  <div className="assignment-answer-form mb--20">
+                    <textarea
+                      rows="6"
+                      placeholder="Add your assignment content here..."
+                      className="w-100 p--15 rounded border"
+                      value={assignmentText}
+                      onChange={(e) => setAssignmentText(e.target.value)}
+                      style={{ backgroundColor: "#f9f9f9" }}
+                    ></textarea>
                   </div>
-                </div>
 
-                <div className="submit-btn mt--35">
-                  <button
-                    type="submit"
-                    className="rbt-btn btn-gradient hover-icon-reverse w-100"
-                    disabled={submittingAssignment}
-                  >
-                    <span className="icon-reverse-wrapper">
-                      <span className="btn-text">
-                        {submittingAssignment ? "Submitting..." : "Submit Assignment"}
+                  <div className="mt--30">
+                    <label className="mb--10 d-block font-weight-bold h6 text-white">Upload files (optional)</label>
+                    <div className="custom-file-upload-wrapper p--20 border-dashed rounded text-center bg-color-light">
+                      <input
+                        type="file"
+                        id="assignment-file"
+                        className="d-none"
+                        onChange={(e) => setAssignmentFile(e.target.files[0])}
+                      />
+                      <label htmlFor="assignment-file" className="cursor-pointer mb--0 d-block">
+                        <i className="feather-upload-cloud h3 d-block mb--10 text-primary"></i>
+                        <span className="d-block">{assignmentFile ? assignmentFile.name : "Click to upload or drag and drop"}</span>
+                        {!assignmentFile && <small className="text-secondary">(Images, PDFs, or ZIP files recommended)</small>}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="submit-btn mt--35">
+                    <button
+                      type="submit"
+                      className="rbt-btn btn-gradient hover-icon-reverse w-100"
+                      disabled={submittingAssignment}
+                    >
+                      <span className="icon-reverse-wrapper">
+                        <span className="btn-text">
+                          {submittingAssignment ? "Submitting..." : "Submit Assignment"}
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
+                        <span className="btn-icon">
+                          <i className="feather-arrow-right"></i>
+                        </span>
                       </span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                      <span className="btn-icon">
-                        <i className="feather-arrow-right"></i>
-                      </span>
-                    </span>
-                  </button>
-                </div>
-              </form>}
+                    </button>
+                  </div>
+                </form>}
             </div>
           )}
       </div>
@@ -1375,12 +1374,13 @@ const LessonPage = () => {
 
               {/* ─── Relocated Tabs ─── */}
               {showTabs && (
-                <div className="lesson-content-tabs ml--auto">
+                <div className="lesson-content-tabs ml--auto" >
                   <button
                     className="lesson-content-tab-btn"
+                    style={{ color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
                     onClick={() => window.open(`https://docs.google.com/viewer?url=${encodeURIComponent(finalPdfUrl)}`, '_blank')}
                   >
-                    <i className="feather-external-link"></i> Open PDF
+                    <i className="feather-external-link" ></i> Open PDF
                   </button>
                 </div>
               )}
@@ -1391,7 +1391,7 @@ const LessonPage = () => {
                   <button
                     className="lesson-content-tab-btn active"
                     onClick={scrollToSubmission}
-                    style={{ borderRadius: '8px', marginLeft: showTabs ? '10px' : '0',color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
+                    style={{ borderRadius: '8px', marginLeft: showTabs ? '10px' : '0', color: '#f5f5f5fc', backgroundColor: "#eb9d4bfc" }}
 
                   >
                     <i className="feather-external-link"></i> Submission
@@ -1468,8 +1468,8 @@ const LessonPage = () => {
                                         className="lesson-chat-filter-input"
                                         style={{ backgroundColor: "transparent", color: "white", cursor: "pointer", border: "none", outline: "none", width: "100%", paddingLeft: "10px" }}
                                       >
-                                        <option value="current" style={{ backgroundColor: "#1c1d20" }}>Current Lactures</option>
-                                        <option value="all" style={{ backgroundColor: "#1c1d20" }}>All Lactures</option>
+                                        <option value="current" style={{ backgroundColor: "#1c1d20" }}>Current Lecture</option>
+                                        <option value="all" style={{ backgroundColor: "#1c1d20" }}>All Lectures</option>
                                       </select>
                                     </div>
 

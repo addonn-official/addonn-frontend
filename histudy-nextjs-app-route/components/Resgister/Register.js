@@ -288,7 +288,8 @@ const Register = () => {
                   </div>
 
                   <div className="form-group">
-                    <Field name="phone" type="text" placeholder="Phone *" />
+                    <Field name="phone" type="text" placeholder="Phone *" MinLength={10} maxLength={10}
+                    />
                     <span className="focus-border"></span>
                     <div className="text-danger"><ErrorMessage name="phone" /></div>
                   </div>
@@ -353,8 +354,8 @@ const Register = () => {
               {step === 2 && !showOtp && !completeRegistration && (
                 <>
                   <div className="otp-verification mb--30">
-                    <h4 className="title mb--20">Verify Email</h4>
-                    <p className="mb--20">Enter the 6-digit code sent to <strong>{values.email}</strong></p>
+                    <h4 className="title mb--20">Verify Phone Number</h4>
+                    <p className="mb--20">Enter the 6-digit code sent to <strong>{values.phone}</strong></p>
                     <div className="form-group">
                       <Field name="otp" type="text" maxLength="6" placeholder="Enter 6-digit OTP *" />
                       <span className="focus-border"></span>

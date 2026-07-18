@@ -3,7 +3,9 @@ import * as Yup from 'yup';
 // Step 1: User Details
 export const step1Schema = Yup.object().shape({
   name: Yup.string().required("Full name is required"),
-  phone: Yup.string().required("Phone number is required"),
+  phone: Yup.string()
+    .required("Phone number is required")
+    .length(10, "Phone number must be exactly 10 digits"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   profession: Yup.string().required("Profession is required"),
 });

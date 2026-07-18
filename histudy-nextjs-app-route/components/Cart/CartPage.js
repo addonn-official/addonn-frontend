@@ -167,6 +167,7 @@ const CartPage = () => {
               </div>
             </div> : <>
               <div className="col-12 text-center mb-4">
+                <p className="text-center fs-1">The cart is feeling lonely, kindly add something</p>
                 <Link
                   href="/#live-courses"
                   className="rbt-btn btn-gradient rbt-switch-btn rbt-switch-y w-25 text-center"
@@ -174,7 +175,6 @@ const CartPage = () => {
                   <span className="fs-2" data-text="Courses">Go to Courses</span>
                 </Link>
               </div>
-              <p className="text-center fs-1">The cart is feeling lonely, kindly add something</p>
             </>
             }
           </div>

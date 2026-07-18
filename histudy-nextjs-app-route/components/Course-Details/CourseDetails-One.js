@@ -12,7 +12,7 @@ import Review from "./Course-Sections/Review";
 import Viedo from "./Course-Sections/Viedo";
 
 const CourseDetailsOne = ({ checkMatchCourses, courseSlug }) => {
-console.log('v>>>>>>checkMatchCourses>>>>',checkMatchCourses);
+  console.log('v>>>>>>checkMatchCourses>>>>', checkMatchCourses);
 
 
 

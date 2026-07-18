@@ -123,13 +123,18 @@ const OrderHistory = () => {
                 <tr>
                   <th style={{ minWidth: "120px" }}>Order ID</th>
 
-                  <th style={{ minWidth: "300px" }}>
+                  <th style={{ minWidth: "250px" }}>
                     Course/Bundle
                   </th>
 
-                  <th style={{ minWidth: "300px", textAlign: "center" }}>
+                  <th style={{ minWidth: "250px", textAlign: "start" }}>
                     Date
                   </th>
+
+                  <th style={{ minWidth: "120px" }}>
+                    Coupon
+                  </th>
+
 
                   <th style={{ minWidth: "120px" }}>
                     Price
@@ -147,9 +152,6 @@ const OrderHistory = () => {
                     Refund
                   </th>
 
-                  <th style={{ minWidth: "120px" }}>
-                    Coupon
-                  </th>
                 </tr>
               </thead>
 
@@ -164,7 +166,6 @@ const OrderHistory = () => {
                     const canRefund = order?.can_request_refund
                     const orderStatus = order?.transaction?.status?.charAt(0).toUpperCase() + order?.transaction?.status?.slice(1)
 
-                    console.log('order>>>>', order?.can_request_refund)
 
                     return (
                       <tr key={index}
@@ -172,22 +173,26 @@ const OrderHistory = () => {
                           borderBottom: "1px solid #eee",
                         }}>
                         <th>#{order.order_id}</th>
-                        <td> <div
-                          style={{
-                            maxWidth: "300px",
-                            whiteSpace: "normal",
-                            wordBreak: "break-word",
-                            lineHeight: "1.5",
-                          }}
-                        >{order.items?.map((item) => item.course?.title).join(", ") || "N/A"}</div></td>
                         <td>
-                          <td>
-                            <div className="fw-bold">{date} {" "}   {time}</div>
-                            {/* <small className="text"> */}
-
-                            {/* </small> */}
-                          </td>
+                          <div
+                            style={{
+                              maxWidth: "300px",
+                              whiteSpace: "normal",
+                              wordBreak: "break-word",
+                              lineHeight: "1.5",
+                            }}
+                          >
+                            {order.items?.map((item) => item.course?.title).join(", ") || "N/A"}</div>
                         </td>
+
+                        <td style={{ textAlign: "start" }}>
+                          <div className="fw-bold ">{date} {" "}   {time}</div>
+                        </td>
+
+                        <td style={{ textAlign: "start" }}>
+                          <div className="fw-bold ">{order?.Coupon || '-'}</div>
+                        </td>
+
                         <td>₹{order.final_amount}</td>
 
 
