@@ -39,6 +39,7 @@ const Context = ({ children }) => {
     setLoadingUser(true);
     try {
       const res = await UserAuthServices.getUserDataService();
+      console.log("Updated user:", res.data);
       if (res && res.status === "success") {
         setUserData(res.data);
       }

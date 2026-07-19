@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refundRequestAction, resetRefundRequest } from "@/redux/action/OrderAction";
 
 const OrderHistory = () => {
-  const { userData, loadingUser } = useAppContext();
+  const { userData, loadingUser, fetchUserProfile } = useAppContext();
   const [refundStatusMap, setRefundStatusMap] = useState({});
   const { isLightTheme } = useAppContext();
 
@@ -26,7 +26,6 @@ const OrderHistory = () => {
   const u = userData || {};
   const orders = useMemo(() => u.orders || [], [u.orders]);
 
-  if (loadingUser) return <div className="skeleton" style={{ height: "400px" }}></div>;
 
   const normalizeOrderStatus = (order) => {
     const label = String(order?.transaction?.status || "-").trim();
@@ -255,6 +254,18 @@ const OrderHistory = () => {
       setRefundType("full");
     }
   }
+
+
+  useEffect(() => {
+
+    if (refundSuccess) {
+      fetchUserProfile();
+      dispatch(resetRefundRequest());
+    }
+  }, [refundSuccess, fetchUserProfile, dispatch]);
+
+
+  if (loadingUser) return <div className="skeleton" style={{ height: "400px" }}></div>;
 
 
   return (

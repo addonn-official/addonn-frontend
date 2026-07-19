@@ -23,7 +23,7 @@ export const refundRequestAction =
                     },
                 });
 
-                if (!res?.success) {
+                if (res?.status !== "success") {
                     Swal.fire("Fail!", res?.message);
 
                     return dispatch({

@@ -218,13 +218,13 @@ const MainDemo = ({ blogs }) => {
 
 
 				{/* Course Bundles */}
-				{bundleCourses && bundleCourses.length > 0 && (
+				{/* {bundleCourses && bundleCourses.length > 0 && (
 					<CourseCarousel
 						courses={bundleCourses}
 						title={<>Get More For Less <br /> With Our Exclusive Bundles</>}
 						subTitle="Course Bundles"
 					/>
-				)}
+				)} */}
 
 				{/* Money Back Guarantee */}
 				{homeSettings.moneyback_section ? (
@@ -288,11 +288,11 @@ const MainDemo = ({ blogs }) => {
 									</h2>
 								</div>
 								{/* <p className="mt--20">Learning communicate to global world and build a bright future with our histudy.</p> */}
-								<div className="mt--30">
+								{/* <div className="mt--30">
 									<Link href="/review" className="rbt-btn btn-gradient">
 										View All Reviews
 									</Link>
-								</div>
+								</div> */}
 							</div>
 							<div className="col-lg-9">
 								<div className="testimonial-cards-wrapper" style={{ width: "100vw" }}>
