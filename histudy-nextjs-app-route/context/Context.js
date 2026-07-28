@@ -38,8 +38,11 @@ const Context = ({ children }) => {
     }
     setLoadingUser(true);
     try {
+      console.log("Fetching latest profile...");
+
       const res = await UserAuthServices.getUserDataService();
-      console.log("Updated user:", res.data);
+      console.log("API Response", res.data);
+
       if (res && res.status === "success") {
         setUserData(res.data);
       }

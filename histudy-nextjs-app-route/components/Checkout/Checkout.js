@@ -359,7 +359,7 @@ const Checkout = () => {
                       ,{" "}
                       <span>
                         <Link
-                          href="/refund"
+                          href="/refund-policy"
                           onMouseEnter={() => setHoverRefund(true)}
                           onMouseLeave={() => setHoverRefund(false)}
                           style={{

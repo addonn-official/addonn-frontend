@@ -3,6 +3,7 @@ import Courses from "../../data/dashboard/instructor/instructor.json";
 import CourseWidgets from "./Dashboard-Section/widgets/CourseWidget";
 
 import { useAppContext } from "../../context/Context";
+import { useEffect } from "react";
 
 const EnrolledCourses = () => {
   const { userData, loadingUser } = useAppContext();
@@ -13,7 +14,8 @@ const EnrolledCourses = () => {
 
   const mapEnrollmentToCourse = (enrollment) => {
     const c = enrollment?.course || {};
-console.log(' c >>>>>>>  c >>>>>>>', c );
+    // console.log(' c >>>>>>>  c >>>>>>>', c);
+    const myReview = enrollment?.review || c?.reviews?.[0] || null;
 
     return {
       enrollment_id: enrollment.id,
@@ -37,11 +39,19 @@ console.log(' c >>>>>>>  c >>>>>>>', c );
       progressValue: enrollment?.completion_percentage,
       certificateStatus: enrollment?.certificate_status,
       certificateMessage: enrollment?.certificate_message,
-      userReviewText: enrollment?.review?.review || "",
-      userRating: enrollment?.review?.rating || 0,
-      userReviews: c?.reviews,
+
+      // userReviewText: enrollment?.review?.review || "",
+      // userRating: enrollment?.review?.rating || 0,
+      // userReviews: c?.reviews,
+
+      userReviewId: myReview?.id || null,
+      userReviewText: myReview?.review || "",
+      userRating: myReview?.rating || 0,
+
+      userReviews: c?.reviews || [],
+
       progress: c?.progress,
-      duration:c?.duration,
+      duration: c?.duration,
       contents: c?.contents || [],
       rating: {
         average: c.reviews_avg_rating || 0,

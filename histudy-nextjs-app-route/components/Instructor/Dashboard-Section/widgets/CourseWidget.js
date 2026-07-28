@@ -6,9 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { showError, showSuccess } from "../../../../utils";
 import { UserReviewServices, CertificateServices } from "../../../../services/User";
+import { useAppContext } from "@/context/Context";
 
 const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgress, isCompleted, isEdit, }) => {
-  const [userRating, setUserRating] = useState(data.rating.average || 0);
+
+  const { fetchUserProfile } = useAppContext();
+
+  const [userRating, setUserRating] = useState(data.userRating || 0);
+
   const [reviewText, setReviewText] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -51,6 +56,10 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
   }, []);
 
   useEffect(() => {
+    setUserRating(data.userRating || 0);
+  }, [data.userRating]);
+
+  useEffect(() => {
     if (!mounted) return;
 
     document.body.style.overflow = showReviewModal ? "hidden" : "";
@@ -67,7 +76,7 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
   const handleCloseReviewModal = () => {
     setShowReviewModal(false);
     setReviewText("");
-    setUserRating(0);
+    setUserRating(data.userRating || 0);
     setCurrentReview(null);
   };
 
@@ -107,23 +116,28 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
           payload,
           currentReview.id
         );
+
+        // Background me latest profile fetch
+        await fetchUserProfile();
       }
 
       // CREATE REVIEW
       else {
         res = await UserReviewServices.giveReviewToCourse(payload);
+        await fetchUserProfile();
+
       }
 
       if (res?.success) {
-        showSuccess(
-          currentReview?.id
-            ? "Review updated successfully."
-            : "Review submitted successfully."
-        );
 
         handleCloseReviewModal();
-      } else {
-        showError(res?.message || "Unable to submit review.");
+
+        showSuccess(
+          currentReview?.id ? "Review updated successfully." : "Review submitted successfully."
+        );
+
+        // Background me latest profile fetch
+        await fetchUserProfile();
       }
     } catch (error) {
       console.error("Review submit error", error);
@@ -133,47 +147,6 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
     }
 
 
-    // if (userRating === 0) {
-    //   try {
-    //     const res = await UserReviewServices.giveReviewToCourse({
-    //       course_id: data.id,
-    //       review: reviewText,
-    //       rating: userRating,
-    //     });
-
-    //     if (res?.success) {
-    //       showSuccess("Review submitted successfully.");
-    //       handleCloseReviewModal();
-    //     } else {
-    //       showError(res?.message || "Unable to submit review.");
-    //     }
-    //   } catch (error) {
-    //     console.error("Review submit error", error);
-    //     toast.error("Unable to submit your review at this time.");
-    //   } finally {
-    //     setSubmittingReview(false);
-    //   }
-    // } else {
-    //   try {
-    //     const res = await UserReviewServices.updateReviewToCourse({
-    //       course_id: data.id,
-    //       review: reviewText,
-    //       rating: userRating,
-    //     });
-
-    //     if (res?.success) {
-    //       showSuccess("Review submitted successfully.");
-    //       handleCloseReviewModal();
-    //     } else {
-    //       showError(res?.message || "Unable to submit review.");
-    //     }
-    //   } catch (error) {
-    //     console.error("Review submit error", error);
-    //     toast.error("Unable to submit your review at this time.");
-    //   } finally {
-    //     setSubmittingReview(false);
-    //   }
-    // }
 
   };
 
@@ -273,14 +246,6 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
     if (!mounted) return null;
     return createPortal(renderReviewModal(), document.body);
   };
-
-  // const getCertificateStatus = () => {
-  //   // const status = data.certificateStatus?.toLowerCase();
-  //   // if (status === "granted" || status === "download now" || status === "downloaded") return "Download Certificate";
-  //   // if (status === "pending" || status === "requested") return "Request Pending";
-  //   // if (status === "rejected") return "Request Rejected";
-  //   return data?.certificate?.request_status;
-  // };
 
 
   const getCertificateStatus = () => {
@@ -382,9 +347,6 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
     }
   };
 
-
-
-
   const handleCertificateClick = (e) => {
     e.preventDefault();
 
@@ -403,14 +365,9 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
     }
   };
 
-
-
-  console.log("Rendering", data);
-
   const topicId = data?.last_watch_topic_id ?? data?.contents?.[0]?.topic?.id;
 
   const contentId = data?.last_watch_content_id ?? data?.contents?.[0]?.id;
-
   return (
     <>
       <div className="rbt-card variation-01 rbt-hover">
@@ -466,7 +423,7 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
                     {userRating > 0 ? (
                       <>
                         {userRating}{" "}
-                        {data?.userReviews?.length > 0 && !data?.userReviews?.[0]?.verify && (<button
+                        {data?.userRating > 0 && !data?.userReviews?.[0]?.verify && (<button
                           // onClick={(e) => {
                           //   e.preventDefault();
                           //   setReviewText(data.userReviewText || "");
@@ -479,9 +436,8 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
                             setCurrentReview({
                               id: data.userReviewId,
                             });
-
-                            setReviewText(data.userReviewText || "");
-                            setUserRating(data.userRating || 0);
+                            setReviewText(data.userReviewText);
+                            setUserRating(data.userRating);
 
                             setShowReviewModal(true);
                           }}
@@ -508,19 +464,16 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
                   </span>
                 </div>
               </div>
+
+
               <h4 className="rbt-card-title">
                 <Link
-                  href={`/lesson?course_slug=${data?.title
-                    ?.toLowerCase()
-                    ?.trim()
-                    ?.replace(/\s+/g, "-")}&topic_id=${topicId}&content_id=${contentId}`}
-                // href={`/lesson?course_slug=${data?.title?.toLowerCase()
-                //   ?.trim()
-                //   ?.replace(/\s+/g, "-")}&topic_id=${data?.contents?.[0]?.topic?.id || data?.last_watch_topic_id}&content_id=${data?.last_watch_content_id || data?.contents?.[0]?.id}`}
+                  href={`/lesson?course_slug=${data?.title?.toLowerCase()?.trim()?.replace(/\s+/g, "-")}&topic_id=${topicId}&content_id=${contentId}`}
                 >{data?.title}</Link>
               </h4>
             </>
           )}
+
           <ul className="rbt-meta">
             <li>
               <i className="feather-video" />
@@ -560,10 +513,15 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
               <div className="rbt-card-bottom">
                 <button
                   onClick={handleCertificateClick}
-                  className={`rbt-btn btn-sm w-100 text-center ${["approved", "downloaded"].includes(data?.certificate?.request_status?.toLowerCase())
+                  className={`rbt-btn btn-sm w-100 text-center   ${["approved", "downloaded"].includes(data?.certificate?.request_status?.toLowerCase())
                     ? "btn-gradient" : data?.certificate?.request_status?.toLowerCase() === "requested" ? "bg-gradient" : "bg-primary-opacity"
                     }`}
                   disabled={data?.certificate?.request_status?.toLowerCase() === "requested"}
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontSize: "14px",
+                    padding: "0 12px",
+                  }}
                 >
                   {getCertificateStatus()}
                 </button>
@@ -587,11 +545,6 @@ const CourseWidget = ({ data, courseStyle, showDescription, showAuthor, isProgre
           ) : (
             ""
           )}
-
-
-
-
-
 
 
           {/* Review Modal */}
